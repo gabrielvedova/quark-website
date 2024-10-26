@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './menu.module.css';
+import styles from './style.module.css';
 
 export default function ConhecaQuark() {
     return (

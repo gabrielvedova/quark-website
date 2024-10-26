@@ -1,7 +1,7 @@
 import React from "react";
-import styles from './menu.module.css';
+import styles from './style.module.css';
 
-export default function Time() {
+export default function Diferenciais() {
     return (
         <div className={styles.container}></div>
     );

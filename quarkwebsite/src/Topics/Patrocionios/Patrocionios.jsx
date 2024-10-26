@@ -1,7 +1,7 @@
 import React from "react";
-import styles from './menu.module.css';
+import styles from './style.module.css';
 
-export default function ComoFunciona() {
+export default function Patrocionios() {
     return (
         <div className={styles.container}></div>
     );

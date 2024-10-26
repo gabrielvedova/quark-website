@@ -1,7 +1,7 @@
 import React from "react";
-import styles from './menu.module.css';
+import styles from './style.module.css';
 
-export default function Conquistas() {
+export default function Blog() {
     return (
         <div className={styles.container}></div>
     );
