@@ -1,0 +1,12 @@
+/* quarkwebsite/src/App/App.css */
+.main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.containerBoss {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
