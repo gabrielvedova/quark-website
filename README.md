@@ -22,10 +22,23 @@ Para facilitar aos desenvolvedores, os protótipos de design está na pasta _*de
 
 ## Observações Técnicas
 
-Para a criação do site, foi necessário utilizar o framework *next.js* para desenvolvimento. Já em bibliotecas, foram utilizados:
+Para a criação do site, foi necessário utilizar as seguintes bibliotecas e frameworks:
 
-#### Front-End
+### Full Stack
 
-* React
+#### Framework
+* NextJs
+#### Biblioteca
+* ESLint
 
-#### Back-End
+### Front-End
+
+#### Framework
+* Tailwind CSS
+#### Biblioteca
+* TypeScript
+
+### Back-End
+#### Framework
+#### Biblioteca
+* TypeScript
