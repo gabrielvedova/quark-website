@@ -1,7 +1,7 @@
 .container {
-    background-color: blueviolet;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: blueviolet;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -1,19 +1,17 @@
-import'../styles/layout.css'
+import "../styles/layout.css";
 
 export const metadata = {
-    title: 'Quark'
-}
+  title: "Quark",
+};
 
 const RootLayout = ({ children }) => {
-    return (
-        <html lang="pt-br">
-        <body>
-            <div id="root">
-                {children}
-            </div>
-        </body>
-        </html>
-    )
-}
+  return (
+    <html lang="pt-br">
+      <body>
+        <div id="root">{children}</div>
+      </body>
+    </html>
+  );
+};
 
-export default RootLayout
+export default RootLayout;

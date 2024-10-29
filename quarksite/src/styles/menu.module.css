@@ -1,45 +1,43 @@
-
 .container {
-    height: 16vh;
-    display: flex;
-    flex-direction: row;
-    margin: 0;
-    padding: 0 5vw;
-    align-items: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14px;
+  height: 16vh;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0 5vw;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
 }
 
 .imgContainer {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .container .imgContainer .img {
-    background-color: aqua;
-    height: 90px;
-    width: 220px;
+  background-color: aqua;
+  height: 90px;
+  width: 220px;
 }
 
 .container ul {
-    flex: 3;
-    margin: 0px;
-    padding: 0px;
-    display: flex;
-    flex-direction: row;
-    list-style-type: none;
-    align-items: center;
-    justify-content: space-evenly;
+  flex: 3;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .container ul button {
-    padding: 10px 30px 10px 30px;
-    border-radius: 50px;
-    background-color: rgb(98, 69, 228);
-    color: #fff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14px;
-    border: none;
+  padding: 10px 30px 10px 30px;
+  border-radius: 50px;
+  background-color: rgb(98, 69, 228);
+  color: #fff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  border: none;
 }

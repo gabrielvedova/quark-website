@@ -1,18 +1,17 @@
-import styles from '../styles/App.module.css'
-import Menu from '../components/Menu'
-import Home from '../components/Home'
-import ComoFunciona from '../components/Funcionalidade'
-import ConhecaQuark from '../components/Conheca'
-import Diferenciais from '../components/Diferenciais'
-import Depoimentos from '../components/Depoimentos'
-import Conquistas from '../components/Conquistas'
-import Perguntas from '../components/Perguntas'
-import Blog from '../components/Blog'
-import Time from '../components/Time'
-import Patrocinios from '../components/Patrocionios'
+import styles from "../styles/App.module.css";
+import Menu from "../components/Menu";
+import Home from "../components/Home";
+import ComoFunciona from "../components/Funcionalidade";
+import ConhecaQuark from "../components/Conheca";
+import Diferenciais from "../components/Diferenciais";
+import Depoimentos from "../components/Depoimentos";
+import Conquistas from "../components/Conquistas";
+import Perguntas from "../components/Perguntas";
+import Blog from "../components/Blog";
+import Time from "../components/Time";
+import Patrocinios from "../components/Patrocionios";
 
 function App() {
-
   return (
     <div className={styles.main}>
       <Menu />
@@ -29,7 +28,7 @@ function App() {
         <Patrocinios />
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

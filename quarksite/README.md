@@ -2,7 +2,7 @@
 
 ## Notas da versão
 
-Nessa versão, ouve mudança na estrutura do projeto. Antes, era utilizado *nextjs* junto com *vite*, algo diferente no momento.
+Nessa versão, ouve mudança na estrutura do projeto. Antes, era utilizado _nextjs_ junto com _vite_, algo diferente no momento.
 
 ### Tasks não resolvidas - Componente Menu
 
