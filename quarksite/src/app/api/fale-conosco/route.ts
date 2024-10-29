@@ -20,6 +20,7 @@ export const POST = async (request: Request) => {
       value.phoneNumber,
       value.institution
     );
+
     return new Response(
       JSON.stringify({
         message: `Email successfully sent to ${result.accepted.join(", ")}`,
