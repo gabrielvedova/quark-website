@@ -1,13 +1,13 @@
 
 .container {
-    height: 15vh;
+    height: 16vh;
     display: flex;
     flex-direction: row;
     margin: 0;
-    padding: 0;
+    padding: 0 5vw;
     align-items: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .imgContainer {
@@ -35,10 +35,11 @@
 }
 
 .container ul button {
-    padding: 15px 50px 15px 50px;
+    padding: 10px 30px 10px 30px;
     border-radius: 50px;
     background-color: rgb(98, 69, 228);
     color: #fff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 18px;
+    font-size: 14px;
+    border: none;
 }
