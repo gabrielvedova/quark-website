@@ -22,13 +22,27 @@ export default function Menu() {
             <IoMenuOutline size={40} />
           </button>
         )}
-        <li>Quem Somos</li>
-        <li>Como Funciona</li>
-        <li>Diferenciais</li>
-        <li>Clientes</li>
-        <li>Depoimentos</li>
-        <li>Blog</li>
-        <li>Time</li>
+        <li>
+          <a href="#QuemSomos">Quem Somos</a>
+        </li>
+        <li>
+          <a href="#ComoFunciona">Como Funciona</a>
+        </li>
+        <li>
+          <a href="#Diferenciais">Diferenciais</a>
+        </li>
+        <li>
+          <a href="#Clientes">Clientes</a>
+        </li>
+        <li>
+          <a href="#Depoimentos">Depoimentos</a>
+        </li>
+        <li>
+          <a href="#Blog">Blog</a>
+        </li>
+        <li>
+          <a href="#Time">Time</a>
+        </li>
         <li>
           <button id="howUseMenu">Como usar?</button>
         </li>

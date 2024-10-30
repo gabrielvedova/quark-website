@@ -92,6 +92,7 @@
 
   .menuOpen li {
     display: flex;
+    flex-direction: column;
     border-top: #d4d4d4 3px solid;
     padding: 10px 20px;
     align-items: center;
@@ -133,6 +134,7 @@
 
   .menuOpen li {
     display: flex;
+    flex-direction: column;
     border-top: #d4d4d4 3px solid;
     padding: 10px 20px;
     align-items: center;
@@ -174,6 +176,7 @@
 
   .menuOpen li {
     display: flex;
+    flex-direction: column;
     border-top: #d4d4d4 3px solid;
     padding: 10px 20px;
     align-items: center;
