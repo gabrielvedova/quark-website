@@ -14,7 +14,7 @@ import Patrocinio from "../components/Patrocinio";
 function App() {
   return (
     <div className={styles.main}>
-      <Menu />
+      <Menu className={styles.menu} />
       <div className={styles.containerBoss}>
         <Home />
         <ComoFunciona />

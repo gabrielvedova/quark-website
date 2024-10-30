@@ -21,7 +21,7 @@
   list-style-type: none;
 }
 
-.container ul button {
+.container ul #howUse {
   padding: 10px 30px 10px 30px;
   border-radius: 50px;
   background-color: rgb(98, 69, 228);
@@ -46,7 +46,7 @@
     justify-content: space-evenly;
   }
 
-  #menuBar {
+  .menuBar {
     display: none;
   }
 }
@@ -66,11 +66,12 @@
   }
 
   .menuOpen {
-    display: block;
+    display: flex;
+    flex-direction: column;
     width: 40%;
     height: max-content;
     position: absolute;
-    top: 15vh;
+    top: 0;
     right: 0;
     z-index: 1;
     background-color: white;

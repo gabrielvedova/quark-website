@@ -11,10 +11,20 @@ export default function Menu() {
       <div className={styles.imgContainer}>
         <div className={styles.img}></div>
       </div>
-      <button onClick={() => setMenu(!isMenuOpen)} className={styles.menuBar}>
-        <IoMenuSharp size={25} />
-      </button>
+      {!isMenuOpen && (
+        <button onClick={() => setMenu(!isMenuOpen)} className={styles.menuBar}>
+          <IoMenuSharp size={25} />
+        </button>
+      )}
       <ul className={isMenuOpen ? styles.menuOpen : styles.menuClose}>
+        {isMenuOpen && (
+          <button
+            onClick={() => setMenu(!isMenuOpen)}
+            className={styles.menuBar}
+          >
+            <IoMenuSharp size={25} />
+          </button>
+        )}
         <li>Quem Somos</li>
         <li>Como Funciona</li>
         <li>Diferenciais</li>
@@ -23,7 +33,7 @@ export default function Menu() {
         <li>Blog</li>
         <li>Time</li>
         <li>
-          <button>Como usar?</button>
+          <button id={styles.howUse}>Como usar?</button>
         </li>
       </ul>
     </nav>
