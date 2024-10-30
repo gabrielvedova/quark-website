@@ -1,28 +1,25 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "../styles/menu.module.css";
-import { IoMenuSharp } from "react-icons/io5";
+import "../styles/menu.css";
+import { IoMenuOutline } from "react-icons/io5";
 
 export default function Menu() {
   const [isMenuOpen, setMenu] = useState(false);
 
   return (
-    <nav className={styles.container}>
-      <div className={styles.imgContainer}>
-        <div className={styles.img}></div>
+    <nav className="containerMenu">
+      <div className="imgContainerMenu">
+        <div className="imgMenu"></div>
       </div>
       {!isMenuOpen && (
-        <button onClick={() => setMenu(!isMenuOpen)} className={styles.menuBar}>
-          <IoMenuSharp size={25} />
+        <button onClick={() => setMenu(!isMenuOpen)} className="menuBar">
+          <IoMenuOutline size={40} />
         </button>
       )}
-      <ul className={isMenuOpen ? styles.menuOpen : styles.menuClose}>
+      <ul className={isMenuOpen ? "menuOpen" : "menuClose"}>
         {isMenuOpen && (
-          <button
-            onClick={() => setMenu(!isMenuOpen)}
-            className={styles.menuBar}
-          >
-            <IoMenuSharp size={25} />
+          <button onClick={() => setMenu(!isMenuOpen)} className="menuBar">
+            <IoMenuOutline size={40} />
           </button>
         )}
         <li>Quem Somos</li>
@@ -33,7 +30,7 @@ export default function Menu() {
         <li>Blog</li>
         <li>Time</li>
         <li>
-          <button id={styles.howUse}>Como usar?</button>
+          <button id="howUseMenu">Como usar?</button>
         </li>
       </ul>
     </nav>

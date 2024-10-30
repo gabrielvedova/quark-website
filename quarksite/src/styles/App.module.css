@@ -9,13 +9,3 @@
   flex: 1;
   flex-direction: column;
 }
-
-.menu {
-  position: fixed;
-  z-index: 10;
-  top: 0;
-  left: 0; /* Adiciona esta linha para garantir que o menu esteja alinhado à esquerda */
-  width: 100%;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
