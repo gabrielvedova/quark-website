@@ -1,4 +1,5 @@
-import { PostSchema, sendContactEmail } from "@/utils/fale-conosco.utils";
+import { PostSchema } from "./schema";
+import { sendContactEmail } from "@/app/actions/send-contact-email";
 
 export async function POST(request: Request) {
   const body = await request.json();
