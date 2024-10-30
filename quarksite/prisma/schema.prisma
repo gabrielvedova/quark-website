@@ -13,21 +13,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TODO Implement password security
 model Admin {
-  id String @id @default(uuid())
-  email String @unique
-  name String
-  role String
+  id             String @id @default(uuid())
+  email          String @unique
+  name           String
+  role           String
   profilePicture String
-  posts Post[]
+  posts          Post[]
 }
 
 model Post {
-  id String @id @default(uuid())
-  title String
-  content String
-  author Admin @relation(fields: [authorId], references: [id])
-  authorId String
-  published Boolean @default(true)
+  id           Int      @id @default(autoincrement())
+  title        String
+  content      String
+  author       Admin    @relation(fields: [authorId], references: [id])
+  authorId     String
+  published    Boolean  @default(true)
   lastEditedAt DateTime
+}
+
+model News {
+  id             Int      @id @default(autoincrement())
+  title          String
+  description    String
+  miniature      String
+  publishingDate DateTime
+  url            String
 }
