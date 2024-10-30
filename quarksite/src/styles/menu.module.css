@@ -9,12 +9,6 @@
   font-size: 14px;
 }
 
-.imgContainer {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-
 .container .imgContainer .img {
   background-color: aqua;
   height: 90px;
@@ -22,14 +16,9 @@
 }
 
 .container ul {
-  flex: 3;
   margin: 0px;
   padding: 0px;
-  display: flex;
-  flex-direction: row;
   list-style-type: none;
-  align-items: center;
-  justify-content: space-evenly;
 }
 
 .container ul button {
@@ -40,4 +29,50 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 14px;
   border: none;
+}
+
+@media (min-width: 971px) {
+  .imgContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container ul {
+    flex: 3;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  #menuBar {
+    display: none;
+  }
+}
+
+@media (max-width: 970px) {
+  .menuBar {
+    display: flex;
+    border: none;
+  }
+
+  .container {
+    justify-content: space-between;
+  }
+
+  .menuClose {
+    display: none;
+  }
+
+  .menuOpen {
+    display: block;
+    width: 40%;
+    height: max-content;
+    position: absolute;
+    top: 15vh;
+    right: 0;
+    z-index: 1;
+    background-color: white;
+  }
 }

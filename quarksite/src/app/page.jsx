@@ -9,7 +9,7 @@ import Conquistas from "../components/Conquistas";
 import Perguntas from "../components/Perguntas";
 import Blog from "../components/Blog";
 import Time from "../components/Time";
-import Patrocinios from "../components/Patrocionios";
+import Patrocinio from "../components/Patrocinio";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
         <Perguntas />
         <Blog />
         <Time />
-        <Patrocinios />
+        <Patrocinio />
       </div>
     </div>
   );
