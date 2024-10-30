@@ -1,35 +1,31 @@
-import { postSchema, sendContactEmail } from "@/utils/fale-conosco.utils";
+import { PostSchema, sendContactEmail } from "@/utils/fale-conosco.utils";
 
-export const POST = async (request: Request) => {
+export async function POST(request: Request) {
   const body = await request.json();
-  const { error, value } = postSchema.validate(body);
+  const result = PostSchema.safeParse(body);
 
-  if (error) {
+  if (!result.success) {
     return new Response(
-      JSON.stringify({
-        error: error.details.map((detail) => detail.message),
-      }),
+      JSON.stringify({ error: result.error.errors.map((err) => err.message) }),
       { status: 400 }
     );
   }
 
   try {
-    const result = await sendContactEmail(
-      value.name,
-      value.email,
-      value.phoneNumber,
-      value.institution
+    const { name, email, phoneNumber, institution } = result.data;
+    const emailResult = await sendContactEmail(
+      name,
+      email,
+      phoneNumber,
+      institution
     );
 
-    return new Response(
-      JSON.stringify({
-        message: `Email successfully sent to ${result.accepted.join(", ")}`,
-      }),
-      { status: 200 }
-    );
-  } catch (error) {
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
+    return Response.json({
+      message: `Email successfully sent to ${emailResult.accepted.join(", ")}`,
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: "Internal server " }), {
       status: 500,
     });
   }
-};
+}

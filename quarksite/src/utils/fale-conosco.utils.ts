@@ -1,43 +1,35 @@
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import Joi from "joi";
+import { z } from "zod";
 
 // TODO - Implement front-end validation
-export const postSchema = Joi.object({
-  name: Joi.string()
-    .pattern(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/)
-    .min(3)
-    .max(100)
-    .required()
-    .messages({
-      "string.empty": "The field 'name' must not be empty",
-      "string.pattern.base":
-        "The field 'name' must contain only letters and spaces",
-      "string.min": "The field 'name' must have at least 3 characters",
-      "string.max": "The field 'name' must have at most 100 characters",
-      "any.required": "The field 'name' is required",
+export const PostSchema = z.object({
+  name: z
+    .string()
+    .min(3, { message: "The field 'name' must have at least 3 characters" })
+    .max(100, { message: "The field 'name' must have at most 100 characters" })
+    .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, {
+      message: "The field 'name' must contain only letters and spaces",
     }),
-  email: Joi.string().email().required().messages({
-    "string.empty": "The field 'email' must not be empty",
-    "string.email": "The field 'email' must be a valid email",
-    "any.required": "TThe field 'email' is required",
+
+  email: z
+    .string()
+    .email({ message: "The field 'email' must be a valid email" }),
+
+  phoneNumber: z.string().regex(/^\(\d{2}\)\s9?\d{4}-\d{4}$/, {
+    message:
+      "Phone number must be in the format (XX) XXXX-XXXX or (XX) 9XXXX-XXXX.",
   }),
-  phoneNumber: Joi.string()
-    .pattern(/^\(\d{2}\)\s9?\d{4}-\d{4}$/)
-    .required()
-    .messages({
-      "string.empty": "The field 'phoneNumber' must not be empty",
-      "string.pattern.base":
-        "Phone number must be in the format (XX) XXXX-XXXX or (XX) 9XXXX-XXXX.",
-      "any.required": "The field 'phoneNumber' is required",
+
+  institution: z
+    .string()
+    .min(3, {
+      message: "The field 'institution' must have at least 3 characters",
+    })
+    .max(200, {
+      message: "The field 'institution' must have at most 200 characters",
     }),
-  institution: Joi.string().min(3).max(200).required().messages({
-    "string.empty": "The field 'institution' must not be empty",
-    "string.min": "The field 'institution' must have at least 3 characters",
-    "string.max": "The field 'institution' must have at most 200 characters",
-    "any.required": "The field 'institution' is required",
-  }),
 });
 
 const transporter = nodemailer.createTransport({
