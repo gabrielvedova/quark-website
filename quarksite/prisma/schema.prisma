@@ -7,13 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// TODO Implement password security
 model Admin {
-  id             String @id @default(uuid())
-  email          String @unique
+  id             String  @id @default(uuid())
+  email          String  @unique
   name           String
   role           String
-  profilePicture String
+  password       String
+  profilePicture String?
   posts          Post[]
 }
 
