@@ -37,6 +37,11 @@
   border: none;
 }
 
+.containerMenu a {
+  text-decoration: none;
+  color: #000;
+}
+
 @media (min-width: 971px) {
   .imgContainerMenu {
     flex: 1;
