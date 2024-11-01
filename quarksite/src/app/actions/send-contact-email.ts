@@ -1,4 +1,4 @@
-import { sendEmail } from "@/lib/email";
+import { sendEmail } from "@/app/lib/email";
 
 export async function sendContactEmail(
   name: string,

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import "../styles/menu.css";
+import "./Menu.css";
 import { IoMenuOutline } from "react-icons/io5";
 
 export default function Menu() {

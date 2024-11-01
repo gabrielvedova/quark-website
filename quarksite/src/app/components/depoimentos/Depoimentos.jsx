@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/depoimentos.module.css";
+import styles from "./Depoimentos.module.css";
 
 export default function Depoimentos() {
   return (

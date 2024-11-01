@@ -1,15 +1,15 @@
-import styles from "../styles/App.module.css";
-import Menu from "../components/Menu";
-import Home from "../components/Home";
-import ComoFunciona from "../components/Funcionalidade";
-import ConhecaQuark from "../components/Conheca";
-import Diferenciais from "../components/Diferenciais";
-import Depoimentos from "../components/Depoimentos";
-import Conquistas from "../components/Conquistas";
-import Perguntas from "../components/Perguntas";
-import Blog from "../components/Blog";
-import Time from "../components/Time";
-import Patrocinio from "../components/Patrocinio";
+import styles from "./app.module.css";
+import Menu from "@/app/components/menu/Menu";
+import Home from "@/app/components/home/Home";
+import ComoFunciona from "@/app/components/como-funciona/ComoFunciona";
+import ConhecaQuark from "@/app/components/conheca/Conheca";
+import Diferenciais from "@/app/components/diferenciais/Diferenciais";
+import Depoimentos from "@/app/components/depoimentos/Depoimentos";
+import Conquistas from "@/app/components/conquistas/Conquistas";
+import Perguntas from "@/app/components/perguntas/Perguntas";
+import Blog from "@/app/components/blog/Blog";
+import Time from "@/app/components/time/Time";
+import Patrocinio from "@/app/components/patrocinio/Patrocinio";
 
 function App() {
   return (

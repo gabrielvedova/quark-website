@@ -1,4 +1,4 @@
-import "../styles/layout.css";
+import "./layout.css";
 
 export const metadata = {
   title: "Quark",

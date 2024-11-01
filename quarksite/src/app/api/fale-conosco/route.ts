@@ -3,17 +3,19 @@ import { sendContactEmail } from "@/app/actions/send-contact-email";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const result = PostSchema.safeParse(body);
+  const validatedPostData = PostSchema.safeParse(body);
 
-  if (!result.success) {
+  if (!validatedPostData.success) {
     return new Response(
-      JSON.stringify({ error: result.error.errors.map((err) => err.message) }),
+      JSON.stringify({
+        error: validatedPostData.error.errors.map((err) => err.message),
+      }),
       { status: 400 }
     );
   }
 
   try {
-    const { name, email, phoneNumber, institution } = result.data;
+    const { name, email, phoneNumber, institution } = validatedPostData.data;
     const emailResult = await sendContactEmail(
       name,
       email,
