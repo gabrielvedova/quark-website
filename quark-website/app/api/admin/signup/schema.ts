@@ -24,7 +24,11 @@ export const PostSchema = z.object({
       message: "A senha deve ter pelo menos uma letra maiúscula.",
     })
     .regex(/(?=.*\d)/, { message: "A senha deve ter pelo menos um dígito." })
-    .regex(/(?=.*[!@#$%&*])/, {
+    .regex(/(?=.*[!@#$%&*-=])/, {
       message: "A senha deve ter pelo menos um caractere especial.",
+    })
+    .regex(/^[A-Za-z\d!@#$%&*-=]+$/, {
+      message:
+        "A senha deve conter apenas letras, dígitos e caracteres especiais permitidos.",
     }),
 });
