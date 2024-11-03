@@ -1,4 +1,4 @@
-import login from "@/app/lib/login";
+import login from "@/lib/login";
 import { PostSchema } from "./schema";
 
 export async function POST(request: Request) {

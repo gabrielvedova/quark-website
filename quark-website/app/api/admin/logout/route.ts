@@ -1,4 +1,4 @@
-import logout from "@/app/lib/logout";
+import logout from "@/lib/logout";
 
 export async function GET(request: Request) {
   const result = await logout();

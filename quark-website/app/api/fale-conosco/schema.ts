@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-// TODO - Implement front-end validation
 export const PostSchema = z.object({
   name: z
     .string()

@@ -1,6 +1,6 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
-import { SessionPayload } from "@/app/lib/definitions";
+import { SessionPayload } from "@/lib/definitions";
 import { cookies } from "next/headers";
 
 const secretKey = process.env.SESSION_SECRET;
@@ -31,6 +31,17 @@ async function setSessionCookie(session: string, expiresAt: Date) {
     sameSite: "lax",
     path: "/admin",
   });
+}
+
+export async function getSession() {
+  const session = (await cookies()).get("session")?.value;
+  const payload = await decrypt(session);
+
+  if (!session || !payload) {
+    return null;
+  }
+
+  return payload;
 }
 
 export async function createSession(userId: string) {
