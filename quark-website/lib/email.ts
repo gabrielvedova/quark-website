@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
   },
 } as SMTPTransport.Options);
 
-export async function sendEmail(
+async function sendEmail(
   sender: Mail.Address,
   recipients: Mail.Address[],
   subject: string,
@@ -24,4 +24,37 @@ export async function sendEmail(
     text: message,
     html: message,
   });
+}
+
+export async function sendContactEmail(
+  name: string,
+  email: string,
+  phoneNumber: string,
+  institution: string
+) {
+  const sender = {
+    name,
+    address: email,
+  };
+
+  const recipients = [
+    {
+      name: process.env.RECIPIENT_MAIL_NAME || "",
+      address: process.env.RECIPIENT_MAIL_ADDRESS || "",
+    },
+  ];
+
+  return await sendEmail(
+    sender,
+    recipients,
+    `Solicitação de contato de ${name}`,
+    `
+    <ul>
+      <li><strong>Nome:</strong> ${name}</li>
+      <li><strong>Email:</strong> ${email}</li>
+      <li><strong>Telefone:</strong> ${phoneNumber}</li>
+      <li><strong>Instituição:</strong> ${institution}</li>
+    </ul>
+    `
+  );
 }

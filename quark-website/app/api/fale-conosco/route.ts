@@ -1,5 +1,5 @@
 import { PostSchema } from "./schema";
-import { sendContactEmail } from "@/app/actions/send-contact-email";
+import { sendContactEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   const body = await request.json();
