@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import "./Menu.css";
 import { IoMenuOutline } from "react-icons/io5";
+import Link from "next/link";
 
 export default function Menu() {
+  // Menu fix to scroll to the top of the page
   const [isMenuOpen, setMenu] = useState(false);
 
   useEffect(() => {
@@ -69,7 +71,9 @@ export default function Menu() {
           <a href="#Time">Time</a>
         </li>
         <li>
-          <button id="howUseMenu">Como usar?</button>
+          <button id="howUseMenu">
+            <Link href="/como-usar">Como Usar</Link>
+          </button>
         </li>
       </ul>
     </nav>

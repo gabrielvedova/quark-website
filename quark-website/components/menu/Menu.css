@@ -31,10 +31,13 @@
   padding: 10px 30px 10px 30px;
   border-radius: 50px;
   background-color: rgb(98, 69, 228);
+  border: none;
+}
+
+.containerMenu ul #howUseMenu a {
   color: #fff;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 14px;
-  border: none;
 }
 
 .containerMenu a {
