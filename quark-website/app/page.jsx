@@ -1,6 +1,6 @@
 import "./app.css";
 import Menu from "@/components/menu/Menu";
-import MainPage from "@/app/mainPage/MainPage";
+import MainPage from "@/components/main-page/MainPage";
 
 function App() {
   return (
