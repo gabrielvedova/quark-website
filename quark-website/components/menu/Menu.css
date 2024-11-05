@@ -13,6 +13,7 @@
   right: 0;
   left: 0;
   background-color: #fff;
+  box-shadow: 0px 10px 15px #3c3b3b42;
 }
 
 .containerMenu .imgContainerMenu .imgMenu {
@@ -74,7 +75,8 @@
     color: #a3a3a3;
     align-items: end;
     justify-content: center;
-    height: 6vh;
+    height: 12vh;
+    padding-right: 20px;
   }
 
   .containerMenu {
@@ -83,27 +85,48 @@
 
   .menuClose {
     display: none;
+    transform: translateX(100%); /* Move o menu para fora da tela */
+    transition: transform 0.3s ease; /* Transição suave para o movimento */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 35vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
   }
 
   .menuOpen {
     display: flex;
     flex-direction: column;
-    width: 35vw;
-    height: 100vh;
+    transform: translateX(0); /* Move o menu para dentro da tela */
+    transition: transform 0.3s ease; /* Transição suave para o movimento */
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 1000;
+    width: 35vw;
+    height: 100vh;
     background-color: white;
-    gap: 4vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    /*gap: 4vh;*/
+    box-shadow: -10px 0px 20px #3c3b3b42;
   }
 
   .menuOpen li {
     display: flex;
     flex-direction: column;
     border-top: #d4d4d4 3px solid;
-    padding: 10px 20px;
+    padding: 3vh 20px;
     align-items: center;
+  }
+
+  .menuOpen #QuemSomosLink {
+    border-top: none;
+    padding-top: 0px;
   }
 }
 
@@ -116,7 +139,8 @@
     color: #a3a3a3;
     align-items: end;
     justify-content: center;
-    height: 6vh;
+    height: 12vh;
+    padding-right: 20px;
   }
 
   .containerMenu {
@@ -125,27 +149,48 @@
 
   .menuClose {
     display: none;
+    transform: translateX(100%); /* Move o menu para fora da tela */
+    transition: transform 0.3s ease; /* Transição suave para o movimento */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
   }
 
   .menuOpen {
     display: flex;
     flex-direction: column;
-    width: 60vw;
-    height: 100vh;
+    transform: translateX(0); /* Move o menu para dentro da tela */
+    transition: transform 0.3s ease; /* Transição suave para o movimento */
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 1000;
+    width: 60vw;
+    height: 100vh;
     background-color: white;
-    gap: 4vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    /*gap: 4vh;*/
+    box-shadow: -10px 0px 20px #3c3b3b42;
   }
 
   .menuOpen li {
     display: flex;
     flex-direction: column;
     border-top: #d4d4d4 3px solid;
-    padding: 10px 20px;
+    padding: 3vh 20px;
     align-items: center;
+  }
+
+  .menuOpen #QuemSomosLink {
+    border-top: none;
+    padding-top: 0px;
   }
 }
 
@@ -158,7 +203,8 @@
     color: #a3a3a3;
     align-items: end;
     justify-content: center;
-    height: 6vh;
+    height: 12vh;
+    padding-right: 20px;
   }
 
   .containerMenu {
@@ -167,26 +213,47 @@
 
   .menuClose {
     display: none;
+    transform: translateX(100%); /* Move o menu para fora da tela */
+    transition: transform 0.3s ease; /* Transição suave para o movimento */
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
   }
 
   .menuOpen {
     display: flex;
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
+    transform: translateX(0); /* Move o menu para dentro da tela */
+    transition: transform 0.3s ease; /* Transição suave para o movimento */
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
     background-color: white;
-    gap: 4vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    /*gap: 4vh;*/
+    box-shadow: -10px 0px 20px #3c3b3b42;
   }
 
   .menuOpen li {
     display: flex;
     flex-direction: column;
     border-top: #d4d4d4 3px solid;
-    padding: 10px 20px;
+    padding: 3vh 20px;
     align-items: center;
+  }
+
+  .menuOpen #QuemSomosLink {
+    border-top: none;
+    padding-top: 0px;
   }
 }

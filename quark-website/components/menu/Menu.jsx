@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import "./Menu.css";
 import { IoMenuOutline } from "react-icons/io5";
+import { IoIosClose } from "react-icons/io";
 import Link from "next/link";
 
 export default function Menu() {
@@ -46,10 +47,10 @@ export default function Menu() {
       <ul className={isMenuOpen ? "menuOpen" : "menuClose"}>
         {isMenuOpen && (
           <button onClick={() => setMenu(!isMenuOpen)} className="menuBar">
-            <IoMenuOutline size={40} />
+            <IoIosClose size={70} />
           </button>
         )}
-        <li>
+        <li id="QuemSomosLink">
           <a href="#QuemSomos">Quem Somos</a>
         </li>
         <li>
@@ -70,7 +71,7 @@ export default function Menu() {
         <li>
           <a href="#Time">Time</a>
         </li>
-        <li>
+        <li id="buttonHowUse">
           <button id="howUseMenu">
             <Link href="/como-usar">Como Usar</Link>
           </button>
