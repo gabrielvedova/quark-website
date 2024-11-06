@@ -1,4 +1,6 @@
+import { stat } from "fs";
 import prisma from "./db";
+import { getUserId } from "./session";
 
 export async function getPosts(params: {
   id?: number;
@@ -32,4 +34,24 @@ export async function getPosts(params: {
   }
 
   return posts;
+}
+
+export async function createPost(data: {
+  title: string;
+  content: string;
+  miniature: string;
+  published: boolean;
+}) {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
+  const { id } = await prisma.post.create({
+    data: {
+      ...data,
+      authorId: userId,
+      lastEditedAt: new Date(),
+    },
+  });
+
+  return id;
 }

@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       message: `Email successfully sent to ${emailResult.accepted.join(", ")}`,
     });
   } catch (err) {
-    return new Response(JSON.stringify({ error: "Internal server error" }), {
+    return new Response("Internal server error", {
       status: 500,
     });
   }

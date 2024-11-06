@@ -21,6 +21,7 @@ model Post {
   id           Int      @id @default(autoincrement())
   title        String
   content      String
+  miniature    String
   author       Admin    @relation(fields: [authorId], references: [id])
   authorId     String
   published    Boolean  @default(true)
