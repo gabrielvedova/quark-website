@@ -64,3 +64,8 @@ export async function updateSession() {
 export async function deleteSession() {
   (await cookies()).delete("session");
 }
+
+export async function getUserId() {
+  const session = await getSession();
+  return session?.userId as string | null;
+}
