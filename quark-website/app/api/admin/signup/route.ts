@@ -1,11 +1,10 @@
 import signup from "@/lib/signup";
 import { PostSchema } from "./schema";
-import { checkAuth } from "@/lib/auth";
 
+/**
+ * @requiresAuthetication
+ */
 export async function POST(request: Request) {
-  const unauthorized = await checkAuth();
-  if (unauthorized) return unauthorized;
-
   const body = await request.json();
   const validatedBody = PostSchema.safeParse(body);
 

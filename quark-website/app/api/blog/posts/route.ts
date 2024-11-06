@@ -23,8 +23,17 @@ export async function GET(request: Request) {
   return Response.json(result);
 }
 
+/**
+ * @requiresAuthentication
+ */
 export async function POST(request: Request) {}
 
+/**
+ * @requiresAuthentication
+ */
 export async function PUT(request: Request) {}
 
+/**
+ * @requiresAuthentication
+ */
 export async function DELETE(request: Request) {}
