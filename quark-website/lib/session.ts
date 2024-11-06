@@ -66,6 +66,5 @@ export async function deleteSession() {
 }
 
 export async function getUserId() {
-  const session = await getSession();
-  return session?.userId as string | null;
+  return (await getSession())?.userId as string | null;
 }

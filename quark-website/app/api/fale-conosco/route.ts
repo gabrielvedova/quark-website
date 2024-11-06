@@ -1,7 +1,18 @@
 import { PostSchema } from "./schema";
 import { sendContactEmail } from "@/lib/email";
 
+/**
+ * @requires request.headers.authorization
+ */
 export async function POST(request: Request) {
+  const unauthorized =
+    request.headers.get("Authorization") !==
+    `Bearer ${process.env.MAIL_API_SECRET}`;
+
+  if (unauthorized) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   const body = await request.json();
   const validatedPostData = PostSchema.safeParse(body);
 
