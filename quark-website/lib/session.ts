@@ -14,13 +14,11 @@ async function encrypt(payload: SessionPayload) {
     .sign(encodedKey);
 }
 
-async function decrypt(session: string | undefined = "") {
+async function decrypt(session: string = "") {
   try {
     return (await jwtVerify(session, encodedKey, { algorithms: ["HS256"] }))
       .payload;
-  } catch (error) {
-    console.log("Failed to verify session");
-  }
+  } catch (error) {}
 }
 
 async function setSessionCookie(session: string, expiresAt: Date) {
