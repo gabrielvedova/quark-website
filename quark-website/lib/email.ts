@@ -41,22 +41,53 @@ export async function sendContactEmail(data: {
 
   const recipients = [
     {
-      name: process.env.RECIPIENT_MAIL_NAME || "",
-      address: process.env.RECIPIENT_MAIL_ADDRESS || "",
+      name: process.env.EMAIL_NAME || "",
+      address: process.env.EMAIL_ADDRESS || "",
     },
   ];
 
-  return await sendEmail(
-    sender,
-    recipients,
-    `Solicitação de contato de ${name}`,
-    `
-    <ul>
-      <li><strong>Nome:</strong> ${name}</li>
-      <li><strong>Email:</strong> ${email}</li>
-      <li><strong>Telefone:</strong> ${phoneNumber}</li>
-      <li><strong>Instituição:</strong> ${institution}</li>
-    </ul>
-    `
-  );
+  const emailSubject = `Solicitação de contato de ${name}`;
+
+  const emailContent = `
+  <ul>
+    <li><strong>Nome:</strong> ${name}</li>
+    <li><strong>Email:</strong> ${email}</li>
+    <li><strong>Telefone:</strong> ${phoneNumber}</li>
+    <li><strong>Instituição:</strong> ${institution}</li>
+  </ul>
+  `;
+
+  return await sendEmail(sender, recipients, emailSubject, emailContent);
+}
+
+export async function sendRecoveryEmail(data: { email: string; code: string }) {
+  const { email, code } = data;
+
+  const sender = {
+    name: process.env.EMAIL_NAME || "",
+    address: process.env.EMAIL_ADDRESS || "",
+  };
+
+  const recipients = [
+    {
+      name: email,
+      address: email,
+    },
+  ];
+
+  const emailSubject =
+    "Recuperação de senha do sistema de administração do website da Quark";
+
+  const emailContent = `
+  Você solicitou a recuperação de senha para a sua conta no nosso sistema, não compartilhe-o com ninguém. <br />
+  Todos os códigos de recuperação enviados anteriormente foram invalidados. <br />
+  Se você não fez essa solicitação, por favor, ignore este email. <br />
+  <br />
+  Caso contrário, utilize este código para redefinir sua senha: ${code} <br />
+  Este código expira em 30 minutos. <br />
+  <br />
+  Este é um email automático, por favor, não responda.
+  `;
+
+  return await sendEmail(sender, recipients, emailSubject, emailContent);
 }
