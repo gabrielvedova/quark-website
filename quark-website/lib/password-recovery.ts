@@ -28,7 +28,7 @@ export async function initiatePasswordRecovery(email: string) {
 
   const user = await prisma.admin.findUnique({ where: { email } });
   if (!user) throw new Error("Not found");
-  if (!user.receivesRecoveryCodes) throw new Error("Unauthorized");
+  if (user.recoveryAttemptsRemaining === 0) throw new Error("Unauthorized");
 
   const code = generateCode();
   const expiration = new Date(Date.now() + 1000 * 60 * 30); // 30 minutes
