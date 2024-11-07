@@ -1,5 +1,10 @@
-import { createPost, getPosts } from "@/lib/posts";
-import { convertGetParams, GetParamsSchema, PostSchema } from "./schema";
+import { createPost, getPosts, updatePost } from "@/lib/posts";
+import {
+  convertGetParams,
+  GetParamsSchema,
+  PostSchema,
+  PutSchema,
+} from "./schema";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -41,6 +46,7 @@ export async function POST(request: Request) {
       }
     );
   }
+
   try {
     const id = await createPost(validatedBody.data);
     return Response.json({ id });
@@ -54,7 +60,35 @@ export async function POST(request: Request) {
 /**
  * @requiresAuthentication
  */
-export async function PUT(request: Request) {}
+export async function PUT(request: Request) {
+  const body = await request.json();
+  const validatedBody = PutSchema.safeParse(body);
+
+  if (!validatedBody.success) {
+    return new Response(
+      JSON.stringify({ error: validatedBody.error.flatten() }),
+      {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+
+  try {
+    await updatePost(validatedBody.data);
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    if (error instanceof Error && error.message === "Bad request") {
+      return new Response("Bad request", { status: 400 });
+    }
+  }
+}
 
 /**
  * @requiresAuthentication

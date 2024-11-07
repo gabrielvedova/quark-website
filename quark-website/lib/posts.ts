@@ -55,3 +55,25 @@ export async function createPost(data: {
 
   return id;
 }
+
+export async function updatePost(data: {
+  id: number;
+  title?: string;
+  content?: string;
+  miniature?: string;
+  published?: boolean;
+}) {
+  const userId = await getUserId();
+  if (!userId) throw new Error("Unauthorized");
+
+  if (
+    !data.title &&
+    !data.content &&
+    !data.miniature &&
+    data.published === undefined
+  ) {
+    throw new Error("Bad request");
+  }
+
+  await prisma.post.update({ where: { id: data.id }, data });
+}

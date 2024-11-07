@@ -46,3 +46,14 @@ export const PostSchema = z.object({
     .min(1),
   published: z.boolean(),
 });
+
+export const PutSchema = z.object({
+  id: z.number(),
+  title: z.string().max(255).optional(),
+  content: z.string().optional(),
+  miniature: z
+    .string()
+    .url({ message: "Miniature must be a valid url" })
+    .optional(),
+  published: z.boolean().optional(),
+});
