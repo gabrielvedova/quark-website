@@ -84,6 +84,10 @@ export async function PUT(request: Request) {
       return new Response("Unauthorized", { status: 401 });
     }
 
+    if (error instanceof Error && error.message === "Not found") {
+      return new Response("Not found", { status: 404 });
+    }
+
     if (error instanceof Error && error.message === "Bad request") {
       return new Response("Bad request", { status: 400 });
     }

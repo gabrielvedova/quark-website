@@ -66,6 +66,9 @@ export async function updatePost(data: {
   const userId = await getUserId();
   if (!userId) throw new Error("Unauthorized");
 
+  const post = await prisma.post.findUnique({ where: { id: data.id } });
+  if (!post) throw new Error("Not found");
+
   if (
     !data.title &&
     !data.content &&
