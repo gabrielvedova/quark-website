@@ -10,6 +10,13 @@ export default async function login(email: string, password: string) {
   if (!passwordMatches)
     return { message: "E-mail ou senha incorretos", status: 401 };
 
+  // If the user was blocked from receiving recovery codes, unblock them
+  await prisma.admin.update({
+    where: { id: admin.id },
+    data: { receivesRecoveryCodes: true },
+  });
+
   await createSession(admin.id);
+
   return { message: "Login realizado com sucesso", status: 200 };
 }
