@@ -1,6 +1,5 @@
-import { stat } from "fs";
 import prisma from "./db";
-import { getUserId } from "./session";
+import { getSession, getUserId } from "./session";
 
 export async function getPosts(params: {
   id?: number;
@@ -34,6 +33,18 @@ export async function getPosts(params: {
   }
 
   return posts;
+}
+
+export async function getPostsMiddleware(request: Request) {
+  const isProtected =
+    new URL(request.url).searchParams.get("published") !== "true";
+  const session = await getSession();
+
+  if (isProtected && !session) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  return null;
 }
 
 export async function createPost(data: {

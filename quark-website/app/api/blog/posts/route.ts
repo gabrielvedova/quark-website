@@ -1,4 +1,10 @@
-import { createPost, deletePost, getPosts, updatePost } from "@/lib/posts";
+import {
+  createPost,
+  deletePost,
+  getPosts,
+  getPostsMiddleware,
+  updatePost,
+} from "@/lib/posts";
 import {
   convertGetParams,
   DeleteSchema,
@@ -8,6 +14,10 @@ import {
 } from "./schema";
 
 export async function GET(request: Request) {
+  // Protects unpublished posts
+  const unauthorized = await getPostsMiddleware(request);
+  if (unauthorized) return unauthorized;
+
   const { searchParams } = new URL(request.url);
   const paramsObject = Object.fromEntries(searchParams);
   const validatedParams = GetParamsSchema.safeParse(paramsObject);
