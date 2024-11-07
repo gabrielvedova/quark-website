@@ -66,13 +66,14 @@ export async function updatePost(data: {
   const post = await prisma.post.findUnique({ where: { id: data.id } });
   if (!post) throw new Error("Not found");
 
+  // If no data is provided, do nothing
   if (
     !data.title &&
     !data.content &&
     !data.miniature &&
     data.published === undefined
   ) {
-    throw new Error("Bad request");
+    return;
   }
 
   await prisma.post.update({ where: { id: data.id }, data });

@@ -1,4 +1,4 @@
-import deleteAccount from "@/lib/delete-account";
+import deleteAccount from "@/lib/delete-admin";
 
 /**
  * @requiresAuthetication
@@ -9,7 +9,12 @@ export async function DELETE(request: Request) {
     return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response(JSON.stringify({ message: "Não autorizado." }), {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
   }
 }

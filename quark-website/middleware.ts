@@ -34,6 +34,16 @@ export async function middleware(request: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
+  // Protect the unpublished posts from being accessed by unauthorized users
+  if (
+    path === "/api/blog/posts" &&
+    request.method === "GET" &&
+    new URL(request.url).searchParams.get("published") !== "true" &&
+    !session
+  ) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
   // If the user is authenticated, or the route is not protected, proceed
   return NextResponse.next();
 }

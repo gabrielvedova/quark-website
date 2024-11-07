@@ -53,7 +53,12 @@ export async function POST(request: Request) {
     return Response.json({ id });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response(JSON.stringify({ message: "Não autorizado." }), {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
   }
 }
@@ -82,15 +87,21 @@ export async function PUT(request: Request) {
     return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
-      return new Response("Unauthorized", { status: 401 });
+      return new Response(JSON.stringify({ message: "Não autorizado." }), {
+        status: 401,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
 
     if (error instanceof Error && error.message === "Not found") {
-      return new Response("Not found", { status: 404 });
-    }
-
-    if (error instanceof Error && error.message === "Bad request") {
-      return new Response("Bad request", { status: 400 });
+      return new Response(JSON.stringify({ message: "Post não encontrado." }), {
+        status: 404,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
   }
 }
@@ -119,7 +130,10 @@ export async function DELETE(request: Request) {
     return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof Error && error.message === "Not found") {
-      return new Response("Not found", { status: 404 });
+      return new Response(JSON.stringify({ message: "Post não encontrado." }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
   }
 }

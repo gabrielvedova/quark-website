@@ -1,10 +1,14 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
-import { SessionPayload } from "@/lib/definitions";
 import { cookies } from "next/headers";
 
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
+
+export type SessionPayload = {
+  userId: string;
+  expiresAt: Date;
+};
 
 async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)

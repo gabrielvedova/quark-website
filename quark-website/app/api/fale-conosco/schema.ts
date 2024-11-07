@@ -3,27 +3,30 @@ import { z } from "zod";
 export const PostSchema = z.object({
   name: z
     .string()
-    .min(3, { message: "The field 'name' must have at least 3 characters" })
-    .max(100, { message: "The field 'name' must have at most 100 characters" })
+    .min(3, { message: "Nome deve ter pelo menos 3 caracteres." })
+    .max(100, { message: "Nome deve ter no máximo 100 caracteres." })
     .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, {
-      message: "The field 'name' must contain only letters and spaces",
-    }),
+      message: "Nome deve possuir apenas letras e espaços.",
+    })
+    .trim(),
 
-  email: z
+  email: z.string().email({ message: "Insira um e-mail válido." }).trim(),
+
+  phoneNumber: z
     .string()
-    .email({ message: "The field 'email' must be a valid email" }),
-
-  phoneNumber: z.string().regex(/^\(\d{2}\)\s9?\d{4}-\d{4}$/, {
-    message:
-      "Phone number must be in the format (XX) XXXX-XXXX or (XX) 9XXXX-XXXX.",
-  }),
+    .regex(/^\(\d{2}\)\s9?\d{4}-\d{4}$/, {
+      message:
+        "O número de telefone deve seguir o padrão (XX) XXXX-XXXX or (XX) 9XXXX-XXXX.",
+    })
+    .trim(),
 
   institution: z
     .string()
     .min(3, {
-      message: "The field 'institution' must have at least 3 characters",
+      message: "Instituição deve ter pelo menos 3 caracteres.",
     })
     .max(200, {
-      message: "The field 'institution' must have at most 200 characters",
-    }),
+      message: "Insituição deve ter no máximo 200 caracteres.",
+    })
+    .trim(),
 });

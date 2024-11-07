@@ -1,4 +1,4 @@
-import signup from "@/lib/signup";
+import signup from "@/lib/create-admin";
 import { PostSchema } from "./schema";
 
 /**

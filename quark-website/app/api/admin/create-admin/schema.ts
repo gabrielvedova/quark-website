@@ -9,10 +9,14 @@ export const PostSchema = z.object({
       message: "O nome deve possuir apenas letras e espaços.",
     })
     .trim(),
+
   role: z
     .string()
-    .max(50, { message: "O cargo deve possuir até 50 caracteres." }),
+    .max(50, { message: "O cargo deve possuir até 50 caracteres." })
+    .trim(),
+
   email: z.string().email({ message: "Insira um email válido" }).trim(),
+
   password: z
     .string()
     .min(8, { message: "A senha deve ter pelo menos 8 caracteres." })

@@ -10,36 +10,38 @@ export async function POST(request: Request) {
     `Bearer ${process.env.MAIL_API_SECRET}`;
 
   if (unauthorized) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response(JSON.stringify({ message: "Não autorizado." }), {
+      status: 401,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   const body = await request.json();
-  const validatedPostData = PostSchema.safeParse(body);
+  const validatedBody = PostSchema.safeParse(body);
 
-  if (!validatedPostData.success) {
+  if (!validatedBody.success) {
     return new Response(
       JSON.stringify({
-        error: validatedPostData.error.errors.map((err) => err.message),
+        error: validatedBody.error.errors.map((err) => err.message),
       }),
       { status: 400 }
     );
   }
 
   try {
-    const { name, email, phoneNumber, institution } = validatedPostData.data;
-    const emailResult = await sendContactEmail(
-      name,
-      email,
-      phoneNumber,
-      institution
-    );
+    await sendContactEmail(validatedBody.data);
 
     return Response.json({
-      message: `Email successfully sent to ${emailResult.accepted.join(", ")}`,
+      message: "Informações enviadas com sucesso.",
     });
   } catch (err) {
-    return new Response("Internal server error", {
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
       status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   }
 }

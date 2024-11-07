@@ -5,7 +5,9 @@ export const GetParamsSchema = z.object({
     .string()
     .regex(/^\d+$/, { message: "Parameter 'id' must be numeric." })
     .optional(),
+
   search: z.string().optional(),
+
   published: z
     .string()
     .regex(/^(true|false)$/, {
@@ -19,42 +21,46 @@ export function convertGetParams(params: {
   search?: string;
   published?: string;
 }) {
-  const convertedParams: { id?: number; search?: string; published?: boolean } =
-    {};
+  const convertedParams: {
+    id?: number;
+    search?: string;
+    published?: boolean;
+  } = {};
 
-  if (params.id) {
-    convertedParams.id = parseInt(params.id);
-  }
-
-  if (params.search) {
-    convertedParams.search = params.search;
-  }
-
-  if (params.published) {
-    convertedParams.published = params.published === "true";
-  }
+  if (params.id) convertedParams.id = parseInt(params.id);
+  if (params.search) convertedParams.search = params.search;
+  if (params.published) convertedParams.published = params.published === "true";
 
   return convertedParams;
 }
 
 export const PostSchema = z.object({
-  title: z.string().min(1).max(255),
-  content: z.string().min(1),
-  miniature: z
+  title: z
     .string()
-    .url({ message: "Miniature must be a valid url" })
-    .min(1),
+    .min(1, { message: "Insira um título." })
+    .max(255, { message: "Título deve ter no máximo 255 caracteres." })
+    .trim(),
+
+  content: z.string().min(1, { message: "Insira um conteúdo." }),
+
+  miniature: z.string().url({ message: "Insira uma URL válida." }).min(1),
+
   published: z.boolean(),
 });
 
 export const PutSchema = z.object({
   id: z.number(),
-  title: z.string().max(255).optional(),
-  content: z.string().optional(),
-  miniature: z
+
+  title: z
     .string()
-    .url({ message: "Miniature must be a valid url" })
+    .max(255, { message: "Título deve ter no máximo 255 caracteres." })
+    .trim()
     .optional(),
+
+  content: z.string().optional(),
+
+  miniature: z.string().url({ message: "Insira uma URL válida." }).optional(),
+
   published: z.boolean().optional(),
 });
 

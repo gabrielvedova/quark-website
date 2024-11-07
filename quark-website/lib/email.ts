@@ -26,12 +26,14 @@ async function sendEmail(
   });
 }
 
-export async function sendContactEmail(
-  name: string,
-  email: string,
-  phoneNumber: string,
-  institution: string
-) {
+export async function sendContactEmail(data: {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  institution: string;
+}) {
+  const { name, email, phoneNumber, institution } = data;
+
   const sender = {
     name,
     address: email,
