@@ -8,14 +8,13 @@ datasource db {
 }
 
 model Admin {
-  id                        String  @id @default(uuid())
-  email                     String  @unique
-  name                      String
-  role                      String
-  password                  String
-  recoveryAttemptsRemaining Int     @default(3)
-  profilePicture            String?
-  posts                     Post[]
+  id             String  @id @default(uuid())
+  email          String  @unique
+  name           String
+  role           String
+  password       String
+  profilePicture String?
+  posts          Post[]
 }
 
 model Post {
