@@ -1,6 +1,7 @@
-import { createPost, getPosts, updatePost } from "@/lib/posts";
+import { createPost, deletePost, getPosts, updatePost } from "@/lib/posts";
 import {
   convertGetParams,
+  DeleteSchema,
   GetParamsSchema,
   PostSchema,
   PutSchema,
@@ -97,4 +98,28 @@ export async function PUT(request: Request) {
 /**
  * @requiresAuthentication
  */
-export async function DELETE(request: Request) {}
+export async function DELETE(request: Request) {
+  const body = await request.json();
+  const validatedBody = DeleteSchema.safeParse(body);
+
+  if (!validatedBody.success) {
+    return new Response(
+      JSON.stringify({ error: validatedBody.error.flatten() }),
+      {
+        status: 400,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+
+  try {
+    await deletePost(validatedBody.data);
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Not found") {
+      return new Response("Not found", { status: 404 });
+    }
+  }
+}

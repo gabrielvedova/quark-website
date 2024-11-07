@@ -63,9 +63,6 @@ export async function updatePost(data: {
   miniature?: string;
   published?: boolean;
 }) {
-  const userId = await getUserId();
-  if (!userId) throw new Error("Unauthorized");
-
   const post = await prisma.post.findUnique({ where: { id: data.id } });
   if (!post) throw new Error("Not found");
 
@@ -79,4 +76,11 @@ export async function updatePost(data: {
   }
 
   await prisma.post.update({ where: { id: data.id }, data });
+}
+
+export async function deletePost(data: { id: number }) {
+  const post = await prisma.post.findUnique({ where: { id: data.id } });
+  if (!post) throw new Error("Not found");
+
+  await prisma.post.delete({ where: { id: data.id } });
 }

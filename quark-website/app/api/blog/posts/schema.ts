@@ -57,3 +57,7 @@ export const PutSchema = z.object({
     .optional(),
   published: z.boolean().optional(),
 });
+
+export const DeleteSchema = z.object({
+  id: z.number(),
+});
