@@ -8,13 +8,14 @@ datasource db {
 }
 
 model Admin {
-  id             String  @id @default(uuid())
-  email          String  @unique
-  name           String
-  role           String
-  password       String
-  profilePicture String?
-  posts          Post[]
+  id                    String  @id @default(uuid())
+  email                 String  @unique
+  name                  String
+  role                  String
+  password              String
+  receivesRecoveryCodes Boolean @default(true)
+  profilePicture        String?
+  posts                 Post[]
 }
 
 model Post {
@@ -35,4 +36,11 @@ model News {
   miniature      String
   publishingDate DateTime
   url            String
+}
+
+model PasswordRecoveryCode {
+  id        Int      @id @default(autoincrement())
+  code      String
+  email     String
+  expiresAt DateTime
 }
