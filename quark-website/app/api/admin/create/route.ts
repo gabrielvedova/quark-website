@@ -37,11 +37,9 @@ export async function POST(request: Request) {
       );
     }
 
-    if (error instanceof Error && error.message === "Internal server error") {
-      return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
