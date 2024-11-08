@@ -7,9 +7,10 @@ export async function middleware(request: Request) {
 
   // Define protected API endpoints
   const protectedApiEndpoints = [
-    { method: "DELETE", path: "/api/admin/delete-account" },
+    { method: "POST", path: "api/admin/create" },
+    { method: "DELETE", path: "/api/admin/delete" },
+    { method: "POST", path: "/api/admin/edit-info" },
     { method: "GET", path: "api/admin/logout" },
-    { method: "POST", path: "api/admin/signup" },
     { method: "POST", path: "/api/blog/posts" },
     { method: "PUT", path: "/api/blog/posts" },
     { method: "DELETE", path: "/api/blog/posts" },
