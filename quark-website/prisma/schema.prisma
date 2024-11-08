@@ -28,18 +28,11 @@ model Post {
   lastEditedAt DateTime
 }
 
-model News {
+model Headline {
   id             Int      @id @default(autoincrement())
   title          String
   description    String
   miniature      String
   publishingDate DateTime
   url            String
-}
-
-model PasswordRecoveryCode {
-  id        Int      @id @default(autoincrement())
-  code      String
-  email     String
-  expiresAt DateTime
 }

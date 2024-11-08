@@ -1,8 +1,8 @@
 import {
-  createNews,
-  deleteNews,
-  getNews,
-  updateNews,
+  createHeadline,
+  deleteHeadline,
+  getHeadline,
+  updateHeadline,
 } from "@/lib/quark-na-midia";
 import {
   convertGetParams,
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
   }
 
   const params = convertGetParams(validatedParams.data);
-  const result = await getNews(params);
+  const result = await getHeadline(params);
   return Response.json(result);
 }
 
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const id = await createNews(validatedBody.data);
+  const id = await createHeadline(validatedBody.data);
   return new Response(JSON.stringify({ id }), {
     status: 201,
     headers: { "Content-Type": "application/json" },
@@ -80,7 +80,7 @@ export async function PUT(request: Request) {
   }
 
   try {
-    await updateNews(validatedBody.data);
+    await updateHeadline(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof Error && error.message === "Not found") {
@@ -117,7 +117,7 @@ export async function DELETE(request: Request) {
   }
 
   try {
-    await deleteNews(validatedBody.data);
+    await deleteHeadline(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
     if (error instanceof Error && error.message === "Not found") {

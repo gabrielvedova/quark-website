@@ -1,24 +1,24 @@
 import prisma from "./db";
 
-export async function getNews(params: { id?: number }) {
+export async function getHeadline(params: { id?: number }) {
   if (params.id) {
-    const news = await prisma.news.findUnique({ where: { id: params.id } });
+    const news = await prisma.headline.findUnique({ where: { id: params.id } });
     return news ? [news] : [];
   }
-  return await prisma.news.findMany();
+  return await prisma.headline.findMany();
 }
 
-export async function createNews(data: {
+export async function createHeadline(data: {
   title: string;
   description: string;
   miniature: string;
   publishingDate: string;
   url: string;
 }) {
-  return (await prisma.news.create({ data })).id;
+  return (await prisma.headline.create({ data })).id;
 }
 
-export async function updateNews(data: {
+export async function updateHeadline(data: {
   id: number;
   title?: string;
   description?: string;
@@ -26,7 +26,7 @@ export async function updateNews(data: {
   publishingDate?: string;
   url?: string;
 }) {
-  const news = await prisma.news.findUnique({ where: { id: data.id } });
+  const news = await prisma.headline.findUnique({ where: { id: data.id } });
   if (!news) throw new Error("Not found");
 
   if (
@@ -39,12 +39,12 @@ export async function updateNews(data: {
     return;
   }
 
-  await prisma.news.update({ where: { id: data.id }, data });
+  await prisma.headline.update({ where: { id: data.id }, data });
 }
 
-export async function deleteNews(data: { id: number }) {
-  const news = await prisma.news.findUnique({ where: { id: data.id } });
+export async function deleteHeadline(data: { id: number }) {
+  const news = await prisma.headline.findUnique({ where: { id: data.id } });
   if (!news) throw new Error("Not found");
 
-  await prisma.news.delete({ where: { id: data.id } });
+  await prisma.headline.delete({ where: { id: data.id } });
 }
