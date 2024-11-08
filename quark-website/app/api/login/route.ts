@@ -17,13 +17,39 @@ export async function POST(request: Request) {
     );
   }
 
-  const { email, password } = validatedBody.data;
-  const result = await login(email, password);
+  try {
+    await login(validatedBody.data);
 
-  return new Response(JSON.stringify({ message: result.message }), {
-    status: result.status,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+    return new Response(
+      JSON.stringify({ message: "Login efetuado com sucesso." }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      error.message === "Email or password incorrect"
+    ) {
+      return new Response(
+        JSON.stringify({ message: "Email ou senha incorretos." }),
+        {
+          status: 401,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    }
+
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 }
