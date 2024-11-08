@@ -14,6 +14,8 @@ export async function middleware(request: Request) {
     { method: "PUT", path: "/api/blog/posts" },
     { method: "DELETE", path: "/api/blog/posts" },
     { method: "POST", path: "/api/quark-na-midia" },
+    { method: "PUT", path: "/api/quark-na-midia" },
+    { method: "DELETE", path: "/api/quark-na-midia" },
   ];
 
   const session = await getSession();
