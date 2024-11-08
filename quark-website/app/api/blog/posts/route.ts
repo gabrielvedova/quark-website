@@ -73,6 +73,11 @@ export async function POST(request: Request) {
         },
       });
     }
+
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 
@@ -116,6 +121,11 @@ export async function PUT(request: Request) {
         },
       });
     }
+
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 
@@ -148,5 +158,10 @@ export async function DELETE(request: Request) {
         headers: { "Content-Type": "application/json" },
       });
     }
+
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
