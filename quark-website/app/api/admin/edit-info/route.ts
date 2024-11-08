@@ -44,5 +44,12 @@ export async function PUT(request: Request) {
         }
       );
     }
+
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+      status: 500,
+      headers: {
+        "content-type": "application/json",
+      },
+    });
   }
 }
