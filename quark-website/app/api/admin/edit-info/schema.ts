@@ -1,8 +1,6 @@
 import { z } from "zod";
 
 export const PutSchema = z.object({
-  id: z.string().uuid(),
-
   name: z
     .string()
     .min(3, { message: "O nome deve possuir pelo menos 3 caracteres." })

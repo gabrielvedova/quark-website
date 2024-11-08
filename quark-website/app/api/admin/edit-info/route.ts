@@ -24,6 +24,15 @@ export async function PUT(request: Request) {
     await updateAdminInfo(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
+    if (error instanceof Error && error.message === "Unauthorized") {
+      return new Response(JSON.stringify({ message: "Não autorizado." }), {
+        status: 401,
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+    }
+
     if (error instanceof Error && error.message === "Not found") {
       return new Response(
         JSON.stringify({ message: "Perfil não encontrado" }),
