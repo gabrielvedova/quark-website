@@ -25,7 +25,9 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof Error && error.message === "Passwords do not match") {
       return new Response(
-        JSON.stringify({ error: { password: ["As senhas não coincidem."] } }),
+        JSON.stringify({
+          error: { passwordConfirmation: ["As senhas não coincidem."] },
+        }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
