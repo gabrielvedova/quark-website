@@ -1,12 +1,12 @@
 import { updateEmail } from "@/lib/change-email";
-import { PutSchema } from "./schema";
+import { PatchSchema } from "./schema";
 
 /**
  * @requiresAuthentication
  */
-export async function PUT(request: Request) {
+export async function PATCH(request: Request) {
   const body = await request.json();
-  const validatedBody = PutSchema.safeParse(body);
+  const validatedBody = PatchSchema.safeParse(body);
 
   if (!validatedBody.success) {
     return new Response(

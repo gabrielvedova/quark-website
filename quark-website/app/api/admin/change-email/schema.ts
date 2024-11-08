@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const PutSchema = z.object({
+export const PatchSchema = z.object({
   email: z.string().email({ message: "Insira um email válido" }),
 
   newEmail: z.string().email({ message: "Insira um email válido" }),
