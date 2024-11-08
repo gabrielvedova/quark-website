@@ -2,6 +2,16 @@ import prisma from "./db";
 import { NotFoundError, UnauthorizedError } from "./errors";
 import { getUserId } from "./session";
 
+/**
+ * Update the information of the current admin.
+ *
+ * @param data.name The name of the admin.
+ * @param data.role The role of the admin.
+ * @param data.profilePicture The profile picture of the admin.
+ *
+ * @throws {UnauthorizedError} If the admin is not authenticated.
+ * @throws {NotFoundError} If the admin is not found.
+ */
 export async function updateAdminInfo(data: {
   name?: string;
   role?: string;

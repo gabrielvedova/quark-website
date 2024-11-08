@@ -9,7 +9,22 @@ import {
 } from "@/lib/errors";
 
 /**
+ * Update the email of the current user.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.email The current email of the user.
+ * @param request.body.newEmail The new email of the user.
+ * @param request.body.newEmailConfirmation The new email of the user, confirmed.
+ *
+ * @returns 200 - { message: "Email alterado com sucesso." }
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 400 - { error: { email: ["Email incorreto."] } }
+ * @returns 400 - { error: { newEmailConfirmation: ["Os emails não coincidem."] } }
+ * @returns 401 - { message: "Não autorizado." }
+ * @returns 404 - { message: "Usuário não encontrado" }
+ * @returns 409 - { error: { newEmail: ["Email já em uso"] } }
+ * @returns 500 - { error: { message: "Ocorreu um erro." } }
  */
 export async function PATCH(request: Request) {
   const body = await request.json();

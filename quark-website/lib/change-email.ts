@@ -8,6 +8,19 @@ import {
 } from "./errors";
 import { getUserId } from "./session";
 
+/**
+ * Update the email of the current user.
+ *
+ * @param data.email The current email of the user.
+ * @param data.newEmail The new email of the user.
+ * @param data.newEmailConfirmation The new email of the user, confirmed.
+ *
+ * @throws {UnauthorizedError} If the user is not authenticated.
+ * @throws {NotFoundError} If the user is not found.
+ * @throws {IncorrectEmailError} If the current email is incorrect.
+ * @throws {EmailMismatchError} If the new email and the confirmation do not match.
+ * @throws {EmailInUseError} If the new email is already in use.
+ */
 export async function updateEmail(data: {
   email: string;
   newEmail: string;

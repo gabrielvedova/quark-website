@@ -14,6 +14,17 @@ import {
 } from "./schema";
 import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 
+/**
+ * Get a list of posts.
+ *
+ * @param request.url.searchParams.id The ID of the post to retrieve.
+ * @param request.url.searchParams.search The search query to filter posts by.
+ * @param request.url.searchParams.published Filter posts by their published status.
+ *
+ * @returns 200 - The list of posts that match the search query.
+ * @returns 400 - { error: validatedParams.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
+ */
 export async function GET(request: Request) {
   // Protects unpublished posts
   const unauthorized = await getPostsMiddleware(request);
@@ -41,7 +52,19 @@ export async function GET(request: Request) {
 }
 
 /**
+ * Create a new post.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.title The title of the post.
+ * @param request.body.content The content of the post.
+ * @param request.body.published The published status of the post.
+ * @param request.body.miniature The miniature of the post.
+ *
+ * @returns 201 - { id }
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
+ * @returns 500 - { message: "Ocorreu um erro." }
  */
 export async function POST(request: Request) {
   const body = await request.json();
@@ -83,7 +106,20 @@ export async function POST(request: Request) {
 }
 
 /**
+ * Modify a post.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.id The ID of the post to modify.
+ * @param request.body.title The new title of the post.
+ * @param request.body.content The new content of the post.
+ * @param request.body.miniature The new miniature of the post.
+ * @param request.body.published The new published status of the post.
+ *
+ * @returns 204
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 404 - { message: "Post não encontrado." }
+ * @returns 500 - { message: "Ocorreu um erro." }
  */
 export async function PUT(request: Request) {
   const body = await request.json();
@@ -122,7 +158,16 @@ export async function PUT(request: Request) {
 }
 
 /**
+ * Delete a post.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.id The ID of the post to delete.
+ *
+ * @returns 204
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 404 - { message: "Post não encontrado." }
+ * @returns 500 - { message: "Ocorreu um erro." }
  */
 export async function DELETE(request: Request) {
   const body = await request.json();

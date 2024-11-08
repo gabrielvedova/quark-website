@@ -1,21 +1,7 @@
-export class UnauthorizedError extends Error {
+export class EmailInUseError extends Error {
   constructor() {
-    super("Unauthorized");
-    this.name = "UnauthorizedError";
-  }
-}
-
-export class NotFoundError extends Error {
-  constructor() {
-    super("Not found");
-    this.name = "NotFoundError";
-  }
-}
-
-export class IncorrectEmailError extends Error {
-  constructor() {
-    super("Current email is incorrect");
-    this.name = "IncorrectEmailError";
+    super("Email already in use");
+    this.name = "EmailInUseError";
   }
 }
 
@@ -26,10 +12,17 @@ export class EmailMismatchError extends Error {
   }
 }
 
-export class EmailInUseError extends Error {
+export class IncorrectEmailError extends Error {
   constructor() {
-    super("Email already in use");
-    this.name = "EmailInUseError";
+    super("Current email is incorrect");
+    this.name = "IncorrectEmailError";
+  }
+}
+
+export class IncorrectEmailOrPasswordError extends Error {
+  constructor() {
+    super("Email or password incorrect");
+    this.name = "IncorrectEmailOrPasswordError";
   }
 }
 
@@ -40,6 +33,13 @@ export class IncorrectPasswordError extends Error {
   }
 }
 
+export class NotFoundError extends Error {
+  constructor() {
+    super("Not found");
+    this.name = "NotFoundError";
+  }
+}
+
 export class PasswordMismatchError extends Error {
   constructor() {
     super("Passwords do not match");
@@ -47,9 +47,9 @@ export class PasswordMismatchError extends Error {
   }
 }
 
-export class IncorrectEmailOrPasswordError extends Error {
+export class UnauthorizedError extends Error {
   constructor() {
-    super("Email or password incorrect");
-    this.name = "IncorrectEmailOrPasswordError";
+    super("Unauthorized");
+    this.name = "UnauthorizedError";
   }
 }

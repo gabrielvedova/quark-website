@@ -1,4 +1,5 @@
-import { getSession } from "./lib/session";
+import { UnauthorizedError } from "./lib/errors";
+import { getSession, updateSession } from "./lib/session";
 import { NextResponse } from "next/server";
 
 export async function middleware(request: Request) {
@@ -43,6 +44,26 @@ export async function middleware(request: Request) {
     });
   }
 
-  // If the user is authenticated, or the route is not protected, proceed
+  // Update session if it exists
+  try {
+    await updateSession();
+  } catch (error) {
+    if (error instanceof UnauthorizedError) {
+      return new Response(JSON.stringify({ message: "Não autorizado." }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    return new Response(
+      JSON.stringify({ message: "Erro interno do servidor." }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  }
+
+  // After updating the session, proceed
   return NextResponse.next();
 }

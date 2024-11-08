@@ -8,6 +8,18 @@ import {
   UnauthorizedError,
 } from "./errors";
 
+/**
+ * Update the password of the current user.
+ *
+ * @param data.password The current password of the user.
+ * @param data.newPassword The new password of the user.
+ * @param data.newPasswordConfirmation The new password of the user, confirmed.
+ *
+ * @throws {UnauthorizedError} If the user is not authenticated.
+ * @throws {NotFoundError} If the user is not found.
+ * @throws {IncorrectPasswordError} If the current password is incorrect.
+ * @throws {PasswordMismatchError} If the new password and the confirmation do not match.
+ */
 export async function updatePassword(data: {
   password: string;
   newPassword: string;

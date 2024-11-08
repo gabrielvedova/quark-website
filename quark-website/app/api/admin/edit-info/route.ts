@@ -3,7 +3,19 @@ import { PutSchema } from "./schema";
 import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 
 /**
+ * Update the information of the current admin.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.name The new name of the admin.
+ * @param request.body.role The new role of the admin.
+ * @param request.body.profilePicture The new profile picture of the admin.
+ *
+ * @returns 204
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
+ * @returns 404 - { message: "Perfil não encontrado" }
+ * @returns 500 - { message: "Ocorreu um erro." }
  */
 export async function PUT(request: Request) {
   const body = request.json();

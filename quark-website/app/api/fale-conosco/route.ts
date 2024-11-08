@@ -2,7 +2,19 @@ import { PostSchema } from "./schema";
 import { sendContactEmail } from "@/lib/email";
 
 /**
+ * Send an email with the contact information.
+ *
  * @requires request.headers.authorization
+ *
+ * @param request.body.name The name of the person who is contacting.
+ * @param request.body.email The email of the person who is contacting.
+ * @param request.body.phoneNumber The phone number of the person who is contacting.
+ * @param request.body.institution The institution of the person who is contacting.
+ *
+ * @returns 200 - { message: "Informações enviadas com sucesso." }
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
+ * @returns 500 - { message: "Ocorreu um erro." }
  */
 export async function POST(request: Request) {
   const unauthorized =
@@ -24,7 +36,7 @@ export async function POST(request: Request) {
   if (!validatedBody.success) {
     return new Response(
       JSON.stringify({
-        error: validatedBody.error.errors.map((err) => err.message),
+        error: validatedBody.error.flatten(),
       }),
       { status: 400 }
     );

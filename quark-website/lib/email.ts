@@ -26,6 +26,16 @@ async function sendEmail(
   });
 }
 
+/**
+ * Send an email to the website owner with the contact information.
+ *
+ * @param data.name The name of the person who is contacting.
+ * @param data.email The email of the person who is contacting.
+ * @param data.phoneNumber The phone number of the person who is contacting.
+ * @param data.institution The institution of the person who is contacting.
+ *
+ * @returns A promise that resolves when the email is sent.
+ */
 export async function sendContactEmail(data: {
   name: string;
   email: string;
@@ -55,38 +65,6 @@ export async function sendContactEmail(data: {
     <li><strong>Telefone:</strong> ${phoneNumber}</li>
     <li><strong>Instituição:</strong> ${institution}</li>
   </ul>
-  `;
-
-  return await sendEmail(sender, recipients, emailSubject, emailContent);
-}
-
-export async function sendRecoveryEmail(data: { email: string; code: string }) {
-  const { email, code } = data;
-
-  const sender = {
-    name: process.env.EMAIL_NAME || "",
-    address: process.env.EMAIL_ADDRESS || "",
-  };
-
-  const recipients = [
-    {
-      name: email,
-      address: email,
-    },
-  ];
-
-  const emailSubject =
-    "Recuperação de senha do sistema de administração do website da Quark";
-
-  const emailContent = `
-  Você solicitou a recuperação de senha para a sua conta no nosso sistema, não compartilhe-o com ninguém. <br />
-  Todos os códigos de recuperação enviados anteriormente foram invalidados. <br />
-  Se você não fez essa solicitação, por favor, ignore este email. <br />
-  <br />
-  Caso contrário, utilize este código para redefinir sua senha: ${code} <br />
-  Este código expira em 30 minutos. <br />
-  <br />
-  Este é um email automático, por favor, não responda.
   `;
 
   return await sendEmail(sender, recipients, emailSubject, emailContent);

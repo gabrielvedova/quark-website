@@ -6,6 +6,23 @@ import {
   UnauthorizedError,
 } from "@/lib/errors";
 
+/**
+ * Update the password of the current user.
+ *
+ * @requiresAuthentication
+ *
+ * @param request.body.password The current password of the user.
+ * @param request.body.newPassword The new password of the user.
+ * @param request.body.newPasswordConfirmation The new password of the user, confirmed.
+ *
+ * @returns 200 - { message: "Senha alterada com sucesso." }
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 400 - { error: { password: ["Senha incorreta."] } }
+ * @returns 400 - { error: { newPasswordConfirmation: ["As senhas não coincidem."] } }
+ * @returns 401 - { message: "Não autorizado." }
+ * @returns 404 - { message: "Usuário não encontrado" }
+ * @returns 500 - { message: "Ocorreu um erro." }
+ */
 export async function PATCH(request: Request) {
   const body = await request.json();
   const validatedBody = PatchSchema.safeParse(body);

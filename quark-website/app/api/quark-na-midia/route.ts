@@ -13,6 +13,17 @@ import {
 } from "./schema";
 import { NotFoundError } from "@/lib/errors";
 
+/**
+ * Get a list of headlines.
+ *
+ * @param request.url.searchParams.id The ID of the headline to retrieve.
+ *
+ * @returns 200 - The list of headlines that match the search query.
+ * @returns 400 - { error: validatedParams.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
+ * @returns 404 - { message: "Manchete não encontrada" }
+ * @returns 500 - { message: "Ocorreu um erro." }
+ */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const paramsObject = Object.fromEntries(searchParams);
@@ -36,7 +47,18 @@ export async function GET(request: Request) {
 }
 
 /**
+ * Create a new headline.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.title The title of the headline.
+ * @param request.body.description The description of the headline.
+ * @param request.body.miniature The miniature of the headline.
+ * @param request.body.publishingDate The publishing date of the headline.
+ * @param request.body.url The URL of the headline.
+ *
+ * @returns 201 - { id }
+ * @returns 400 - { error: validatedBody.error.flatten() }
  */
 export async function POST(request: Request) {
   const body = await request.json();
@@ -62,7 +84,21 @@ export async function POST(request: Request) {
 }
 
 /**
+ * Modify a headline.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.id The ID of the headline to modify.
+ * @param request.body.title The new title of the headline.
+ * @param request.body.description The new description of the headline.
+ * @param request.body.miniature The new miniature of the headline.
+ * @param request.body.publishingDate The new publishing date of the headline.
+ * @param request.body.url The new URL of the headline.
+ *
+ * @returns 204
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 404 - { message: "Manchete não encontrada" }
+ * @returns 500 - { message: "Ocorreu um erro." }
  */
 export async function PUT(request: Request) {
   const body = request.json();
@@ -106,7 +142,16 @@ export async function PUT(request: Request) {
 }
 
 /**
+ * Delete a headline.
+ *
  * @requiresAuthentication
+ *
+ * @param request.body.id The ID of the headline to delete.
+ *
+ * @returns 204
+ * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 404 - { message: "Manchete não encontrada" }
+ * @returns 500 - { message: "Ocorreu um erro." }
  */
 export async function DELETE(request: Request) {
   const body = await request.json();
