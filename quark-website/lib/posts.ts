@@ -41,7 +41,10 @@ export async function getPostsMiddleware(request: Request) {
   const session = await getSession();
 
   if (isProtected && !session) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response(JSON.stringify({ message: "Não autorizado." }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   return null;
