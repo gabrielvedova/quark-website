@@ -16,5 +16,12 @@ export async function DELETE(request: Request) {
         },
       });
     }
+
+    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }
 }
