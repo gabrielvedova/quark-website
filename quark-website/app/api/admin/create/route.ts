@@ -1,5 +1,6 @@
 import createAdmin from "@/lib/create-admin";
 import { PostSchema } from "./schema";
+import { EmailInUseError, PasswordMismatchError } from "@/lib/errors";
 
 /**
  * @requiresAuthetication
@@ -23,7 +24,7 @@ export async function POST(request: Request) {
   try {
     await createAdmin(validatedBody.data);
   } catch (error) {
-    if (error instanceof Error && error.message === "Passwords do not match") {
+    if (error instanceof PasswordMismatchError) {
       return new Response(
         JSON.stringify({
           error: { passwordConfirmation: ["As senhas não coincidem."] },
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (error instanceof Error && error.message === "Email already in use") {
+    if (error instanceof EmailInUseError) {
       return new Response(
         JSON.stringify({ error: { email: ["Email já em uso."] } }),
         { status: 409, headers: { "Content-Type": "application/json" } }

@@ -1,5 +1,6 @@
 import { updateAdminInfo } from "@/lib/edit-admin-info";
 import { PutSchema } from "./schema";
+import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 
 /**
  * @requiresAuthentication
@@ -24,7 +25,7 @@ export async function PUT(request: Request) {
     await updateAdminInfo(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
-    if (error instanceof Error && error.message === "Unauthorized") {
+    if (error instanceof UnauthorizedError) {
       return new Response(JSON.stringify({ message: "Não autorizado." }), {
         status: 401,
         headers: {
@@ -33,7 +34,7 @@ export async function PUT(request: Request) {
       });
     }
 
-    if (error instanceof Error && error.message === "Not found") {
+    if (error instanceof NotFoundError) {
       return new Response(
         JSON.stringify({ message: "Perfil não encontrado" }),
         {

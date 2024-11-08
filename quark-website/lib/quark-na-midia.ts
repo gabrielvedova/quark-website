@@ -1,4 +1,5 @@
 import prisma from "./db";
+import { NotFoundError } from "./errors";
 
 export async function getHeadline(params: { id?: number }) {
   if (params.id) {
@@ -27,7 +28,7 @@ export async function updateHeadline(data: {
   url?: string;
 }) {
   const news = await prisma.headline.findUnique({ where: { id: data.id } });
-  if (!news) throw new Error("Not found");
+  if (!news) throw new NotFoundError();
 
   if (
     !data.title &&
@@ -44,7 +45,7 @@ export async function updateHeadline(data: {
 
 export async function deleteHeadline(data: { id: number }) {
   const news = await prisma.headline.findUnique({ where: { id: data.id } });
-  if (!news) throw new Error("Not found");
+  if (!news) throw new NotFoundError();
 
   await prisma.headline.delete({ where: { id: data.id } });
 }

@@ -1,5 +1,6 @@
 import login from "@/lib/login";
 import { PostSchema } from "./schema";
+import { IncorrectEmailOrPasswordError } from "@/lib/errors";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -30,10 +31,7 @@ export async function POST(request: Request) {
       }
     );
   } catch (error) {
-    if (
-      error instanceof Error &&
-      error.message === "Email or password incorrect"
-    ) {
+    if (error instanceof IncorrectEmailOrPasswordError) {
       return new Response(
         JSON.stringify({ message: "Email ou senha incorretos." }),
         {

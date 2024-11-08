@@ -1,4 +1,5 @@
 import prisma from "./db";
+import { NotFoundError, UnauthorizedError } from "./errors";
 import { getUserId } from "./session";
 
 export async function updateAdminInfo(data: {
@@ -7,10 +8,10 @@ export async function updateAdminInfo(data: {
   profilePicture?: string;
 }) {
   const id = await getUserId();
-  if (!id) throw new Error("Unauthorized");
+  if (!id) throw new UnauthorizedError();
 
   const admin = await prisma.admin.findUnique({ where: { id } });
-  if (!admin) throw new Error("Not found");
+  if (!admin) throw new NotFoundError();
 
   if (!data.name && !data.role && !data.profilePicture) {
     return;

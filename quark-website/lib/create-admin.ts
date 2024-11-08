@@ -1,5 +1,6 @@
 import prisma from "./db";
 import argon2 from "argon2";
+import { EmailInUseError, PasswordMismatchError } from "./errors";
 
 export default async function createAdmin(data: {
   name: string;
@@ -10,13 +11,12 @@ export default async function createAdmin(data: {
 }) {
   const { name, role, email, password, passwordConfirmation } = data;
 
-  if (password !== passwordConfirmation)
-    throw new Error("Passwords do not match");
+  if (password !== passwordConfirmation) throw new PasswordMismatchError();
 
   const emailAlreadyInUse =
     (await prisma.admin.count({ where: { email } })) !== 0;
 
-  if (emailAlreadyInUse) throw new Error("Email already in use");
+  if (emailAlreadyInUse) throw new EmailInUseError();
 
   const hashedPassword = await argon2.hash(password);
 
@@ -29,5 +29,5 @@ export default async function createAdmin(data: {
     },
   });
 
-  if (!id) throw new Error("Internal server error");
+  if (!id) throw new Error();
 }

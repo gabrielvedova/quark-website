@@ -1,4 +1,5 @@
 import deleteAccount from "@/lib/delete-admin";
+import { UnauthorizedError } from "@/lib/errors";
 
 /**
  * @requiresAuthetication
@@ -8,7 +9,7 @@ export async function DELETE(request: Request) {
     const result = await deleteAccount();
     return new Response(null, { status: 204 });
   } catch (error) {
-    if (error instanceof Error && error.message === "Unauthorized") {
+    if (error instanceof UnauthorizedError) {
       return new Response(JSON.stringify({ message: "Não autorizado." }), {
         status: 401,
         headers: {

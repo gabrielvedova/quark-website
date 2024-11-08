@@ -1,4 +1,5 @@
 import prisma from "./db";
+import { NotFoundError, UnauthorizedError } from "./errors";
 import { getSession, getUserId } from "./session";
 
 export async function getPosts(params: {
@@ -57,7 +58,7 @@ export async function createPost(data: {
   published: boolean;
 }) {
   const userId = await getUserId();
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId) throw new UnauthorizedError();
 
   const { id } = await prisma.post.create({
     data: {
@@ -78,7 +79,7 @@ export async function updatePost(data: {
   published?: boolean;
 }) {
   const post = await prisma.post.findUnique({ where: { id: data.id } });
-  if (!post) throw new Error("Not found");
+  if (!post) throw new NotFoundError();
 
   // If no data is provided, do nothing
   if (
@@ -95,7 +96,7 @@ export async function updatePost(data: {
 
 export async function deletePost(data: { id: number }) {
   const post = await prisma.post.findUnique({ where: { id: data.id } });
-  if (!post) throw new Error("Not found");
+  if (!post) throw new NotFoundError();
 
   await prisma.post.delete({ where: { id: data.id } });
 }

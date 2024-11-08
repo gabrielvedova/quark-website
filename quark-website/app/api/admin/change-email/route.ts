@@ -1,5 +1,12 @@
 import { updateEmail } from "@/lib/change-email";
 import { PatchSchema } from "./schema";
+import {
+  EmailInUseError,
+  EmailMismatchError,
+  IncorrectEmailError,
+  NotFoundError,
+  UnauthorizedError,
+} from "@/lib/errors";
 
 /**
  * @requiresAuthentication
@@ -24,7 +31,7 @@ export async function PATCH(request: Request) {
     await updateEmail(validatedBody.data);
     return Response.json({ message: "Email alterado com sucesso." });
   } catch (error) {
-    if (error instanceof Error && error.message === "Unauthorized") {
+    if (error instanceof UnauthorizedError) {
       return new Response(JSON.stringify({ message: "Não autorizado." }), {
         status: 401,
         headers: {
@@ -33,24 +40,21 @@ export async function PATCH(request: Request) {
       });
     }
 
-    if (error instanceof Error && error.message === "Not found") {
+    if (error instanceof NotFoundError) {
       return new Response(
         JSON.stringify({ message: "Usuário não encontrado" }),
         { status: 404, headers: { "content-type": "application/json" } }
       );
     }
 
-    if (
-      error instanceof Error &&
-      error.message === "Current email is incorrect"
-    ) {
+    if (error instanceof IncorrectEmailError) {
       return new Response(
         JSON.stringify({ error: { email: ["Email incorreto."] } }),
         { status: 400, headers: { "content-type": "application/json" } }
       );
     }
 
-    if (error instanceof Error && error.message === "Emails do not match") {
+    if (error instanceof EmailMismatchError) {
       return new Response(
         JSON.stringify({
           error: { newEmailConfirmation: ["Os emails não coincidem."] },
@@ -59,7 +63,7 @@ export async function PATCH(request: Request) {
       );
     }
 
-    if (error instanceof Error && error.message === "Email already in use") {
+    if (error instanceof EmailInUseError) {
       return new Response(
         JSON.stringify({ error: { newEmail: ["Email já em uso"] } }),
         { status: 409, headers: { "content-type": "application/json" } }

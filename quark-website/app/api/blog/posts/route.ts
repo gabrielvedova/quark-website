@@ -12,6 +12,7 @@ import {
   PostSchema,
   PutSchema,
 } from "./schema";
+import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 
 export async function GET(request: Request) {
   // Protects unpublished posts
@@ -65,7 +66,7 @@ export async function POST(request: Request) {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
-    if (error instanceof Error && error.message === "Unauthorized") {
+    if (error instanceof UnauthorizedError) {
       return new Response(JSON.stringify({ message: "Não autorizado." }), {
         status: 401,
         headers: {
@@ -104,16 +105,7 @@ export async function PUT(request: Request) {
     await updatePost(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
-    if (error instanceof Error && error.message === "Unauthorized") {
-      return new Response(JSON.stringify({ message: "Não autorizado." }), {
-        status: 401,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    if (error instanceof Error && error.message === "Not found") {
+    if (error instanceof NotFoundError) {
       return new Response(JSON.stringify({ message: "Post não encontrado." }), {
         status: 404,
         headers: {
@@ -152,7 +144,7 @@ export async function DELETE(request: Request) {
     await deletePost(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
-    if (error instanceof Error && error.message === "Not found") {
+    if (error instanceof NotFoundError) {
       return new Response(JSON.stringify({ message: "Post não encontrado." }), {
         status: 404,
         headers: { "Content-Type": "application/json" },

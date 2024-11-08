@@ -22,7 +22,9 @@ async function decrypt(session: string = "") {
   try {
     return (await jwtVerify(session, encodedKey, { algorithms: ["HS256"] }))
       .payload;
-  } catch (error) {}
+  } catch (error) {
+    return null;
+  }
 }
 
 async function setSessionCookie(session: string, expiresAt: Date) {

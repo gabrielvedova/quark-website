@@ -11,6 +11,7 @@ import {
   PostSchema,
   PutSchema,
 } from "./schema";
+import { NotFoundError } from "@/lib/errors";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -83,7 +84,7 @@ export async function PUT(request: Request) {
     await updateHeadline(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
-    if (error instanceof Error && error.message === "Not found") {
+    if (error instanceof NotFoundError) {
       return new Response(
         JSON.stringify({ message: "Manchete não encontrada" }),
         {
@@ -127,7 +128,7 @@ export async function DELETE(request: Request) {
     await deleteHeadline(validatedBody.data);
     return new Response(null, { status: 204 });
   } catch (error) {
-    if (error instanceof Error && error.message === "Not found") {
+    if (error instanceof NotFoundError) {
       return new Response(
         JSON.stringify({ message: "Manchete não encontrada" }),
         {

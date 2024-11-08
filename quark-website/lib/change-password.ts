@@ -1,6 +1,12 @@
 import argon2 from "argon2";
 import prisma from "./db";
 import { getUserId } from "./session";
+import {
+  IncorrectPasswordError,
+  NotFoundError,
+  PasswordMismatchError,
+  UnauthorizedError,
+} from "./errors";
 
 export async function updatePassword(data: {
   password: string;
@@ -10,16 +16,16 @@ export async function updatePassword(data: {
   const { password, newPassword, newPasswordConfirmation } = data;
 
   const id = await getUserId();
-  if (!id) throw new Error("Unauthorized");
+  if (!id) throw new UnauthorizedError();
 
   const user = await prisma.admin.findUnique({ where: { id } });
-  if (!user) throw new Error("Not found");
+  if (!user) throw new NotFoundError();
 
   const passwordMatches = await argon2.verify(user.password, password);
-  if (!passwordMatches) throw new Error("Current password is incorrect");
+  if (!passwordMatches) throw new IncorrectPasswordError();
 
   if (newPassword !== newPasswordConfirmation)
-    throw new Error("Passwords do not match");
+    throw new PasswordMismatchError();
 
   const hashedPassword = await argon2.hash(newPassword);
   await prisma.admin.update({
