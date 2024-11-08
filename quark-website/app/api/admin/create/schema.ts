@@ -35,4 +35,6 @@ export const PostSchema = z.object({
       message:
         "A senha deve conter apenas letras, dígitos e caracteres especiais permitidos.",
     }),
+
+  passwordConfirmation: z.string(),
 });

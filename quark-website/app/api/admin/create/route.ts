@@ -1,4 +1,4 @@
-import signup from "@/lib/create-admin";
+import createAdmin from "@/lib/create-admin";
 import { PostSchema } from "./schema";
 
 /**
@@ -20,22 +20,28 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, role, email, password } = validatedBody.data;
-  const result = await signup(name, role, email, password);
+  try {
+    await createAdmin(validatedBody.data);
+  } catch (error) {
+    if (error instanceof Error && error.message === "Passwords do not match") {
+      return new Response(
+        JSON.stringify({ error: { password: ["As senhas não coincidem."] } }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
 
-  if (result?.error) {
-    return new Response(JSON.stringify({ error: result.error }), {
-      status: 400,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (error instanceof Error && error.message === "Email already in use") {
+      return new Response(
+        JSON.stringify({ error: { email: ["Email já em uso."] } }),
+        { status: 409, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    if (error instanceof Error && error.message === "Internal server error") {
+      return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
   }
-
-  return new Response(JSON.stringify({ message: result.message }), {
-    status: result.status,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 }
