@@ -35,7 +35,10 @@ export async function middleware(request: Request) {
     ) &&
     !session
   ) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response(JSON.stringify({ message: "Não autorizado." }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   // If the user is authenticated, or the route is not protected, proceed
