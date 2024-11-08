@@ -41,3 +41,10 @@ export async function updateNews(data: {
 
   await prisma.news.update({ where: { id: data.id }, data });
 }
+
+export async function deleteNews(data: { id: number }) {
+  const news = await prisma.news.findUnique({ where: { id: data.id } });
+  if (!news) throw new Error("Not found");
+
+  await prisma.news.delete({ where: { id: data.id } });
+}

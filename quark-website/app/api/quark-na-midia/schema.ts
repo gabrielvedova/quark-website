@@ -64,3 +64,7 @@ export const PutSchema = z.object({
 
   url: z.string().url({ message: "Insira uma URL válida." }).optional(),
 });
+
+export const DeleteSchema = z.object({
+  id: z.number().int(),
+});

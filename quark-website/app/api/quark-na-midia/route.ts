@@ -1,6 +1,12 @@
-import { createNews, getNews, updateNews } from "@/lib/quark-na-midia";
+import {
+  createNews,
+  deleteNews,
+  getNews,
+  updateNews,
+} from "@/lib/quark-na-midia";
 import {
   convertGetParams,
+  DeleteSchema,
   GetParamsSchema,
   PostSchema,
   PutSchema,
@@ -91,4 +97,39 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {}
+/**
+ * @requiresAuthentication
+ */
+export async function DELETE(request: Request) {
+  const body = await request.json();
+  const validatedBody = DeleteSchema.safeParse(body);
+
+  if (!validatedBody.success) {
+    return new Response(
+      JSON.stringify({ error: validatedBody.error.flatten() }),
+      {
+        status: 400,
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+  }
+
+  try {
+    await deleteNews(validatedBody.data);
+    return new Response(null, { status: 204 });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Not found") {
+      return new Response(
+        JSON.stringify({ message: "Manchete não encontrada" }),
+        {
+          status: 404,
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+    }
+  }
+}
