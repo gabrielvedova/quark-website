@@ -60,7 +60,10 @@ export async function POST(request: Request) {
 
   try {
     const id = await createPost(validatedBody.data);
-    return Response.json({ id });
+    return new Response(JSON.stringify({ id }), {
+      status: 201,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     if (error instanceof Error && error.message === "Unauthorized") {
       return new Response(JSON.stringify({ message: "Não autorizado." }), {

@@ -7,3 +7,13 @@ export async function getNews(params: { id?: number }) {
   }
   return await prisma.news.findMany();
 }
+
+export async function createNews(data: {
+  title: string;
+  description: string;
+  miniature: string;
+  publishingDate: string;
+  url: string;
+}) {
+  return (await prisma.news.create({ data })).id;
+}

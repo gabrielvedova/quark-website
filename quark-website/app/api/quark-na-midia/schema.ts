@@ -14,3 +14,26 @@ export function convertGetParams(params: { id?: string }) {
 
   return convertedParams;
 }
+
+export const PostSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "Insira um título." })
+    .max(255, { message: "Título deve ter no máximo 255 caracteres." })
+    .trim(),
+
+  description: z
+    .string()
+    .min(1, { message: "Insira uma descrição." })
+    .max(255, { message: "Descrição deve ter no máximo 255 caracteres." })
+    .trim(),
+
+  miniature: z.string().url({ message: "Insira uma URL válida." }).min(1),
+
+  publishingDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Insira uma data válida." })
+    .trim(),
+
+  url: z.string().url({ message: "Insira uma URL válida." }).min(1),
+});
