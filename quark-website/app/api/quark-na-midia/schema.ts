@@ -37,3 +37,30 @@ export const PostSchema = z.object({
 
   url: z.string().url({ message: "Insira uma URL válida." }).min(1),
 });
+
+export const PutSchema = z.object({
+  id: z.number().int(),
+
+  title: z
+    .string()
+    .min(1, { message: "Insira um título." })
+    .max(255, { message: "Título deve ter no máximo 255 caracteres." })
+    .trim(),
+
+  description: z
+    .string()
+    .min(1, { message: "Insira uma descrição." })
+    .max(255, { message: "Descrição deve ter no máximo 255 caracteres." })
+    .trim()
+    .optional(),
+
+  miniature: z.string().url({ message: "Insira uma URL válida." }).optional(),
+
+  publishingDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Insira uma data válida." })
+    .trim()
+    .optional(),
+
+  url: z.string().url({ message: "Insira uma URL válida." }).optional(),
+});
