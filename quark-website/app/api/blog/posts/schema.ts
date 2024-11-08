@@ -49,7 +49,7 @@ export const PostSchema = z.object({
 });
 
 export const PutSchema = z.object({
-  id: z.number(),
+  id: z.number().int(),
 
   title: z
     .string()
@@ -65,5 +65,5 @@ export const PutSchema = z.object({
 });
 
 export const DeleteSchema = z.object({
-  id: z.number(),
+  id: z.number().int(),
 });
