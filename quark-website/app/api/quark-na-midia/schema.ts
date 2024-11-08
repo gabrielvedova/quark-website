@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const GetParamsSchema = z.object({
+export const GetParamsSchema = z.object({
   id: z
     .string()
     .regex(/^\d+$/, { message: "Parameter 'id' must be numeric." })

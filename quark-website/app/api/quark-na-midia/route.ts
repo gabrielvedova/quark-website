@@ -1,6 +1,5 @@
 import { getNews } from "@/lib/quark-na-midia";
-import { GetParamsSchema } from "../blog/posts/schema";
-import { convertGetParams } from "./schema";
+import { convertGetParams, GetParamsSchema } from "./schema";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -20,3 +19,9 @@ export async function GET(request: Request) {
   const result = await getNews(params);
   return Response.json(result);
 }
+
+export async function POST(request: Request) {}
+
+export async function PUT(request: Request) {}
+
+export async function DELETE(request: Request) {}
