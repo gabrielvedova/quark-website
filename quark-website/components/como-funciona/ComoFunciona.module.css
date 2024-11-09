@@ -1,7 +1,56 @@
 .container {
-  background-color: rgb(165, 82, 51);
+  background-color: rgba(165, 81, 51, 0.24);
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+}
+
+.text {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.funco {
+  height: 70%;
+  width: 70%;
+  background-color: rgba(165, 42, 42, 0.726);
+  display: flex;
+  justify-content: space-between;
+}
+
+.funco .item {
+  width: 25%;
+  background-color: rgba(54, 42, 165, 0.466);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.funco .item .img {
+  height: 40%;
+  width: 55%;
+  background-color: rgba(42, 165, 83, 0.952);
+  border-radius: 50%;
+}
+
+.funco .item .textItem {
+  height: 50%;
+  width: 90%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.funco .item .textItem h1 {
+  font-size: 20px;
+}
+
+.funco .item .textItem p {
+  line-height: 1.5;
+  font-size: 14px;
 }
