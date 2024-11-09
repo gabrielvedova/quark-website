@@ -95,14 +95,15 @@ export async function createSession(userId: string) {
  * @throws {UnauthorizedError} If the user is not authenticated.
  */
 export async function updateSession() {
-  const session = (await cookies()).get("session")?.value;
-  const payload = await decrypt(session);
+  const userId = await getUserId();
 
-  if (!session || !payload) {
-    return new UnauthorizedError();
+  if (!userId) {
+    throw new UnauthorizedError();
   }
 
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 1000);
+  const session = await encrypt({ userId, expiresAt });
+
   await setSessionCookie(session, expiresAt);
 }
 
