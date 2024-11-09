@@ -1,3 +1,4 @@
+"use client";
 import Home from "@/components/home/Home";
 import ComoFunciona from "@/components/como-funciona/ComoFunciona";
 import ConhecaQuark from "@/components/conheca/Conheca";
