@@ -1,7 +1,95 @@
 .container {
-  background-color: rgb(60, 112, 8);
-  flex: 1;
+  background-color: rgba(50, 94, 6, 0.267);
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  flex-direction: column;
+  padding-top: 5%;
+  height: 120vh;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title span {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ca3333;
+}
+
+.title h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.main {
+  width: 70%;
+  height: 80%;
+  display: flex;
+  background-color: rgb(120, 192, 192);
+  justify-content: space-between;
+}
+
+.main .text1 {
+  width: 30%;
+  text-align: end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.main .img {
+  width: 30%;
+  height: 80%;
+  background-color: blue;
+  align-self: center;
+}
+
+.main .text2 {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+/* Círculo em cada título dos tópicos */
+
+.circle {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+
+.circle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.topic1 .circle::before {
+  background-color: rgba(189, 238, 99, 0.651);
+}
+.topic2 .circle::before {
+  background-color: rgb(128, 202, 202);
+}
+.topic3 .circle::before {
+  background-color: rgba(198, 126, 231, 0.651);
+}
+.topic4 .circle::before {
+  background-color: rgba(198, 126, 231, 0.651);
+}
+
+.topic4 #point {
+  color: rgba(198, 126, 231, 0.651);
 }

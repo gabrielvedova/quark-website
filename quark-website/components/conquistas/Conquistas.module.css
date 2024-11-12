@@ -1,7 +1,59 @@
 .container {
-  background-color: brown;
+  background-color: rgba(165, 42, 42, 0.562);
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title span {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ca3333;
+}
+
+.title h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.carousel {
+  width: 70%;
+  height: auto;
+}
+
+.totalInfo {
+  display: flex;
+  width: 70%;
+  height: 20%;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  height: 100%;
+}
+
+.info h1 {
+  font-size: 50px;
+  font-weight: 700;
+  color: rgb(58, 47, 216);
+}
+
+.info span {
+  text-align: center;
+  font-size: 18px;
 }

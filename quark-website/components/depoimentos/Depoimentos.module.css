@@ -1,7 +1,63 @@
 .container {
   background-color: cadetblue;
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  height: 130vh;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title span {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ca3333;
+}
+
+.title h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.video {
+  height: 60vh;
+  width: 70%;
+  background-color: blueviolet;
+  margin: 2% 0;
+}
+
+.comments {
+  height: 30%;
+  width: 70%;
+}
+
+.comments .slideContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.slideContainer .itemSlide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.itemSlide .comment {
+  margin: auto;
+  padding: 25% 10%;
+  background-color: rgb(170, 170, 170);
+  height: 100%;
+  width: 70%;
+  border-radius: 5%;
 }
