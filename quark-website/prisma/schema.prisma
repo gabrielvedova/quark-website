@@ -8,13 +8,21 @@ datasource db {
 }
 
 model Admin {
-  id             String  @id @default(uuid())
-  email          String  @unique
+  id             String    @id @default(uuid())
+  email          String    @unique
   name           String
   role           String
   password       String
   profilePicture String?
   posts          Post[]
+  sessions       Session[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  adminId   String
+  expiresAt DateTime
 }
 
 model Post {
@@ -22,7 +30,7 @@ model Post {
   title        String
   content      String
   miniature    String
-  author       Admin    @relation(fields: [authorId], references: [id])
+  author       Admin    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId     String
   published    Boolean  @default(true)
   lastEditedAt DateTime

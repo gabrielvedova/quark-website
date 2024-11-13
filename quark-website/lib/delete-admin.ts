@@ -1,6 +1,6 @@
 import prisma from "./db";
 import { UnauthorizedError } from "./errors";
-import { deleteSession, getUserId } from "./session";
+import { deleteSession, getAdminId } from "./session";
 
 /**
  * Delete the current user account.
@@ -8,10 +8,9 @@ import { deleteSession, getUserId } from "./session";
  * @throws {UnauthorizedError} If the user is not authenticated.
  */
 export default async function deleteAccount() {
-  const id = await getUserId();
-
+  const id = await getAdminId();
   if (!id) throw new UnauthorizedError();
 
-  await prisma.admin.delete({ where: { id } });
   await deleteSession();
+  await prisma.admin.delete({ where: { id } });
 }

@@ -4,12 +4,12 @@
 <img src="https://th.bing.com/th/id/OIP.nX3dNvxHPZFMwSWmjIKMdAHaHa?rs=1&pid=ImgDetMain" width="300" height="250">
 </div>
 
+## Descrição
 
- ## Descrição
+Este projeto tem como objetivo desenvolver um site informativo moderno e intuitivo, projetado para oferecer aos usuários uma experiência única e acessível, com conteúdo relevante e atualizado sobre as habilidades comportamentais do século XXI com a plataforma quark. A **Quark** é uma plataforma de **educação focada no desenvolvimento de habilidades comportamentais**, que oferece cursos e treinamentos voltados para aprimorar competências como liderança, comunicação, inteligência emocional, resolução de conflitos e trabalho em equipe. A plataforma utiliza metodologias inovadoras, como aprendizagem gamificada e conteúdos interativos, para proporcionar uma experiência de aprendizado envolvente e prática. Seu objetivo é ajudar indivíduos e organizações a desenvolverem habilidades essenciais para o sucesso pessoal e profissional, promovendo um ambiente mais colaborativo, produtivo e saudável.
 
-Este projeto tem como objetivo desenvolver um site informativo moderno e intuitivo, projetado para oferecer aos usuários uma experiência única e acessível, com conteúdo relevante e atualizado sobre as habilidades comportamentais do século XXI com a plataforma quark.  A **Quark** é uma plataforma de **educação focada no desenvolvimento de habilidades comportamentais**, que oferece cursos e treinamentos voltados para aprimorar competências como liderança, comunicação, inteligência emocional, resolução de conflitos e trabalho em equipe. A plataforma utiliza metodologias inovadoras, como aprendizagem gamificada e conteúdos interativos, para proporcionar uma experiência de aprendizado envolvente e prática. Seu objetivo é ajudar indivíduos e organizações a desenvolverem habilidades essenciais para o sucesso pessoal e profissional, promovendo um ambiente mais colaborativo, produtivo e saudável.
+### Redes sociais
 
-**Redes sociais**:
 <div style="display: flex; align-items: center;">
   <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="margin-right: 10px; width: 24px; height: 24px;">
   <a href="https://instagram.com/edu.quark">Instagram</a>
@@ -30,36 +30,38 @@ Este projeto tem como objetivo desenvolver um site informativo moderno e intuiti
   <a href="https://apps.apple.com/br/app/quark/id1610958564">App Store</a>
 </div>
 
+---
 
-
-
-
-# Tecnologias Usadas
+## Tecnologias Usadas
 
 - **Frontend**: React , tailwind e Next.Js.
 - **Backend**: Node.js e next.js.
 - **Banco de Dados**: PostgreSQL e Prisma .
 - **serviços externos**: AWS SES (serviço de email.) e AWS S3 ( servico de armazenamento de imagem.)
 
+---
 
+## Estrutura do Projeto
 
-# Estrutura do Projeto
-
+```txt
 quark/
-├── public/          # Arquivos públicos (index.html, imagens)
-├── components/      # Componentes reutilizáveis (botões, cabeçalhos, formulários, etc.)
-├── lib/             # Funções e bibliotecas reutilizáveis, como helpers, utilitários
-├── app/             # Lógica principal da aplicação, incluindo configuração da API
-│   ├── api/         # Interações com a API e backend
-├── middleware.ts    # Middleware (funções intermediárias) que processam as requisições
-├── .env             # Variáveis de ambiente
-└── README.md        # Documentação principal do projeto
+├── public/ # Arquivos públicos (index.html, imagens)
+├── components/ # Componentes reutilizáveis (botões, cabeçalhos, formulários, etc.)
+├── lib/ # Funções e bibliotecas reutilizáveis, como helpers, utilitários
+├── app/ # Lógica principal da aplicação, incluindo configuração da API
+│   └── api/ # Interações com a API e backend as requisições
+├── .env # Variáveis de ambiente
+└── README.md # Documentação principal do projeto
+```
 
+---
 
 ## Como Rodar o Projeto Localmente
 
 ### Pré-requisitos
+
 Antes de começar, certifique-se de ter as seguintes dependências instaladas:
+
 - **Next.Js** (Versão 15.0.3)
 - **npm** ou **yarn** (gerenciador de pacotes)
 - **PostgreSQL** (para o banco de dados local, caso o backend precise)
@@ -67,50 +69,100 @@ Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 
 ### Passo a Passo
 
-1. Clone o repositório:
+1 - Clone o repositório:
 
-   git clone https://github.com/usuario/quark.git
+```bash
+git clone <https://github.com/gabrielvedova/quark-website.git>
+```
 
-2. Acesse o diretório do projeto:
+2 - Acesse o diretório do projeto:
 
-   cd quark
+```bash
+cd quark-website/
+```
 
-3. Instale as dependências do frontend:
+3 - Instale as dependências do frontend:
 
-   npm install # ou yarn
-
-# Configuração do Backend
-
-
-1.  Instale as dependências do backend:
-
-      cd app
+```bash
 npm install # ou yarn
+```
 
+4 - Configure as váriáveis de ambiente em `.env`
 
- ## Documentação da API
+```env
+# Next.js
+NEXT_PUBLIC_BASE_URL='' # A URL base em que o projeto está sendo executado
 
+# Mailing service
+MAIL_HOST=''
+MAIL_PORT=
+MAIL_USER=''
+MAIL_PASS=''
 
- # Administração (/admin)
+EMAIL_NAME='' # Nome do receptor do email
+EMAIL_ADDRESS='' # Endereço de email a receber o contato
 
- 1. PATCH /api/admin/change-email
+MAIL_API_SECRET='' # Bearer token da API de email
 
- Altera o e-mail do usuário autenticado.
+# Database credentials
+DATABASE_URL='' # Prisma configuration
 
- **Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**).
+# Node environment
+NODE_ENV='' # 'production' | 'development'
 
-**Descrição**: Permite ao usuário autenticado alterar seu e-mail.
-Estrutura  da requisição:
+# session encription secret
+SESSION_SECRET='' # Segredo de encriptação do token de sessão
+```
+
+---
+
+## Autenticação
+
+<!--> Explicar tipos de autenticação <!-->
+
+### Sessões
+
+As sessões são guardadas no banco de dados e são encriptografadas com um segredo definido nas variáveis de ambiente. Elas são usadas para autenticar usuários e manter a sessão ativa enquanto o usuário estiver logado. As sessões são encerradas quando o usuário faz logout ou quando o token expira. As sessões armazenam o ID do usuário e a data de expiração do token.
+
+Este meio de autenticação é considerado o principal, sua finalidade é proteger páginas e rotas que só devem ser acessadas pelos administradores do sistema, como edição de postagens, manchetes, informações de perfis e gerenciamento de usuários.
+
+O cookie responsável por armazenar a sessão é seguro e possui as seguintes configurações:
+
+- **httpOnly**: O cookie só pode ser acessado pelo servidor.
+- **secure**: O cookie só é enviado em conexões seguras (HTTPS).
+- **sameSite**: O cookie só é enviado se a requisição for do mesmo site.
+
+Seu nome é `session` e seu valor é o token de sessão encriptografado.
+
+No código, é possível identificar a necessidade de autenticação por sessão através do middleware `withAuth` (há um caso especial em que se utiliza `withGetPostsAuth` que impede o acesso a postagens não publicadas).
+
+### Bearer tokens
+
+Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são internas e técnicas, como envio de e-mails de contato. Os tokens são armazenados nas variáveis de ambiente e são enviados no cabeçalho `Authorization` da requisição. Para a checagem, utiliza-se o middleware `withTokenAuth`.
+
+---
+
+## Endpoints da API
+
+### PATCH /api/admin/change-email
+
+**Autenticação:** Por sessão.
+
+**Descrição:** Permite ao usuário autenticado alterar seu e-mail.
+
+#### Estrutura de requisição
 
 ```json
 {
-  "email": "email@example.com",
-  "newEmail": "gabrielvedova@gmail.com",
-  "newEmailConfirmation": "gabrielvedova@gmail.com"
+  "email": string,
+  "newEmail": string,
+  "newEmailConfirmation": string
 }
 ```
 
-**Resposta** (200 OK):
+#### Respostas
+
+- **200** _OK_
 
 ```json
 {
@@ -118,28 +170,34 @@ Estrutura  da requisição:
 }
 ```
 
-**Resposta** (400 Bad Request):
+- **400** _Bad Request_
 
 ```json
 {
-  "error": /* erros */
+  "error": {
+    [k: string]: string[]
+  }
 }
 ```
 
-**Resposta** (401 Unauthorized):
+- **401** _Unauthorized_
 
 ```json
 {
   "message": "Não autorizado."
 }
 ```
-**Resposta**  (404 Not found)
-``` json
-  {
-  "mensage":"Usuário não encontrado",
-  }
+
+- **404** _Not Found_
+
+```json
+{
+  "message": "Usuário não encontrado"
+}
 ```
-**Resposta** (409 Conflict)
+
+- **409** _Conflict_
+
 ```json
 {
   "error": {
@@ -147,496 +205,644 @@ Estrutura  da requisição:
   }
 }
 ```
-**Resposta** ( 500 Internal Server Error)
+
+- **500** _Internal Server Error_
+
 ```json
 {
-  "error": {
-    "message": ["Ocorreu um erro."]
-    }
+  "message": "Ocorreu um erro."
 }
 ```
 
+### PATCH /api/admin/change-password
 
-2.  PATCH /api/admin/change-password
+**Autenticação:** Por sessão.
 
-Altera a senha do usuário autenticado.
+**Descrição:** Permite ao usuário autenticado alterar sua senha.
 
-**Autenticação**: Requer autenticação geral.
+#### Estrutura de requisição
 
-**Descrição**: Permite ao usuário autenticado alterar sua senha.
-
-Estrutura de requisição:
 ```json
 {
- "password": "2345667",
- "newpassword": "0987654"
- "newPasswordConfirmation": "0987654"
+ "password": string,
+ "newpassword": string,
+ "newPasswordConfirmation": string
 }
 ```
-**Resposta** (200 OK):
+
+#### Respostas
+
+- **200** _OK_
+
 ```json
 {
   "message": "Senha alterada com sucesso."
 }
 ```
 
-**Resposta**  (400 Bad Request):
-```json
-{
-  "error": /* erros */
-}
-```
-**Resposta** (401 Unauthorized)
+- **400** _Bad Request_
 
 ```json
 {
- "message": "Não autorizado."
+  "error": {
+    [k: string]: string[]
+  }
 }
 ```
-**Resposta** (401 Unauthorized)
+
+- **401** _Unauthorized_
+
 ```json
-  {
-    "message": "Não autorizado."
-  }
-  ```
-  **Resposta** (404 Not Found)
+{
+  "message": "Não autorizado."
+}
+```
+
+- **404** _Not Found_
+
 ```json
 {
   "message": "Usuário não encontrado"
 }
-
 ```
-**Resposta** (500 Internal Server Error)
+
+- **500** _Internal Server Error_
 
 ```json
 {
-   "message": "Ocorreu um erro."
+  "message": "Ocorreu um erro."
 }
 ```
 
-3. CREATE /api/create-admin
-  Cria um novo usuário
+### CREATE /api/create-admin
 
-**Autenticação**: Requer autenticação para garantir que apenas administradores possam criar novos administradores.
+**Autenticação**: Por sessão (apenas administradores podem criar novos usuários).
 
 **Descrição**: Cria um novo usuário com a permissão de administrador no sistema.
 
-Estrutura de Requisição:
+#### Estrutura de requisição
+
 ```json
 {
-  "name": "Gabriel"
-  "role": "CEO"
-  "password": "1234"
-  "passwordconfirmation": "1234"
-
+  "name": string,
+  "role": string,
+  "password": string,
+  "passwordconfirmation": string
 }
 ```
-**Resposta** (200 OK):
+
+#### Respostas
+
+- **200** _OK_
+
 ```json
 {
   "message": "Admin criado com sucesso."
 }
 ```
-**Resposta**  (400 Bad Request):
-```json
-{
-  "error": /* erros */
-}
-```
-**Resposta** (409 Conflict)
+
+- **400** _Bad Request_
+
 ```json
 {
   "error": {
-    "Email": ["Email já em uso"]
+    [k: string]: string
   }
 }
 ```
-**Resposta** (500 Internal Server Error)
+
+- **401** _Unauthorized_
 
 ```json
 {
-   "message": "Ocorreu um erro."
+  "message": "Não autorizado."
 }
 ```
 
-
-4.  DELETE /api/admin/delete
-
-Exclui um usuário do sistema.
-
-**Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**).
-
-**Descrição**: Exclui um usuário do sistema usando seu ID.
-
-
-**Resposta** (204 No Content)
-
-
-**Resposta** (401 Unauthorized)
+- **409** _Conflict_
 
 ```json
-  {
-    "message": "Não autorizado."
+{
+  "error": {
+    "email": ["Email já em uso"]
   }
-  ```
-**Resposta** (500 Internal Server Error)
-
-```json
-{
-   "message": "Ocorreu um erro."
 }
 ```
 
+- **500** _Internal Server Error_
 
-5. PUT /api/admin/edit-info
-
-Edita as informações do usuário autenticado.
-
-**Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**).
-
-**Descrição**: Edita as informações do usuário autenticado.
-Estrutura da requisição:
 ```json
 {
-  "name": "gabriel della (atualizado)",
-  "role": "CFO"
-  "profilePicture"
-}
-```
-**Resposta** (204 No Content):
-
-
-**Resposta**  (400 Bad Request):
-```json
-{
-  "error": /* erros */
+  "message": "Ocorreu um erro."
 }
 ```
 
-**Resposta** (401 Unauthorized)
+### DELETE /api/admin/delete
+
+**Autenticação**: Por sessão.
+
+**Descrição**: Exclui usuário atualmente logado no sistema.
+
+#### Estrutura de requisição
+
+Sem corpo, pois o usuário é identificado por seu ID guardado e encriptografado na sessão atual.
+
+#### Respostas
+
+- **204** _No Content_
+
+Sem corpo.
+
+- **401** _Unauthorized_
 
 ```json
-  {
-    "message": "Não autorizado."
+{
+  "message": "Não autorizado."
+}
+```
+
+- **500** _Internal Server Error_
+
+```json
+{
+  "message": "Ocorreu um erro."
+}
+```
+
+### PUT /api/admin/edit-info
+
+**Autenticação**: Por sessão.
+
+**Descrição**: Edita as informações que aparecem no blog do administrador atualmente autenticado.
+
+#### Estrutura de requisição
+
+```json
+{
+  "name": string,
+  "role": string,
+  "profilePicture": string
+}
+```
+
+#### Respostas
+
+- **200** _OK_:
+
+```json
+{
+  "message": "Informações alteradas com sucesso."
+}
+```
+
+- **400** _Bad Request_
+
+```json
+{
+  "error": {
+    [k: string]: string
   }
-  ```
-**Resposta** (404 Not Found)
+}
+```
+
+- **401** _Unauthorized_
+
+```json
+{
+  "message": "Não autorizado."
+}
+```
+
+- **404** _Not Found_
+
 ```json
 {
   "message": "Perfil não encontrado"
 }
 ```
 
-**Resposta** (500 Internal Server Error)
+- **500** _Internal Server Error_
 
 ```json
 {
-   "message": "Ocorreu um erro."
+  "message": "Ocorreu um erro."
 }
 ```
 
-6.  POST /api/admin/logout
+### GET /api/blog
 
-Desfaz a autenticação do usuário, encerrando a sessão.
+**Autenticação**: Requer autenticação por sessão caso `published !== true`.
 
-**Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**).
+**Descrição**: Lista as postagens do blog, filtrando-as se inserido algum valor nas queries.
 
-**Descrição**: Realiza o logout do usuário.
+#### Estrutura de requisição
 
-**Resposta** (204 No Content):
+```ts
+interface searchQuery {
+  id: number;
+  search: string;
+  published: boolean;
+}
+```
 
-7. Blog (/blog/posts)
- POST /api/blog/posts
+#### Respostas
 
-Cria novos post
+- **200** _OK_
 
-**Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**)
-
-**Descrição**: cria novos post.
-
-Estrutura de requisição:
 ```json
 {
-  "title": "homem morre em afogados"
-  "content":
-  "published":
-  "miniature":
+  "data": {
+    "id": number,
+    "title": string,
+    "content": string, // HTML of the post
+    "miniature": string, // URL of the miniature image
+    "authorId": string,
+    "published": boolean,
+    "lastEditedAt": Date
+  }[]
 }
 ```
-**Resposta** (201 Created):
-```json
-{
-  "id": "3456"
-}
-```
-**Resposta**  (400 Bad Request):
-```json
-{
-  "error": /* erros */
-}
-```
-**Resposta** (401 Unauthorized)
+
+- **400** _Bad Request_
 
 ```json
-  {
-    "message": "Não autorizado."
+{
+  "error": {
+    [k: string]: string
   }
-  ```
-  **Resposta** (500 Internal Server Error)
-
-```json
-{
-   "message": "Ocorreu um erro."
 }
 ```
 
-
-8. GET /api/blog
-
-lista todas as postagens do blog, ou uma liata filtrada ou um post especifico.
-
-**Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**) caso queira um post não publicado.
-
-**Descrição**:
-Estrutura da requisição: Lista todas as postagens do blog, ou uma liata filtrada ou um post especifico.
-
-**parametros**: (Query)
-
-```typescript
-id: number;
-search: string;
-published: boolean;
-```
-**Resposta** (200 OK):
+- **401** _Unauthorized_
 
 ```json
 {
-  "data": /* vetor contendo os posts resultantes */
+  "message": "Não autorizado."
 }
 ```
 
-**Resposta**  (400 Bad Request):
+### POST /api/blog/posts
+
+**Autenticação**: Por sessão.
+
+**Descrição**: Cria uma nova postagem no blog.
+
+#### Estrutura de requisição
+
 ```json
 {
-  "error": /* erros */
+  "title": string,
+  "content": string,
+  "published": boolean,
+  "miniature": string
 }
 ```
-**Resposta** (401 Unauthorized)
+
+- **201** _Created_
 
 ```json
-  {
-    "message": "Não autorizado."
+{
+  "id": number
+}
+```
+
+- **400** _Bad Request_
+
+```json
+{
+  "error": {
+    [k: string]: string
   }
-  ```
+}
+```
 
+- **401** _Unauthorized_
 
-9.  PUT /api/blog/posts
+```json
+{
+  "message": "Não autorizado."
+}
+```
 
-Edita um post existente.
+- **500** _Internal Server Error_
 
-**Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**).
+```json
+{
+  "message": "Ocorreu um erro."
+}
+```
+
+### PUT /api/blog/posts
+
+**Autenticação**: Por sessão.
 
 **Descrição**: Edita um post existente no blog.
 
-Estrutura da requisição:
+#### Estrutura de requisição
+
 ```json
 {
-  "id": 1,
-  "newtitle": "Post 1 Atualizado",
-  "content": "Novo conteúdo do post 1"
-  "published":
-"newminiature":
-
+  "id": number,
+  "title": string,
+  "content": string,
+  "miniature": string,
+  "published": boolean
 }
 ```
-**Resposta** (204 No Content):
 
-**Resposta**  (400 Bad Request):
+#### Respostas
+
+- **204** _No Content_
+
+Sem corpo.
+
+- **400** _Bad Request_
+
 ```json
 {
-  "error": /* erros */
+  "error": {
+    [k: string]: string
+  }
 }
 ```
-**Resposta** (404 Not Found)
+
+- **401** _Unauthorized_
+
+```json
+{
+  "message": "Não autorizado."
+}
+```
+
+- **404** _Not Found_
+
 ```json
 {
   "message": "Post não encontrado"
 }
 ```
-  **Resposta** (500 Internal Server Error)
+
+- **500** _Internal Server Error_
 
 ```json
 {
-   "message": "Ocorreu um erro."
+  "message": "Ocorreu um erro."
 }
 ```
 
+### DELETE /api/blog/posts
 
-10. DELETE /api/blog/posts
-
-Exclui um post do blog.
-
-**Autenticação**: Requer autenticação (decorado com **@requiresAuthentication**).
+**Autenticação**: Por sessão.
 
 **Descrição**: Exclui um post do blog.
 
-id: ID do post a ser excluído.
-
-**Resposta** (204 No Content):
-
-**Resposta**  (400 Bad Request):
-```json
-{
-  "error": /* erros */
-}
-```
-
-**Resposta** (404 Not Found):
-```json
-{
-  "erro": "Post não encontrado"
-}
-```
-  **Resposta** (500 Internal Server Error)
+#### Estrutura de requisição
 
 ```json
 {
-   "message": "Ocorreu um erro."
+  "id": number
 }
 ```
-11. Contato (/fale-conosco)
- POST /api/fale-conosco
 
-Envia uma mensagem de contato.
+#### Respostas
+
+- **204** _No Content_
+
+Sem corpo.
+
+- **400** _Bad Request_
+
+```json
+{
+  "error": {
+    [k: string]: string
+  }
+}
+```
+
+- **401** _Unauthorized_
+
+```json
+{
+  "message": "Não autorizado."
+}
+```
+
+- **404** _Not Found_
+
+```json
+{
+  "message": "Post não encontrado"
+}
+```
+
+- **500** _Internal Server Error_
+
+```json
+{
+  "message": "Ocorreu um erro."
+}
+```
+
+### POST /api/fale-conosco
 
 **Autenticação**: Não requer autenticação.
 
 **Descrição**: Permite que o usuário envie uma mensagem através do formulário de contato.
 
-Estrutura da requisição:
-```json
-{
-  "name": "caio manoel",
-  "email": "caio@dominio.com",
-  "phonenumber":"23456789"
-  "institution": "ETE PORTO DIGITAL"
-}
-```
-**Resposta** (204 No Content):
-
-**Resposta**  (400 Bad Request):
-```json
-{
-  "error": /* erros */
-}
-```
-**Resposta** (401 Unauthorized)
+#### Estrutura de requisição
 
 ```json
-  {
-    "message": "Não autorizado."
+{
+  "name": string,
+  "email": string,
+  "phonenumber": string,
+  "institution": string
+}
+```
+
+#### Respostas
+
+- **204** _No Content_
+
+Sem corpo.
+
+- **400** _Bad Request_
+
+```json
+{
+  "error": {
+    [k: string]: string
   }
-  ```
-  **Resposta** (500 Internal Server Error)
-
-```json
-{
-   "message": "Ocorreu um erro."
 }
 ```
 
-Login (/login)
- 1. POST /api/login
+- **401** _Unauthorized_
 
-Autentica um usuário.
+```json
+{
+  "message": "Não autorizado."
+}
+```
+
+- **500** _Internal Server Error_
+
+```json
+{
+  "message": "Ocorreu um erro."
+}
+```
+
+### POST /api/login
 
 **Autenticação**: Não requer autenticação (é o primeiro ponto de entrada para obter um token).
 
 **Descrição**: Realiza o login do usuário com e-mail e senha.
 
-Estrutura da requisição:
-
-{
-  "email": "joao@dominio.com",
-  "senha": "senha123"
-}
-**Resposta** (200 OK):
-```json
-{
-  "token": "JWT_TOKEN_AQUI"
-}
-```
-**Resposta**  (400 Bad Request):
-```json
-{
-  "error": /* erros */
-}
-```
-**Resposta** (401 Unauthorized)
+#### Estrutura de requisição
 
 ```json
 {
-  "Email ou Senhas incorretos."
+  "email": string,
+  "password": string
 }
-
 ```
 
-**Resposta** (500 Internal Server Error)
+#### Respostas
+
+- **200** _OK_
 
 ```json
 {
-   "message": "Ocorreu um erro."
+  "message": "Login realizado com sucesso"
 }
 ```
 
+- **400** _Bad Request_
 
-2. Quark na Mídia (/quark-na-midia)
- GET /api/quark-na-midia
+```json
+{
+  "error": {
+    [k: string]: string
+  }
+}
+```
 
-obtenhe uma lista de manchetes
+- **401** _Unauthorized_
+
+```json
+{
+  "message": "Email ou senha incorretos."
+}
+```
+
+- **500** _Internal Server Error_
+
+```json
+{
+  "message": "Ocorreu um erro."
+}
+```
+
+### POST /api/logout
+
+**Autenticação**: Por sessão.
+
+**Descrição**: Realiza o logout do usuário, encerrando sua sessão.
+
+#### Estrutura de requisição
+
+Sem corpo.
+
+#### Respostas
+
+- **204** _No Content_
+
+Sem corpo.
+
+- **401** _Unauthorized_
+
+```json
+{
+  "message": "Não autorizado."
+}
+```
+
+- **500** _Internal Server Error_
+
+```json
+{
+  "message": "Ocorreu um erro."
+}
+```
+
+### GET /api/quark-na-midia
 
 **Autenticação**: Não requer autenticação.
 
-**Descrição**: obter uma manchete
+**Descrição**: Acessa a lista de manchetes de notícias sobre a Quark.
 
-**Resposta** (200 OK):
-```json
-{
-  "token": "A lista de títulos que correspondem à consulta de pesquisa"
-}
+#### Estrutura de requisição
 
-```
-**Resposta**  (400 Bad Request):
-
-```json
-{
-  "error": /* erros */
-}
-```
-**Resposta** (401 Unauthorized)
-
-```json
-{
-  "A lista de títulos que correspondem à consulta de pesquisa"
-
+```ts
+interface searchQuery {
+  id: number;
 }
 ```
 
-**Resposta** (404 Not Found):
-```json
-{
-  "erro": "Manchete não encontrada"
-}
-```
-  **Resposta** (500 Internal Server Error)
+#### Respostas
+
+- **200** _OK_
 
 ```json
 {
-   "message": "Ocorreu um erro."
+  "data": {
+    "id": number,
+    "title": string,
+    "description": string,
+    "miniature": string,
+    "publishingDate": Date,
+    "url": string
+  }[]
 }
 ```
+
+- **400** _Bad Request_
+
+```json
+{
+  "error": {
+    [k: string]: string
+  }
+}
+```
+
+- **401** _Unauthorized_
+
+```json
+{
+  "message": "Não autorizado."
+}
+```
+
+- **404** _Not Found_
+
+```json
+{
+  "message": "Manchete não encontrada"
+}
+```
+
+- **500** _Internal Server Error_
+
+```json
+{
+  "message": "Ocorreu um erro."
+}
+```
+
 ## Créditos
 
 **Front-end:** [Gabriel Vedova](https://linkedin.com/in/gabrielvedova)
-**Back-end:** [Caio de Araujo](https://linkedin.com/in/caiotdearaujo)
-**documentação**: [Breno cunha](https://www.linkedin.com/in/breno-cunha-2a49a9302?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app )
+**Back-end:** [Caio de Araújo](https://linkedin.com/in/caiotdearaujo)
+**Documentação**: [Breno Cunha](https://www.linkedin.com/in/breno-cunha-2a49a9302?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)

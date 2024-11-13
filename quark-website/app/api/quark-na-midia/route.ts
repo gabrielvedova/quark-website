@@ -12,6 +12,8 @@ import {
   PutSchema,
 } from "./schema";
 import { NotFoundError } from "@/lib/errors";
+import { ConventionalResponse } from "@/lib/responses";
+import { withAuth } from "@/lib/auth";
 
 /**
  * Get a list of headlines.
@@ -24,32 +26,24 @@ import { NotFoundError } from "@/lib/errors";
  * @returns 404 - { message: "Manchete não encontrada" }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export async function GET(request: Request) {
+export const GET = async (request: Request): Promise<ConventionalResponse> => {
   const { searchParams } = new URL(request.url);
   const paramsObject = Object.fromEntries(searchParams);
   const validatedParams = GetParamsSchema.safeParse(paramsObject);
 
   if (!validatedParams.success) {
-    return new Response(
-      JSON.stringify({ error: validatedParams.error.flatten() }),
-      {
-        status: 400,
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.badRequest({
+      error: validatedParams.error.flatten(),
+    });
   }
 
   const params = convertGetParams(validatedParams.data);
-  const result = await getHeadline(params);
-  return Response.json(result);
-}
+  const data = await getHeadline(params);
+  return ConventionalResponse.ok({ data });
+};
 
 /**
  * Create a new headline.
- *
- * @requiresAuthentication
  *
  * @param request.body.title The title of the headline.
  * @param request.body.description The description of the headline.
@@ -59,34 +53,24 @@ export async function GET(request: Request) {
  *
  * @returns 201 - { id }
  * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
  */
-export async function POST(request: Request) {
+export const POST = withAuth(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PostSchema.safeParse(body);
 
   if (!validatedBody.success) {
-    return new Response(
-      JSON.stringify({ error: validatedBody.error.flatten() }),
-      {
-        status: 400,
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten(),
+    });
   }
 
   const id = await createHeadline(validatedBody.data);
-  return new Response(JSON.stringify({ id }), {
-    status: 201,
-    headers: { "Content-Type": "application/json" },
-  });
-}
+  return ConventionalResponse.created({ data: { id } });
+});
 
 /**
  * Modify a headline.
- *
- * @requiresAuthentication
  *
  * @param request.body.id The ID of the headline to modify.
  * @param request.body.title The new title of the headline.
@@ -97,99 +81,65 @@ export async function POST(request: Request) {
  *
  * @returns 204
  * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
  * @returns 404 - { message: "Manchete não encontrada" }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export async function PUT(request: Request) {
+export const PUT = withAuth(async (request: Request) => {
   const body = request.json();
   const validatedBody = PutSchema.safeParse(body);
 
   if (!validatedBody.success) {
-    return new Response(
-      JSON.stringify({ error: validatedBody.error.flatten() }),
-      {
-        status: 400,
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten(),
+    });
   }
 
   try {
     await updateHeadline(validatedBody.data);
-    return new Response(null, { status: 204 });
+    return ConventionalResponse.noContent();
   } catch (error) {
     if (error instanceof NotFoundError) {
-      return new Response(
-        JSON.stringify({ message: "Manchete não encontrada" }),
-        {
-          status: 404,
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      );
+      return ConventionalResponse.notFound({
+        message: "Manchete não encontrada",
+      });
     }
 
-    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
-      status: 500,
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    return ConventionalResponse.internalServerError();
   }
-}
+});
 
 /**
  * Delete a headline.
- *
- * @requiresAuthentication
  *
  * @param request.body.id The ID of the headline to delete.
  *
  * @returns 204
  * @returns 400 - { error: validatedBody.error.flatten() }
+ * @returns 401 - { message: "Não autorizado." }
  * @returns 404 - { message: "Manchete não encontrada" }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export async function DELETE(request: Request) {
+export const DELETE = withAuth(async (request: Request) => {
   const body = await request.json();
   const validatedBody = DeleteSchema.safeParse(body);
 
   if (!validatedBody.success) {
-    return new Response(
-      JSON.stringify({ error: validatedBody.error.flatten() }),
-      {
-        status: 400,
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten(),
+    });
   }
 
   try {
     await deleteHeadline(validatedBody.data);
-    return new Response(null, { status: 204 });
+    return ConventionalResponse.noContent();
   } catch (error) {
     if (error instanceof NotFoundError) {
-      return new Response(
-        JSON.stringify({ message: "Manchete não encontrada" }),
-        {
-          status: 404,
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      );
+      return ConventionalResponse.notFound({
+        message: "Manchete não encontrada.",
+      });
     }
 
-    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
-      status: 500,
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+    return ConventionalResponse.internalServerError();
   }
-}
+});

@@ -6,7 +6,7 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from "./errors";
-import { getUserId } from "./session";
+import { getAdminId } from "./session";
 
 /**
  * Update the email of the current user.
@@ -28,7 +28,7 @@ export async function updateEmail(data: {
 }) {
   const { email, newEmail, newEmailConfirmation } = data;
 
-  const id = await getUserId();
+  const id = await getAdminId();
   if (!id) throw new UnauthorizedError();
 
   const user = await prisma.admin.findUnique({ where: { id } });

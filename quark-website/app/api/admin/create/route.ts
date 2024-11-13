@@ -1,11 +1,11 @@
 import createAdmin from "@/lib/create-admin";
 import { PostSchema } from "./schema";
 import { EmailInUseError, PasswordMismatchError } from "@/lib/errors";
+import { ConventionalResponse } from "@/lib/responses";
+import { withAuth } from "@/lib/auth";
 
 /**
  * Create a new admin account.
- *
- * @requiresAuthentication
  *
  * @param request.body.name The name of the admin.
  * @param request.body.role The role of the admin.
@@ -16,47 +16,38 @@ import { EmailInUseError, PasswordMismatchError } from "@/lib/errors";
  * @returns 200 - { message: "Admin criado com sucesso." }
  * @returns 400 - { error: validatedBody.error.flatten() }
  * @returns 400 - { error: { passwordConfirmation: ["As senhas não coincidem."] } }
+ * @returns 401 - { message: "Não autorizado." }
  * @returns 409 - { error: { email: ["Email já em uso."] } }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export async function POST(request: Request) {
+export const POST = withAuth(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PostSchema.safeParse(body);
 
   if (!validatedBody.success) {
-    return new Response(
-      JSON.stringify({ error: validatedBody.error.flatten() }),
-      {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten(),
+    });
   }
 
   try {
     await createAdmin(validatedBody.data);
+    return ConventionalResponse.created({
+      message: "Admin criado com sucesso.",
+    });
   } catch (error) {
     if (error instanceof PasswordMismatchError) {
-      return new Response(
-        JSON.stringify({
-          error: { passwordConfirmation: ["As senhas não coincidem."] },
-        }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+      return ConventionalResponse.badRequest({
+        error: { passwordConfirmation: ["As senhas não coincidem."] },
+      });
     }
 
     if (error instanceof EmailInUseError) {
-      return new Response(
-        JSON.stringify({ error: { email: ["Email já em uso."] } }),
-        { status: 409, headers: { "Content-Type": "application/json" } }
-      );
+      return ConventionalResponse.conflict({
+        error: { email: ["Email já em uso."] },
+      });
     }
 
-    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return ConventionalResponse.internalServerError();
   }
-}
+});

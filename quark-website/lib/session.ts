@@ -1,27 +1,32 @@
 import "server-only";
-import { SignJWT, jwtVerify } from "jose";
+import prisma from "./db";
+import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { UnauthorizedError } from "./errors";
 
 /**
- * The secret key used to sign the session token.
+ * Clean expired sessions.
  */
+async function cleanSessions() {
+  await prisma.session.deleteMany({ where: { expiresAt: { lt: new Date() } } });
+}
+
 const secretKey = process.env.SESSION_SECRET;
 const encodedKey = new TextEncoder().encode(secretKey);
 
-export type SessionPayload = {
-  userId: string;
+type SessionPayload = {
+  sessionId: string;
   expiresAt: Date;
 };
 
 /**
- * Encrypts a session token.
+ * Encrypt a session.
  *
  * @param payload The payload to encrypt.
  *
- * @returns The encrypted session token.
+ * @returns The encrypted session.
  */
-async function encrypt(payload: SessionPayload) {
+async function encryptSession(payload: SessionPayload) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -30,13 +35,13 @@ async function encrypt(payload: SessionPayload) {
 }
 
 /**
- * Decrypts a session token.
+ * Decrypt a session.
  *
- * @param session The session token to decrypt.
+ * @param session The session to decrypt.
  *
- * @returns The decrypted payload, or null if the token is invalid.
+ * @returns The decrypted session.
  */
-async function decrypt(session: string = "") {
+async function decryptSession(session: string) {
   try {
     return (await jwtVerify(session, encodedKey, { algorithms: ["HS256"] }))
       .payload;
@@ -46,79 +51,123 @@ async function decrypt(session: string = "") {
 }
 
 /**
- * Sets the session cookie.
+ * Set the session cookie.
  *
- * @param session The session token.
- * @param expiresAt The expiration date of the session token.
+ * @param session The session to set.
+ * @param expiresAt The expiration date of the session.
  */
 async function setSessionCookie(session: string, expiresAt: Date) {
   (await cookies()).set("session", session, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     expires: expiresAt,
     sameSite: "lax",
-    path: "/admin",
+    path: "/",
   });
 }
 
 /**
- * Gets the current session payload from the session cookie.
+ * Get the session payload from the cookies.
  *
- * @returns The current session, or null if there is no session.
+ * @returns The session payload.
  */
-export async function getSession() {
-  const session = (await cookies()).get("session")?.value;
-  const payload = await decrypt(session);
+export async function getSessionPayload() {
+  const session = (await cookies()).get("session");
+  if (!session) return null;
 
-  if (!session || !payload) {
+  const jwtPayload = await decryptSession(session.value);
+
+  if (!jwtPayload || !jwtPayload.sessionId || !jwtPayload.expiresAt) {
     return null;
   }
 
-  return payload;
+  return jwtPayload as SessionPayload;
 }
 
 /**
- * Creates a new session for a user.
+ * Check if an admin is authenticated.
  *
- * @param userId The ID of the user.
+ * @returns Whether the admin is authenticated.
  */
-export async function createSession(userId: string) {
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+export async function isAdminAuthenticated() {
+  return !!(await getSession());
+}
 
+/**
+ * Get the session from the cookies.
+ *
+ * @returns The session.
+ */
+export async function getSession() {
+  const payload = await getSessionPayload();
+  if (!payload) return null;
+
+  await cleanSessions();
+  return await prisma.session.findUnique({
+    where: { id: payload.sessionId },
+  });
+}
+
+/**
+ * Get the ID of the authenticated admin.
+ *
+ * @returns The ID of the authenticated admin.
+ */
+export async function getAdminId() {
+  const session = await getSession();
+  if (!session) return null;
+
+  return session.adminId;
+}
+
+/**
+ * Create a new session.
+ *
+ * @param adminId The ID of the admin.
+ */
+export async function createSession(adminId: string) {
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+  await cleanSessions();
+  if (await isAdminAuthenticated()) await deleteSession();
+  const { id } = await prisma.session.create({ data: { adminId, expiresAt } });
+  console.log(await prisma.session.findMany());
+
+  const session = await encryptSession({ sessionId: id, expiresAt });
   await setSessionCookie(session, expiresAt);
 }
 
 /**
- * Updates the current session.
- *
- * @throws {UnauthorizedError} If the user is not authenticated.
+ * Update the current session expiration date.
  */
 export async function updateSession() {
-  const userId = await getUserId();
+  const session = await getSession();
+  if (!session) throw new UnauthorizedError();
 
-  if (!userId) {
-    throw new UnauthorizedError();
-  }
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+  await cleanSessions();
+  await prisma.session.update({
+    where: { id: session.id },
+    data: { expiresAt },
+  });
 
-  await setSessionCookie(session, expiresAt);
+  const newSessionPayload = await encryptSession({
+    sessionId: session.id,
+    expiresAt,
+  });
+
+  await setSessionCookie(newSessionPayload, expiresAt);
 }
 
 /**
- * Deletes the current session.
+ * Delete the current session and remove the session cookie.
  */
 export async function deleteSession() {
-  (await cookies()).delete("session");
-}
+  const session = await getSession();
+  if (!session) throw new UnauthorizedError();
 
-/**
- * Gets the ID of the current user from the session cookie.
- *
- * @returns The ID of the current user, or null if the user is not authenticated.
- */
-export async function getUserId() {
-  return (await getSession())?.userId as string | null;
+  await cleanSessions();
+  await prisma.session.delete({ where: { id: session.id } });
+  (await cookies()).delete("session");
 }

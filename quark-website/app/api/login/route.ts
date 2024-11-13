@@ -1,6 +1,9 @@
 import login from "@/lib/login";
 import { PostSchema } from "./schema";
 import { IncorrectEmailOrPasswordError } from "@/lib/errors";
+import { ConventionalResponse } from "@/lib/responses";
+import { isAdminAuthenticated } from "@/lib/session";
+import { NextResponse } from "next/server";
 
 /**
  * Log in an admin.
@@ -13,52 +16,26 @@ import { IncorrectEmailOrPasswordError } from "@/lib/errors";
  * @returns 401 - { message: "Email ou senha incorretos." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export async function POST(request: Request) {
+export const POST = async (request: Request): Promise<ConventionalResponse> => {
   const body = await request.json();
   const validatedBody = PostSchema.safeParse(body);
 
   if (!validatedBody.success) {
-    return new Response(
-      JSON.stringify({ error: validatedBody.error.flatten() }),
-      {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten(),
+    });
   }
 
   try {
     await login(validatedBody.data);
-
-    return new Response(
-      JSON.stringify({ message: "Login efetuado com sucesso." }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.ok({ message: "Login efetuado com sucesso." });
   } catch (error) {
     if (error instanceof IncorrectEmailOrPasswordError) {
-      return new Response(
-        JSON.stringify({ message: "Email ou senha incorretos." }),
-        {
-          status: 401,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      return ConventionalResponse.unauthorized({
+        message: "Email ou senha incorretos.",
+      });
     }
 
-    return new Response(JSON.stringify({ message: "Ocorreu um erro." }), {
-      status: 500,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return ConventionalResponse.internalServerError();
   }
-}
+};

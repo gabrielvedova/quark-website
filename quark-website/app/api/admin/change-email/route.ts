@@ -7,11 +7,11 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from "@/lib/errors";
+import { ConventionalResponse } from "@/lib/responses";
+import { withAuth } from "@/lib/auth";
 
 /**
  * Update the email of the current user.
- *
- * @requiresAuthentication
  *
  * @param request.body.email The current email of the user.
  * @param request.body.newEmail The new email of the user.
@@ -26,68 +26,48 @@ import {
  * @returns 409 - { error: { newEmail: ["Email já em uso"] } }
  * @returns 500 - { error: { message: "Ocorreu um erro." } }
  */
-export async function PATCH(request: Request) {
+export const PATCH = withAuth(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PatchSchema.safeParse(body);
 
   if (!validatedBody.success) {
-    return new Response(
-      JSON.stringify({ error: validatedBody.error.flatten() }),
-      {
-        status: 400,
-        headers: {
-          "content-type": "application/json",
-        },
-      }
-    );
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten(),
+    });
   }
 
   try {
     await updateEmail(validatedBody.data);
-    return Response.json({ message: "Email alterado com sucesso." });
+    return ConventionalResponse.ok({ message: "Email alterado com sucesso." });
   } catch (error) {
     if (error instanceof UnauthorizedError) {
-      return new Response(JSON.stringify({ message: "Não autorizado." }), {
-        status: 401,
-        headers: {
-          "content-type": "application/json",
-        },
-      });
+      return ConventionalResponse.unauthorized();
     }
 
     if (error instanceof NotFoundError) {
-      return new Response(
-        JSON.stringify({ message: "Usuário não encontrado" }),
-        { status: 404, headers: { "content-type": "application/json" } }
-      );
+      return ConventionalResponse.notFound({
+        message: "Usuário não encontrado",
+      });
     }
 
     if (error instanceof IncorrectEmailError) {
-      return new Response(
-        JSON.stringify({ error: { email: ["Email incorreto."] } }),
-        { status: 400, headers: { "content-type": "application/json" } }
-      );
+      return ConventionalResponse.badRequest({
+        error: { email: ["Email incorreto."] },
+      });
     }
 
     if (error instanceof EmailMismatchError) {
-      return new Response(
-        JSON.stringify({
-          error: { newEmailConfirmation: ["Os emails não coincidem."] },
-        }),
-        { status: 400, headers: { "content-type": "application/json" } }
-      );
+      return ConventionalResponse.badRequest({
+        error: { email: ["Os emails não coincidem."] },
+      });
     }
 
     if (error instanceof EmailInUseError) {
-      return new Response(
-        JSON.stringify({ error: { newEmail: ["Email já em uso"] } }),
-        { status: 409, headers: { "content-type": "application/json" } }
-      );
+      return ConventionalResponse.conflict({
+        error: { newEmail: ["Email já em uso"] },
+      });
     }
 
-    return new Response(
-      JSON.stringify({ error: { message: "Ocorreu um erro." } }),
-      { status: 500, headers: { "content-type": "application/json" } }
-    );
+    return ConventionalResponse.internalServerError();
   }
-}
+});

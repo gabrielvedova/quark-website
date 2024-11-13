@@ -1,12 +1,12 @@
 import argon2 from "argon2";
 import prisma from "./db";
-import { getUserId } from "./session";
 import {
   IncorrectPasswordError,
   NotFoundError,
   PasswordMismatchError,
   UnauthorizedError,
 } from "./errors";
+import { getAdminId } from "./session";
 
 /**
  * Update the password of the current user.
@@ -27,7 +27,7 @@ export async function updatePassword(data: {
 }) {
   const { password, newPassword, newPasswordConfirmation } = data;
 
-  const id = await getUserId();
+  const id = await getAdminId();
   if (!id) throw new UnauthorizedError();
 
   const user = await prisma.admin.findUnique({ where: { id } });

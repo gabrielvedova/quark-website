@@ -1,6 +1,6 @@
 import prisma from "./db";
 import { NotFoundError, UnauthorizedError } from "./errors";
-import { getSession, getUserId } from "./session";
+import { getAdminId } from "./session";
 
 /**
  * Get a filtered or unfiltered list of posts.
@@ -46,28 +46,6 @@ export async function getPosts(params: {
 }
 
 /**
- * Middleware to check if the user is authorized to access the unpublished posts.
- *
- * @param request The incoming request.
- *
- * @returns A response if the user is not authorized, or null otherwise.
- */
-export async function getPostsMiddleware(request: Request) {
-  const isProtected =
-    new URL(request.url).searchParams.get("published") !== "true";
-  const session = await getSession();
-
-  if (isProtected && !session) {
-    return new Response(JSON.stringify({ message: "Não autorizado." }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  return null;
-}
-
-/**
  * Create a new post.
  *
  * @param data.title The title of the post.
@@ -85,13 +63,13 @@ export async function createPost(data: {
   miniature: string;
   published: boolean;
 }) {
-  const userId = await getUserId();
-  if (!userId) throw new UnauthorizedError();
+  const adminId = await getAdminId();
+  if (!adminId) throw new UnauthorizedError();
 
   const { id } = await prisma.post.create({
     data: {
       ...data,
-      authorId: userId,
+      authorId: adminId,
       lastEditedAt: new Date(),
     },
   });

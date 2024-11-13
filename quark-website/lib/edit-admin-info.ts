@@ -1,6 +1,6 @@
 import prisma from "./db";
 import { NotFoundError, UnauthorizedError } from "./errors";
-import { getUserId } from "./session";
+import { getAdminId } from "./session";
 
 /**
  * Update the information of the current admin.
@@ -17,7 +17,7 @@ export async function updateAdminInfo(data: {
   role?: string;
   profilePicture?: string;
 }) {
-  const id = await getUserId();
+  const id = await getAdminId();
   if (!id) throw new UnauthorizedError();
 
   const admin = await prisma.admin.findUnique({ where: { id } });
