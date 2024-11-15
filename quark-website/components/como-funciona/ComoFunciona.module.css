@@ -1,5 +1,5 @@
 .container {
-  background-color: rgba(165, 81, 51, 0.24);
+  background-color: rgba(165, 81, 51, 0.301);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,9 +15,8 @@
 }
 
 .funco {
-  height: 70%;
-  width: 70%;
-  background-color: rgba(165, 42, 42, 0.726);
+  height: 60vh;
+  width: 80%;
   display: flex;
   justify-content: space-between;
 }
@@ -30,6 +29,8 @@
   justify-content: space-around;
   align-items: center;
   padding: 10px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 10px rgb(133, 133, 133);
 }
 
 .funco .item .img {
