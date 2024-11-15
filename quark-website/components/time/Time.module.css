@@ -1,9 +1,55 @@
 .container {
-  background-color: dimgray;
+  background-color: rgba(105, 105, 105, 0.265);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   flex: 1 1 auto;
   padding: 40px; /* Ajuste conforme necessário */
   min-height: 100vh;
+}
+
+.container img {
+  width: 70%;
+  max-width: 200px; /* Ajuste conforme necessário */
+  aspect-ratio: 1 / 1; /* Mantém a proporção 1:1 */
+  border-radius: 50%;
+  object-fit: cover; /* Garante que a imagem mantenha suas proporções */
+}
+
+.timeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 65%;
+}
+
+.timeContainer .member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
+
+.memberDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.memberDetails .memberName {
+  height: auto;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 7px;
+}
+
+.memberDetails .memberName h3 {
+  margin-bottom: 0;
+}
+
+.memberDetails p {
+  margin-top: 0;
 }

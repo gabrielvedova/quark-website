@@ -1,9 +1,24 @@
 .container {
-  background-color: darkgoldenrod;
+  background-color: rgba(184, 135, 11, 0.288);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   flex: 1 1 auto;
   padding: 40px; /* Ajuste conforme necessário */
   min-height: 100vh;
+}
+
+.container .parceirosContainer {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.parceiro img {
+  height: 70px; /* Defina a altura desejada */
+  width: auto; /* Ajusta a largura automaticamente */
+  object-fit: contain; /* Mantém a proporção da imagem */
 }
