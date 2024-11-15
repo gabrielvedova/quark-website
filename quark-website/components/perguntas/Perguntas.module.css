@@ -6,26 +6,44 @@
   align-items: center;
 }
 
+#questionClose {
+  height: 60%;
+  justify-content: space-evenly;
+}
+
+#questionOpen {
+  height: 75%;
+  gap: 4%;
+  justify-content: center;
+}
+
 .totalQuestion {
   width: 70%;
-  height: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 }
 
 .question {
+  width: 70%;
+  border: 3px solid #696969;
+  border-radius: 20px;
+  padding: 2% 3%;
+}
+
+.question .answer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 70%;
-  height: 25%;
-  border: 3px solid #696969;
-  border-radius: 20px;
-  padding: 0 3%;
+  height: 10;
+  width: 100%;
 }
 
-.question span {
+.question .answer span {
   font-size: 22px;
+}
+
+.question .detailsQuestion {
+  width: 90%;
+  padding: 3% 0;
 }
