@@ -1,4 +1,5 @@
 .container {
+  background-color: rgb(53, 126, 189);
   display: flex;
   margin-top: 16vh;
   justify-content: end;

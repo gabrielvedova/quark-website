@@ -16,6 +16,10 @@ export default function Home() {
           Essa é uma solução criada entre Happen e SEBRAE PE, a partir do
           programa de Inovação Aberta do Porto Digital.
         </p>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7cDenJxJECrEs_tf7Q_egOsRFU0VOIFzlLw&s"
+          alt=""
+        />
       </div>
       <div className={styles.carousel}>
         <Slide />
