@@ -1,9 +1,8 @@
 :root {
-  margin: 0;
-  padding: 0;
-  height: 1050vh;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
+  min-height: 100vh; /* Garante que o contêiner ocupe pelo menos a altura da tela */
 }
 
 body {

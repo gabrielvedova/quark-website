@@ -1,7 +1,43 @@
 .container {
-  background-color: blue;
-  flex: 1;
+  background-color: rgba(147, 147, 255, 0.361);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 auto;
+  padding: 40px; /* Ajuste conforme necessário */
+  min-height: 100vh;
+}
+
+.containerNotices {
+  width: 80%;
+}
+
+.containerNotices .slideContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.slideContainer .itemSlide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.itemSlide .notice {
+  margin: auto;
+  background-color: rgb(170, 170, 170);
+  width: 90%;
+  border-radius: 10px;
+}
+
+.containerNotices .notice img {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+}
+
+.noticeContent {
+  padding: 10px;
 }

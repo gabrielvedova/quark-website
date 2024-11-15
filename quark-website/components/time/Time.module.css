@@ -1,7 +1,9 @@
 .container {
   background-color: dimgray;
-  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1 1 auto;
+  padding: 40px; /* Ajuste conforme necessário */
+  min-height: 100vh;
 }

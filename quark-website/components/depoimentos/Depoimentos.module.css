@@ -4,7 +4,9 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 130vh;
+  flex: 1 1 auto;
+  padding: 50px; /* Ajuste conforme necessário */
+  min-height: 100vh;
 }
 
 .title {

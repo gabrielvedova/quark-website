@@ -1,26 +1,18 @@
 .container {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-#questionClose {
-  height: 60%;
-  justify-content: space-evenly;
-}
-
-#questionOpen {
-  height: 75%;
-  gap: 4%;
-  justify-content: center;
+  flex: 1 1 auto;
+  padding: 40px; /* Ajuste conforme necessário */
+  min-height: 80vh;
 }
 
 .totalQuestion {
-  width: 70%;
+  width: 80%;
+  gap: 20px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -35,7 +27,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 10;
+  height: 10%;
   width: 100%;
 }
 
