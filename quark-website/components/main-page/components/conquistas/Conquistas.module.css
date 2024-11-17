@@ -66,4 +66,16 @@
   .info {
     width: 60%;
   }
+  .carousel {
+    width: 90%; /* Ajuste conforme necessário */
+    height: auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .carousel {
+    width: 120%; /* Ajuste conforme necessário */
+    height: auto;
+    padding: 0 10px; /* Adiciona padding para evitar transbordamento */
+  }
 }

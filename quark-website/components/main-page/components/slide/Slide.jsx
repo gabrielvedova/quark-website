@@ -38,16 +38,6 @@ export default function Slide() {
     beforeChange: (current, next) => {
       setCurrentSlide((next + 1) % list.length);
     },
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          centerMode: true,
-          centerPadding: "0",
-        },
-      },
-    ],
   };
 
   return (

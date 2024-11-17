@@ -47,7 +47,7 @@
   color: #000;
 }
 
-@media (min-width: 971px) {
+@media (min-width: 1025px) {
   .imgContainerMenu {
     flex: 1;
     display: flex;
@@ -67,7 +67,7 @@
   }
 }
 
-@media (max-width: 970px) and (min-width: 681px) {
+@media (max-width: 1024px) and (min-width: 681px) {
   .menuBar {
     display: flex;
     flex-direction: column;
