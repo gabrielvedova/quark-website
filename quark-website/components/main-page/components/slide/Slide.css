@@ -1,0 +1,42 @@
+.slick-list {
+  width: 100%;
+}
+
+.slickSlider {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slickSlide {
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  transition: transform 0.5s ease;
+}
+
+.slickSlide img {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  transition: transform 0.5s ease; /* Adiciona transição suave */
+}
+
+.slickSlide--active img {
+  transform: scale(1.3); /* Aumenta o slide ativo */
+}
+
+.slickSlide:not(.slickSlide--active) img {
+  transform: scale(0.7); /* Diminui os slides não ativos */
+}
+
+@media (max-width: 700px) {
+  .slickSlide img {
+    width: 100%;
+  }
+}

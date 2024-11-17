@@ -1,10 +1,14 @@
 "use client";
+import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styles from "./Slide.module.css";
+import "./Slide.css";
 
 export default function Slide() {
+  const sliderRef = useRef(null);
+  const [currentSlide, setCurrentSlide] = useState(1);
+
   const list = [
     {
       id: 1,
@@ -19,24 +23,47 @@ export default function Slide() {
       img: "https://img.lojasrenner.com.br/item/913864815/original/3.jpg",
     },
   ];
+
   const settings = {
     dots: false,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    speed: 2000,
-    autoplaySpeed: 2000,
     arrows: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    centerMode: true, // Ativar o modo centralizado
+    centerPadding: "0", // Remover padding central
+    autoplay: true,
+    autoplaySpeed: 2000,
+    beforeChange: (current, next) => {
+      setCurrentSlide((next + 1) % list.length);
+    },
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          centerMode: true,
+          centerPadding: "0",
+        },
+      },
+    ],
   };
 
   return (
-    <Slider {...settings}>
-      {list.map((item) => (
-        <div key={item.id} className={styles.slickSlide}>
-          <img src={item.img} alt={`item${item.id}`} />
-        </div>
-      ))}
-    </Slider>
+    <div className="slickSlider">
+      <Slider ref={sliderRef} {...settings}>
+        {list.map((item, index) => (
+          <div
+            key={item.id}
+            className={`slickSlide ${
+              index === currentSlide ? "slickSlide--active" : ""
+            }`}
+          >
+            <img src={item.img} alt={`item${item.id}`} />
+          </div>
+        ))}
+      </Slider>
+    </div>
   );
 }
