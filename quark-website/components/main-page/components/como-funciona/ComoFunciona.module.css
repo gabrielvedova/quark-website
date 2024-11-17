@@ -1,5 +1,4 @@
 .container {
-  background-color: rgba(165, 81, 51, 0.301);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,6 +6,7 @@
   flex: 1 1 auto;
   padding: 10px; /* Ajuste conforme necessário */
   min-height: 100vh;
+  gap: 6vh;
 }
 
 .text {
@@ -15,15 +15,15 @@
 }
 
 .funco {
-  height: 60vh;
+  min-height: 60vh;
   width: 80%;
   display: flex;
   justify-content: space-between;
+  padding-bottom: 5vh;
 }
 
 .funco .item {
   width: 25%;
-  background-color: rgba(54, 42, 165, 0.466);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -31,11 +31,12 @@
   padding: 10px;
   border-radius: 20px;
   box-shadow: 3px 3px 10px rgb(133, 133, 133);
+  transition: transform 0.3s ease; /* Adiciona a transição */
 }
 
 .funco .item .img {
-  height: 40%;
   width: 55%;
+  aspect-ratio: 1 / 1;
   background-color: rgba(42, 165, 83, 0.952);
   border-radius: 50%;
 }
@@ -49,11 +50,43 @@
   align-items: center;
 }
 
-.funco .item .textItem h1 {
-  font-size: 20px;
+@media (min-width: 1441px) {
+  .funco .item .textItem h1 {
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  .funco .item .textItem p {
+    line-height: 1.5;
+    font-size: 18px;
+  }
+  .funco .item:hover {
+    transform: scale(1.2); /* Aumenta o tamanho ao passar o mouse */
+  }
 }
 
-.funco .item .textItem p {
-  line-height: 1.5;
-  font-size: 14px;
+@media (max-width: 1440px) and (min-width: 1300px) {
+  .funco .item .textItem h1 {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .funco .item .textItem p {
+    line-height: 1.5;
+    font-size: 16px;
+  }
+  .funco .item:hover {
+    transform: scale(1.2); /* Aumenta o tamanho ao passar o mouse */
+  }
+}
+
+@media (max-width: 1299px) {
+  .funco {
+    flex-direction: column;
+    align-items: center;
+    gap: 6vh;
+  }
+  .funco .item {
+    width: 300px;
+  }
 }

@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./Diferenciais.module.css";
+import "@/app/app.css";
 
 export default function Diferenciais() {
   return (
     <div className={styles.container} id="Diferenciais">
-      <div className={styles.title}>
+      <div className="title">
         <span>Conheça a Quark</span>
         <h1>Diferenciais Quark</h1>
       </div>
@@ -31,7 +32,10 @@ export default function Diferenciais() {
             </p>
           </div>
         </div>
-        <div className={styles.img}></div>
+        <img
+          src="https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png"
+          alt=""
+        />
         <div className={styles.text2}>
           <div className={styles.topic3}>
             <h2>
@@ -46,9 +50,7 @@ export default function Diferenciais() {
           <div className={styles.topic4}>
             <h2>
               Inova
-              <span className={styles.circle}>
-                ção<span id={styles.point}>.</span>
-              </span>
+              <span className={styles.circle}>ção</span>
             </h2>
             <p>
               Além disso, a Quark foi criada em um dos maiores ecossistemas de

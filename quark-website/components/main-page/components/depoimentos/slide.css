@@ -1,0 +1,8 @@
+.slick-dots li button:before {
+  font-size: 12px; /* Aumenta o tamanho dos pontos */
+  color: #f1296c; /* Muda a cor dos pontos */
+}
+
+.slick-dots li.slick-active button:before {
+  color: #f1296c; /* Muda a cor dos pontos ativos */
+}

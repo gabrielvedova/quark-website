@@ -1,5 +1,5 @@
 .container {
-  background-color: rgba(165, 42, 42, 0.562);
+  background-color: #dadada8f;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7,25 +7,6 @@
   flex: 1 1 auto;
   padding: 40px; /* Ajuste conforme necessário */
   min-height: 100vh;
-}
-
-.title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.title span {
-  margin-top: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #ca3333;
-}
-
-.title h1 {
-  font-size: 40px;
-  font-weight: 700;
 }
 
 .carousel {
@@ -58,4 +39,31 @@
 .info span {
   text-align: center;
   font-size: 18px;
+}
+
+.container button {
+  margin-top: 50px;
+  padding: 15px 70px;
+  font-size: 20px;
+  color: white;
+  background-color: #8a2be2;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+@media (max-width: 1450px) {
+  .totalInfo {
+    width: 90%;
+  }
+}
+@media (max-width: 970px) {
+  .totalInfo {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .info {
+    width: 60%;
+  }
 }

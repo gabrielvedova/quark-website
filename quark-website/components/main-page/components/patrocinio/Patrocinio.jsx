@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Patrocinio.module.css";
+import "@/app/app.css";
 
 export default function Patrocinio() {
   const parceiros = [
@@ -22,16 +23,25 @@ export default function Patrocinio() {
   ];
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
+      <div className="title">
         <span>Parceiros</span>
         <h1>Quem confia na Quark</h1>
       </div>
-      <div className={styles.parceirosContainer}>
-        {parceiros.map((parceiro) => (
-          <div key={parceiro.id} className={styles.parceiro}>
-            <img src={parceiro.img} alt="Parceiro" />
-          </div>
-        ))}
+      <div className={styles.totalParceiros}>
+        <div className={styles.parceirosContainer}>
+          {parceiros.map((parceiro) => (
+            <div key={parceiro.id} className={styles.parceiro}>
+              <img src={parceiro.img} alt="Parceiro" />
+            </div>
+          ))}
+        </div>
+        <div className={styles.parceirosContainer}>
+          {parceiros.map((parceiro) => (
+            <div key={parceiro.id} className={styles.parceiro}>
+              <img src={parceiro.img} alt="Parceiro" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

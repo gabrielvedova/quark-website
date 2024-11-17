@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./Conquistas.module.css";
 import Slide from "../slide/Slide";
+import "@/app/app.css";
 
 export default function Conquistas() {
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
+      <div className="title">
         <span>Números</span>
         <h1>Nossas Conquistas</h1>
       </div>
@@ -40,6 +41,7 @@ export default function Conquistas() {
           </span>
         </div>
       </div>
+      <button>Fale com a gente</button>
     </div>
   );
 }

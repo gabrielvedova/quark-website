@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Time.module.css";
 import { FaLinkedin } from "react-icons/fa6";
+import "@/app/app.css";
 
 export default function Time() {
   const time = [
@@ -56,7 +57,7 @@ export default function Time() {
 
   return (
     <div className={styles.container} id="Time">
-      <div className={styles.title}>
+      <div className="title">
         <span>Time</span>
         <h1>Quem faz a Quark</h1>
       </div>

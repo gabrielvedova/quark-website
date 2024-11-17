@@ -1,10 +1,11 @@
 import React from "react";
 import styles from "./ComoFunciona.module.css";
+import "@/app/app.css";
 
 export default function ComoFunciona() {
   return (
     <div className={styles.container} id="ComoFunciona">
-      <div className={styles.text}>
+      <div className="title">
         <span>Como funciona?</span>
         <h1>Funcionalidades Quark</h1>
       </div>

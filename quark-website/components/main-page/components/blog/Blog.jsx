@@ -3,6 +3,18 @@ import styles from "./Blog.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "@/app/app.css";
+import "@/components/main-page/components/blog/slide.css";
+
+const slidesToShow = () => {
+  if (window.innerWidth < 1300 && window.innerWidth > 970) {
+    return 2;
+  } else if (window.innerWidth < 971) {
+    return 1;
+  } else {
+    return 3;
+  }
+};
 
 export default function Blog() {
   const notices = [
@@ -96,7 +108,7 @@ export default function Blog() {
     dots: false,
     arrows: false,
     infinite: true,
-    slidesToShow: 3,
+    slidesToShow: slidesToShow(),
     slidesToScoll: 1,
     speed: 500,
   };
@@ -107,7 +119,7 @@ export default function Blog() {
 
   return (
     <div className={styles.container} id="Blog">
-      <div className={styles.title}>
+      <div className="title">
         <span>Notícias</span>
         <h1>Quark na mídia</h1>
       </div>

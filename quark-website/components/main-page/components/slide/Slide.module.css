@@ -9,3 +9,9 @@
   height: auto;
   margin: auto;
 }
+
+@media (max-width: 700px) {
+  .slickSlide img {
+    width: 250px;
+  }
+}

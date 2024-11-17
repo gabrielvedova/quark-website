@@ -1,5 +1,4 @@
 .container {
-  background-color: rgba(50, 94, 6, 0.267);
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -7,7 +6,7 @@
   padding-top: 5%;
   flex: 1 1 auto;
   padding: 10px; /* Ajuste conforme necessário */
-  height: 120vh;
+  min-height: 120vh;
 }
 
 .title {
@@ -31,9 +30,7 @@
 
 .main {
   width: 70%;
-  height: 80%;
   display: flex;
-  background-color: rgb(120, 192, 192);
   justify-content: space-between;
 }
 
@@ -46,14 +43,13 @@
 }
 
 .main .img {
-  width: 30%;
-  height: 80%;
   background-color: blue;
   align-self: center;
 }
 
 .main .text2 {
   width: 30%;
+  min-height: 40vh;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -80,18 +76,40 @@
 }
 
 .topic1 .circle::before {
-  background-color: rgba(189, 238, 99, 0.651);
+  background-color: rgba(238, 236, 99, 0.425);
 }
 .topic2 .circle::before {
-  background-color: rgb(128, 202, 202);
+  background-color: rgba(128, 202, 202, 0.425);
 }
 .topic3 .circle::before {
-  background-color: rgba(198, 126, 231, 0.651);
+  background-color: rgba(198, 126, 231, 0.425);
 }
 .topic4 .circle::before {
-  background-color: rgba(198, 126, 231, 0.651);
+  background-color: rgba(198, 126, 231, 0.425);
+  transform: translate(-40%, -50%);
 }
 
-.topic4 #point {
-  color: rgba(198, 126, 231, 0.651);
+@media (min-width: 971px) {
+  .main img {
+    width: 40%;
+    object-fit: contain;
+  }
+}
+
+@media (max-width: 970px) {
+  .main {
+    flex-direction: column;
+    align-items: center;
+  }
+  .main .text1 {
+    width: 90%;
+    text-align: center;
+  }
+  .main img {
+    width: auto;
+  }
+  .main .text2 {
+    width: 90%;
+    text-align: center;
+  }
 }
