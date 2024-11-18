@@ -119,16 +119,8 @@ export default function Depoimentos() {
     }
   };
 
-  const dotsToShow = () => {
-    if (window.innerWidth < 971) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
   const settings = {
-    dots: dotsToShow(),
+    dots: window.innerWidth > 971 ? true : false,
     infinite: true,
     slidesToShow: slidesToShow(),
     slidesToScroll: slidesToShow(),
