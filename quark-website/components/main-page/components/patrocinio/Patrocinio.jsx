@@ -22,7 +22,7 @@ export default function Patrocinio() {
     },
   ];
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="Clientes">
       <div className="title">
         <span>Parceiros</span>
         <h1>Quem confia na Quark</h1>

@@ -43,7 +43,7 @@
   }
 }
 
-@media (max-width: 1350px) {
+@media (max-width: 1400px) {
   .text h1 {
     font-size: 35px;
   }
@@ -58,7 +58,7 @@
 @media (max-width: 970px) {
   .container {
     flex-direction: column;
-    margin-bottom: 15vh;
+    margin-bottom: 15%;
   }
   .text {
     width: 80%;

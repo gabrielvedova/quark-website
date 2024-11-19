@@ -3,6 +3,7 @@ import styles from "./Blog.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import "@/app/app.css";
 import "@/components/main-page/components/blog/slide.css";
 
@@ -101,16 +102,63 @@ export default function Blog() {
     },
   ];
 
+  const NextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          color: "transparent",
+          top: 100,
+          right: window.innerWidth > 971 ? -50 : -30,
+        }}
+        onClick={onClick}
+      >
+        <MdNavigateNext
+          color="#f1296c"
+          size={window.innerWidth < 551 ? 50 : 100}
+        />
+      </div>
+    );
+  };
+
+  const PrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          left: window.innerWidth < 551 ? -55 : -85,
+          top: 100,
+        }}
+        onClick={onClick}
+      >
+        <MdNavigateBefore
+          color="#f1296c"
+          size={window.innerWidth < 551 ? 50 : 100}
+        />
+      </div>
+    );
+  };
+
   // Ordenar as notícias pela data, do mais recente para o mais antigo
   notices.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const settings = {
-    dots: false,
+    dots: window.innerWidth > 971 ? true : false,
     arrows: false,
     infinite: true,
     slidesToShow: slidesToShow(),
-    slidesToScoll: 1,
+    slidesToScroll: 1,
     speed: 500,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    centerMode: true,
+    centerPadding: "0",
   };
 
   const capitalizeFirstLetter = (string) => {
@@ -133,7 +181,11 @@ export default function Blog() {
             });
             formattedDate = capitalizeFirstLetter(formattedDate);
             return (
-              <div className={styles.itemSlide} key={notice.id}>
+              <div
+                className={styles.itemSlide}
+                key={notice.id}
+                style={{ width: 80 }}
+              >
                 <div className={styles.notice}>
                   <img src={notice.image} alt={notice.title} />
                   <div className={styles.noticeContent}>

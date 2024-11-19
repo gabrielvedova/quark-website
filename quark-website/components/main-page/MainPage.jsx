@@ -18,8 +18,8 @@ export default function MainPage() {
       <ConhecaQuark />
       <Diferenciais />
       <Depoimentos />
-      <Conquistas />
       <Perguntas />
+      <Conquistas />
       <Blog />
       <Time />
       <Patrocinio />

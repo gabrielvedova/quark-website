@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   flex: 1 1 auto;
-  padding: 40px; /* Ajuste conforme necessário */
+  padding: 40px;
   min-height: 70vh;
 }
 
@@ -23,6 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 90%;
 }
 
 .itemSlide .notice {
@@ -41,8 +42,15 @@
   padding: 10px;
 }
 
+@media (max-width: 900px) {
+  .containerNotices {
+    width: 60%;
+  }
+}
+
+/* TODO transbordamento da tela */
 @media (max-width: 500px) {
   .containerNotices {
-    width: 100%;
+    width: 60%;
   }
 }
