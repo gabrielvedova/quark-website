@@ -64,8 +64,6 @@ Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 
 - **Next.Js** (Versão 15.0.3)
 - **npm** ou **yarn** (gerenciador de pacotes)
-- **PostgreSQL** (para o banco de dados local, caso o backend precise)
-- **Docker** (se for usar containers para o ambiente de desenvolvimento)
 
 ### Passo a Passo
 
@@ -90,28 +88,30 @@ npm install # ou yarn
 4 - Configure as váriáveis de ambiente em `.env`
 
 ```env
-# Next.js
-NEXT_PUBLIC_BASE_URL='' # A URL base em que o projeto está sendo executado
+# nodemailer config
+NODEMAILER_HOST='' # host do serviço de email
+NODEMAILER_PORT=0 # porta do serviço de email
+NODEMAILER_USER='' # usuário do serviço de email
+NODEMAILER_PASSWORD='' # senha do serviço de email
 
-# Mailing service
-MAIL_HOST=''
-MAIL_PORT=
-MAIL_USER=''
-MAIL_PASS=''
+# contact mail information
+CONTACT_RECIPIENT_NAME='' # nome do destinatário do email de contato
+CONTACT_RECIPIENT_ADDRESS='' # endereço de email do destinatário do email de contato
 
-EMAIL_NAME='' # Nome do receptor do email
-EMAIL_ADDRESS='' # Endereço de email a receber o contato
+# mailing api endpoint secret
+MAIL_API_SECRET='' # segredo para acessar a API de envio de email
 
-MAIL_API_SECRET='' # Bearer token da API de email
+# database credentials
+DATABASE_URL='' # URL de conexão com o banco de dados
 
-# Database credentials
-DATABASE_URL='' # Prisma configuration
-
-# Node environment
-NODE_ENV='' # 'production' | 'development'
+# node environment
+NODE_ENV='' # ambiente de execução do node
 
 # session encription secret
-SESSION_SECRET='' # Segredo de encriptação do token de sessão
+SESSION_SECRET='' # segredo para encriptar as sessões
+
+# URL
+NEXT_PUBLIC_BASE_URL='' # URL base da aplicação
 ```
 
 ---
@@ -152,7 +152,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "email": string,
   "newEmail": string,
@@ -164,7 +164,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **200** _OK_
 
-```json
+```ts
 {
   "message": "E-mail alterado com sucesso"
 }
@@ -172,7 +172,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string[]
@@ -182,7 +182,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -190,7 +190,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **404** _Not Found_
 
-```json
+```ts
 {
   "message": "Usuário não encontrado"
 }
@@ -198,7 +198,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **409** _Conflict_
 
-```json
+```ts
 {
   "error": {
     "newEmail": ["Email já em uso"]
@@ -208,7 +208,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -222,7 +222,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
  "password": string,
  "newpassword": string,
@@ -234,7 +234,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **200** _OK_
 
-```json
+```ts
 {
   "message": "Senha alterada com sucesso."
 }
@@ -242,7 +242,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string[]
@@ -252,7 +252,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -260,7 +260,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **404** _Not Found_
 
-```json
+```ts
 {
   "message": "Usuário não encontrado"
 }
@@ -268,7 +268,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -282,7 +282,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "name": string,
   "role": string,
@@ -295,7 +295,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **200** _OK_
 
-```json
+```ts
 {
   "message": "Admin criado com sucesso."
 }
@@ -303,7 +303,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -313,7 +313,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -321,7 +321,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **409** _Conflict_
 
-```json
+```ts
 {
   "error": {
     "email": ["Email já em uso"]
@@ -331,7 +331,7 @@ Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são i
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -355,7 +355,7 @@ Sem corpo.
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -363,7 +363,7 @@ Sem corpo.
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -377,7 +377,7 @@ Sem corpo.
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "name": string,
   "role": string,
@@ -389,7 +389,7 @@ Sem corpo.
 
 - **200** _OK_:
 
-```json
+```ts
 {
   "message": "Informações alteradas com sucesso."
 }
@@ -397,7 +397,7 @@ Sem corpo.
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -407,7 +407,7 @@ Sem corpo.
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -415,7 +415,7 @@ Sem corpo.
 
 - **404** _Not Found_
 
-```json
+```ts
 {
   "message": "Perfil não encontrado"
 }
@@ -423,7 +423,7 @@ Sem corpo.
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -449,7 +449,7 @@ interface searchQuery {
 
 - **200** _OK_
 
-```json
+```ts
 {
   "data": {
     "id": number,
@@ -465,7 +465,7 @@ interface searchQuery {
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -475,7 +475,7 @@ interface searchQuery {
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -489,7 +489,7 @@ interface searchQuery {
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "title": string,
   "content": string,
@@ -500,7 +500,7 @@ interface searchQuery {
 
 - **201** _Created_
 
-```json
+```ts
 {
   "id": number
 }
@@ -508,7 +508,7 @@ interface searchQuery {
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -518,7 +518,7 @@ interface searchQuery {
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -526,7 +526,7 @@ interface searchQuery {
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -540,7 +540,7 @@ interface searchQuery {
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "id": number,
   "title": string,
@@ -558,7 +558,7 @@ Sem corpo.
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -568,7 +568,7 @@ Sem corpo.
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -576,7 +576,7 @@ Sem corpo.
 
 - **404** _Not Found_
 
-```json
+```ts
 {
   "message": "Post não encontrado"
 }
@@ -584,7 +584,7 @@ Sem corpo.
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -598,7 +598,7 @@ Sem corpo.
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "id": number
 }
@@ -612,7 +612,7 @@ Sem corpo.
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -622,7 +622,7 @@ Sem corpo.
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -630,7 +630,7 @@ Sem corpo.
 
 - **404** _Not Found_
 
-```json
+```ts
 {
   "message": "Post não encontrado"
 }
@@ -638,7 +638,7 @@ Sem corpo.
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -652,7 +652,7 @@ Sem corpo.
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "name": string,
   "email": string,
@@ -669,7 +669,7 @@ Sem corpo.
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -679,7 +679,7 @@ Sem corpo.
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -687,7 +687,7 @@ Sem corpo.
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -701,7 +701,7 @@ Sem corpo.
 
 #### Estrutura de requisição
 
-```json
+```ts
 {
   "email": string,
   "password": string
@@ -712,7 +712,7 @@ Sem corpo.
 
 - **200** _OK_
 
-```json
+```ts
 {
   "message": "Login realizado com sucesso"
 }
@@ -720,7 +720,7 @@ Sem corpo.
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -730,7 +730,7 @@ Sem corpo.
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Email ou senha incorretos."
 }
@@ -738,7 +738,7 @@ Sem corpo.
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -762,7 +762,7 @@ Sem corpo.
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -770,7 +770,7 @@ Sem corpo.
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }
@@ -794,7 +794,7 @@ interface searchQuery {
 
 - **200** _OK_
 
-```json
+```ts
 {
   "data": {
     "id": number,
@@ -809,7 +809,7 @@ interface searchQuery {
 
 - **400** _Bad Request_
 
-```json
+```ts
 {
   "error": {
     [k: string]: string
@@ -819,7 +819,7 @@ interface searchQuery {
 
 - **401** _Unauthorized_
 
-```json
+```ts
 {
   "message": "Não autorizado."
 }
@@ -827,7 +827,7 @@ interface searchQuery {
 
 - **404** _Not Found_
 
-```json
+```ts
 {
   "message": "Manchete não encontrada"
 }
@@ -835,7 +835,7 @@ interface searchQuery {
 
 - **500** _Internal Server Error_
 
-```json
+```ts
 {
   "message": "Ocorreu um erro."
 }

@@ -1,28 +1,27 @@
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: Number(process.env.MAIL_PORT),
+  host: process.env.NODEMAILER_HOST,
+  port: Number(process.env.NODEMAILER_PORT),
+  secure: true,
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    user: process.env.NODEMAILER_USER,
+    pass: process.env.NODEMAILER_PASSWORD,
   },
-} as SMTPTransport.Options);
+});
 
 async function sendEmail(
   sender: Mail.Address,
-  recipients: Mail.Address[],
+  recipient: Mail.Address,
   subject: string,
-  message: string
+  content: string
 ) {
   return await transporter.sendMail({
     from: sender,
-    to: recipients,
+    to: recipient,
     subject,
-    text: message,
-    html: message,
+    html: content,
   });
 }
 
@@ -44,21 +43,13 @@ export async function sendContactEmail(data: {
 }) {
   const { name, email, phoneNumber, institution } = data;
 
-  const sender = {
-    name,
-    address: email,
+  const sender = { name, address: email };
+  const recipient = {
+    name: process.env.CONTACT_RECIPIENT_NAME || "",
+    address: process.env.CONTACT_RECIPIENT_ADDRESS || "",
   };
-
-  const recipients = [
-    {
-      name: process.env.EMAIL_NAME || "",
-      address: process.env.EMAIL_ADDRESS || "",
-    },
-  ];
-
-  const emailSubject = `Solicitação de contato de ${name}`;
-
-  const emailContent = `
+  const subject = `Solicitação de contato de ${name}`;
+  const content = `
   <ul>
     <li><strong>Nome:</strong> ${name}</li>
     <li><strong>Email:</strong> ${email}</li>
@@ -67,5 +58,5 @@ export async function sendContactEmail(data: {
   </ul>
   `;
 
-  return await sendEmail(sender, recipients, emailSubject, emailContent);
+  return await sendEmail(sender, recipient, subject, content);
 }
