@@ -8,7 +8,7 @@ import {
 } from "./schema";
 import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
-import { withAuth, withGetPostsAuth } from "@/lib/auth";
+import { adminAuthApiMiddleware, protectUnpublishedPosts } from "@/lib/auth";
 
 /**
  * Get a list of posts.
@@ -21,14 +21,14 @@ import { withAuth, withGetPostsAuth } from "@/lib/auth";
  * @returns 400 - { error: validatedParams.error.flatten() }
  * @returns 401 - { message: "Não autorizado." }
  */
-export const GET = withGetPostsAuth(async (request: Request) => {
+export const GET = protectUnpublishedPosts(async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const paramsObject = Object.fromEntries(searchParams);
   const validatedParams = GetParamsSchema.safeParse(paramsObject);
 
   if (!validatedParams.success) {
     return ConventionalResponse.badRequest({
-      error: validatedParams.error.flatten(),
+      error: validatedParams.error.flatten().fieldErrors,
     });
   }
 
@@ -50,13 +50,13 @@ export const GET = withGetPostsAuth(async (request: Request) => {
  * @returns 401 - { message: "Não autorizado." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const POST = withAuth(async (request: Request) => {
+export const POST = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PostSchema.safeParse(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
-      error: validatedBody.error.flatten(),
+      error: validatedBody.error.flatten().fieldErrors,
     });
   }
 
@@ -87,13 +87,13 @@ export const POST = withAuth(async (request: Request) => {
  * @returns 404 - { message: "Post não encontrado." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const PUT = withAuth(async (request: Request) => {
+export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PutSchema.safeParse(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
-      error: validatedBody.error.flatten(),
+      error: validatedBody.error.flatten().fieldErrors,
     });
   }
 
@@ -120,13 +120,13 @@ export const PUT = withAuth(async (request: Request) => {
  * @returns 404 - { message: "Post não encontrado." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const DELETE = withAuth(async (request: Request) => {
+export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = DeleteSchema.safeParse(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
-      error: validatedBody.error.flatten(),
+      error: validatedBody.error.flatten().fieldErrors,
     });
   }
 

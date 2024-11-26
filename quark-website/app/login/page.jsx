@@ -1,13 +1,15 @@
 "use client";
 
+import "./page.css";
 import { useState } from "react";
-import { login } from "./action";
-import { redirect } from "next/navigation";
+import { login, proceed } from "./actions";
+import { useRouter } from "next/navigation";
 
-function Page() {
+export default function Page() {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,12 +18,13 @@ function Page() {
     setIsSubmitting(true);
 
     const response = await login(formData);
+    console.log(response);
 
-    if (response.status === 400) {
+    if (response.status === 200) {
+      router.push("/admin");
+    } else if (response.status === 400) {
       setErrors(response.error);
       setMessage(null);
-    } else if (response.status === 200) {
-      redirect("/admin");
     } else {
       setErrors({});
       setMessage(response.message);
@@ -31,7 +34,7 @@ function Page() {
   };
 
   return (
-    <div>
+    <div className="Container">
       <h1>Admin Quark</h1>
       <form onSubmit={handleSubmit}>
         <div id="email">
@@ -42,7 +45,7 @@ function Page() {
             placeholder="E-mail"
             className={errors.email ? "error" : ""}
           />
-          <Errors messages={errors.email} />
+          {errors.email && <p>{errors.email}</p>}
         </div>
         <div id="password">
           <input
@@ -52,25 +55,13 @@ function Page() {
             placeholder="Senha"
             className={errors.password ? "error" : ""}
           />
-          <Errors messages={errors.password} />
+          {errors.password && <p>{errors.password}</p>}
         </div>
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Enviando..." : "Login"}
         </button>
       </form>
       {message && alert(message)}
-    </div>
-  );
-}
-
-function Errors({ messages }) {
-  return (
-    <div>
-      <ul>
-        {messages.map((message, index) => {
-          <li key={index}>{message}</li>;
-        })}
-      </ul>
     </div>
   );
 }

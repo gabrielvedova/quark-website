@@ -9,7 +9,7 @@ import { isAdminAuthenticated } from "./session";
  *
  * @returns The handler if the user is authenticated, otherwise a 401 response.
  */
-export function withBearerAuth(
+export function bearerAuthMiddleware(
   token: string | undefined,
   handler: (request: Request) => Promise<ConventionalResponse>
 ) {
@@ -35,7 +35,7 @@ export function withBearerAuth(
  *
  * @returns The handler if the user is authenticated, otherwise a 401 response.
  */
-export function withAuth(
+export function adminAuthApiMiddleware(
   handler: (request: Request) => Promise<ConventionalResponse>
 ) {
   return async function (request: Request): Promise<ConventionalResponse> {
@@ -54,7 +54,7 @@ export function withAuth(
  *
  * @returns The handler if the user is authenticated, otherwise a 401 response.
  */
-export function withGetPostsAuth(
+export function protectUnpublishedPosts(
   handler: (request: Request) => Promise<ConventionalResponse>
 ) {
   return async function (request: Request): Promise<ConventionalResponse> {

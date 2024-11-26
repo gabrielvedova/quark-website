@@ -2,7 +2,7 @@ import { updateAdminInfo } from "@/lib/edit-admin-info";
 import { PutSchema } from "./schema";
 import { NotFoundError, UnauthorizedError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
-import { withAuth } from "@/lib/auth";
+import { adminAuthApiMiddleware } from "@/lib/auth";
 
 /**
  * Update the information of the current admin.
@@ -17,13 +17,13 @@ import { withAuth } from "@/lib/auth";
  * @returns 404 - { message: "Perfil não encontrado" }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const PUT = withAuth(async (request: Request) => {
+export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   const body = request.json();
   const validatedBody = PutSchema.safeParse(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
-      error: validatedBody.error.flatten(),
+      error: validatedBody.error.flatten().fieldErrors,
     });
   }
 

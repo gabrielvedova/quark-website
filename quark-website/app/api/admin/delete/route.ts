@@ -1,4 +1,4 @@
-import { withAuth } from "@/lib/auth";
+import { adminAuthApiMiddleware } from "@/lib/auth";
 import deleteAccount from "@/lib/delete-admin";
 import { UnauthorizedError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
@@ -10,7 +10,7 @@ import { ConventionalResponse } from "@/lib/responses";
  * @returns 401 - { message: "Não autorizado." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const DELETE = withAuth(async (request: Request) => {
+export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
   try {
     await deleteAccount();
     return ConventionalResponse.noContent();

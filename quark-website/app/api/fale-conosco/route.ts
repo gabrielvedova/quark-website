@@ -1,7 +1,7 @@
 import { ConventionalResponse } from "@/lib/responses";
 import { PostSchema } from "./schema";
 import { sendContactEmail } from "@/lib/email";
-import { withBearerAuth } from "@/lib/auth";
+import { bearerAuthMiddleware } from "@/lib/auth";
 
 /**
  * Send an email with the contact information.
@@ -16,7 +16,7 @@ import { withBearerAuth } from "@/lib/auth";
  * @returns 401 - { message: "Não autorizado." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const POST = withBearerAuth(
+export const POST = bearerAuthMiddleware(
   process.env.MAIL_API_SECRET,
   async (request: Request) => {
     const body = await request.json();
@@ -24,7 +24,7 @@ export const POST = withBearerAuth(
 
     if (!validatedBody.success) {
       return ConventionalResponse.badRequest({
-        error: validatedBody.error.flatten(),
+        error: validatedBody.error.flatten().fieldErrors,
       });
     }
 

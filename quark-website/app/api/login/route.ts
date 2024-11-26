@@ -2,8 +2,6 @@ import login from "@/lib/login";
 import { PostSchema } from "./schema";
 import { IncorrectEmailOrPasswordError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
-import { isAdminAuthenticated } from "@/lib/session";
-import { NextResponse } from "next/server";
 
 /**
  * Log in an admin.
@@ -22,7 +20,7 @@ export const POST = async (request: Request): Promise<ConventionalResponse> => {
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
-      error: validatedBody.error.flatten(),
+      error: validatedBody.error.flatten().fieldErrors,
     });
   }
 

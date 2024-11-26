@@ -2,7 +2,7 @@ import createAdmin from "@/lib/create-admin";
 import { PostSchema } from "./schema";
 import { EmailInUseError, PasswordMismatchError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
-import { withAuth } from "@/lib/auth";
+import { adminAuthApiMiddleware } from "@/lib/auth";
 
 /**
  * Create a new admin account.
@@ -20,13 +20,13 @@ import { withAuth } from "@/lib/auth";
  * @returns 409 - { error: { email: ["Email já em uso."] } }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const POST = withAuth(async (request: Request) => {
+export const POST = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PostSchema.safeParse(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
-      error: validatedBody.error.flatten(),
+      error: validatedBody.error.flatten().fieldErrors,
     });
   }
 

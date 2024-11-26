@@ -1,4 +1,4 @@
-import { withAuth } from "@/lib/auth";
+import { adminAuthApiMiddleware } from "@/lib/auth";
 import { UnauthorizedError } from "@/lib/errors";
 import logout from "@/lib/logout";
 import { ConventionalResponse } from "@/lib/responses";
@@ -10,7 +10,7 @@ import { ConventionalResponse } from "@/lib/responses";
  * @returns 401 - { message: "Não autorizado." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const POST = withAuth(async (request: Request) => {
+export const POST = adminAuthApiMiddleware(async (request: Request) => {
   try {
     await logout();
     return ConventionalResponse.noContent();

@@ -13,7 +13,7 @@ import {
 } from "./schema";
 import { NotFoundError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
-import { withAuth } from "@/lib/auth";
+import { adminAuthApiMiddleware } from "@/lib/auth";
 
 /**
  * Get a list of headlines.
@@ -55,7 +55,7 @@ export const GET = async (request: Request): Promise<ConventionalResponse> => {
  * @returns 400 - { error: validatedBody.error.flatten() }
  * @returns 401 - { message: "Não autorizado." }
  */
-export const POST = withAuth(async (request: Request) => {
+export const POST = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PostSchema.safeParse(body);
 
@@ -85,7 +85,7 @@ export const POST = withAuth(async (request: Request) => {
  * @returns 404 - { message: "Manchete não encontrada" }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const PUT = withAuth(async (request: Request) => {
+export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   const body = request.json();
   const validatedBody = PutSchema.safeParse(body);
 
@@ -120,7 +120,7 @@ export const PUT = withAuth(async (request: Request) => {
  * @returns 404 - { message: "Manchete não encontrada" }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
-export const DELETE = withAuth(async (request: Request) => {
+export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = DeleteSchema.safeParse(body);
 

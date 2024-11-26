@@ -8,7 +8,7 @@ import {
   UnauthorizedError,
 } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
-import { withAuth } from "@/lib/auth";
+import { adminAuthApiMiddleware } from "@/lib/auth";
 
 /**
  * Update the email of the current user.
@@ -26,13 +26,13 @@ import { withAuth } from "@/lib/auth";
  * @returns 409 - { error: { newEmail: ["Email já em uso"] } }
  * @returns 500 - { error: { message: "Ocorreu um erro." } }
  */
-export const PATCH = withAuth(async (request: Request) => {
+export const PATCH = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PatchSchema.safeParse(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
-      error: validatedBody.error.flatten(),
+      error: validatedBody.error.flatten().fieldErrors,
     });
   }
 
