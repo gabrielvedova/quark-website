@@ -2,8 +2,9 @@
 
 import "./page.css";
 import { useState } from "react";
-import { login, proceed } from "./actions";
+import { login } from "./actions";
 import { useRouter } from "next/navigation";
+import FormErrors from "@/components/admin/FormErrors/FormErrors";
 
 export default function Page() {
   const [errors, setErrors] = useState({});
@@ -45,7 +46,7 @@ export default function Page() {
             placeholder="E-mail"
             className={errors.email ? "error" : ""}
           />
-          {errors.email && <p>{errors.email}</p>}
+          {errors.email && <FormErrors errors={errors.email} />}
         </div>
         <div id="password">
           <input
@@ -55,7 +56,7 @@ export default function Page() {
             placeholder="Senha"
             className={errors.password ? "error" : ""}
           />
-          {errors.password && <p>{errors.password}</p>}
+          {errors.password && <FormErrors errors={errors.password} />}
         </div>
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Enviando..." : "Login"}
