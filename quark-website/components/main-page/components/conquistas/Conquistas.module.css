@@ -74,7 +74,7 @@
 
 @media (max-width: 500px) {
   .carousel {
-    width: 120%; /* Ajuste conforme necessário */
+    width: 110%; /* Ajuste conforme necessário */
     height: auto;
     padding: 0 10px; /* Adiciona padding para evitar transbordamento */
   }
