@@ -150,7 +150,7 @@ export default function Blog() {
 
   const settings = {
     dots: window.innerWidth > 971 ? true : false,
-    arrows: false,
+    arrows: true,
     infinite: true,
     slidesToShow: slidesToShow(),
     slidesToScroll: 1,

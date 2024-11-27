@@ -29,7 +29,7 @@ export default function Slide() {
     arrows: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: window.innerWidth > 450 ? 3 : 1,
     slidesToScroll: 1,
     centerMode: true, // Ativar o modo centralizado
     centerPadding: "0", // Remover padding central

@@ -48,9 +48,8 @@
   }
 }
 
-/* TODO transbordamento da tela */
 @media (max-width: 500px) {
   .containerNotices {
-    width: 60%;
+    width: 80%;
   }
 }
