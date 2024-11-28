@@ -5,11 +5,14 @@ import { useState } from "react";
 import { login } from "./actions";
 import { useRouter } from "next/navigation";
 import FormErrors from "@/components/admin/FormErrors/FormErrors";
+import { IoMdClose } from "react-icons/io";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Page() {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -19,7 +22,6 @@ export default function Page() {
     setIsSubmitting(true);
 
     const response = await login(formData);
-    console.log(response);
 
     if (response.status === 200) {
       router.push("/admin");
@@ -35,7 +37,7 @@ export default function Page() {
   };
 
   return (
-    <div className="Container">
+    <div className="container">
       <h1>Admin Quark</h1>
       <form onSubmit={handleSubmit}>
         <div id="email">
@@ -46,23 +48,50 @@ export default function Page() {
             placeholder="E-mail"
             className={errors.email ? "error" : ""}
           />
-          {errors.email && <FormErrors errors={errors.email} />}
+          <div className="errorDiv">
+            {errors.email && <FormErrors errors={errors.email} />}
+          </div>
         </div>
         <div id="password">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             id="password"
             placeholder="Senha"
             className={errors.password ? "error" : ""}
           />
-          {errors.password && <FormErrors errors={errors.password} />}
+          <button
+            className="togglePasswordBtn"
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? "Ocultar senha" : "Mostrar senha"}
+          </button>
+          <div className="errorDiv">
+            {errors.password && <FormErrors errors={errors.password} />}
+          </div>
         </div>
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Enviando..." : "Login"}
+          {isSubmitting ? "Logando..." : "Login"}
         </button>
       </form>
-      {message && alert(message)}
+      {message && (
+        <div className="messagePopUp">
+          <div className="closeBtnContainer">
+            <div
+              className="closeBtn"
+              onClick={() => {
+                setMessage(null);
+              }}
+            >
+              <IoMdClose />
+            </div>
+          </div>
+          <div className="messageContainer">
+            <p className="message">{message}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
