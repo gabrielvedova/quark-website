@@ -3,22 +3,16 @@
   margin-top: 16vh;
   align-items: center;
   flex: 1 1 auto;
-  padding: 10px; /* Ajuste conforme necessário */
+  padding: 10px;
   min-height: 80vh;
 }
 
 .text {
-  width: 40%;
+  width: 45%;
 }
 
 .text h1 {
-  font-size: 50px;
-}
-
-.text p {
-  font-size: 20px;
-  width: 65%;
-  line-height: 2.5vh;
+  font-size: 38px;
 }
 
 .carousel {

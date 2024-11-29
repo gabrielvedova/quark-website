@@ -9,13 +9,9 @@ export default function Home() {
     <div className={styles.container} id="QuemSomos">
       <div className={styles.text}>
         <h1>
-          Desenvolvendo <strong>Soft Skills</strong> para revolucionar o futuro{" "}
-          <strong>profissional</strong> dos jovens.
+          Melhorando a <strong>empregabilidade</strong> de jovens através do
+          desenvolvimento de <strong>habilidades comportamentais</strong>
         </h1>
-        <p>
-          Essa é uma solução criada entre Happen e SEBRAE PE, a partir do
-          programa de Inovação Aberta do Porto Digital.
-        </p>
 
         <div className={styles.imgContainer}>
           <img

@@ -10,38 +10,37 @@ export default function Conquistas() {
     <>
       <div className={styles.container}>
         <div className="title">
-          <span>Números</span>
-          <h1>Nossas Conquistas</h1>
+          <h1>Quark em Números</h1>
         </div>
         <div className={styles.carousel}>
           <Slide />
         </div>
         <div className={styles.totalInfo}>
           <div className={styles.info}>
-            <h1>+10</h1>
+            <h1>+60</h1>
             <span>
-              Estamos presentes em mais de <strong>10 estados</strong>{" "}
+              Estamos presentes em mais de <strong>60 municípios</strong>{" "}
               brasileiros
             </span>
           </div>
           <div className={styles.info}>
-            <h1>+4.500</h1>
+            <h1>+40.00</h1>
             <span>
-              Mais de <strong>4.500 alunos</strong> já usam nosso aplicativo
+              Mais de <strong>40.000 alunos</strong> já usam nosso aplicativo
             </span>
           </div>
           <div className={styles.info}>
-            <h1>+7.200</h1>
+            <h1>+60.000</h1>
             <span>
-              <strong>+7.200 certificados</strong> já foram conquistados pela
+              <strong>+60.000 certificados</strong> já foram conquistados pela
               Quark
             </span>
           </div>
           <div className={styles.info}>
-            <h1>+300k</h1>
+            <h1>+120.000</h1>
             <span>
-              Já foram consumidos mais de <strong>300 mil</strong> objetos
-              educacionais
+              Já foram consumidos mais de <strong>120 mil</strong> horas de
+              conteúdo já consumidas na Quark
             </span>
           </div>
         </div>

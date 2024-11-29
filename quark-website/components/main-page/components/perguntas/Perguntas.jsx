@@ -13,8 +13,7 @@ export default function Perguntas() {
   return (
     <div className={styles.container}>
       <div className="title">
-        <span>Dúvidas?</span>
-        <h1>Perguntas Frequentes</h1>
+        <h1>Dúvidas?</h1>
       </div>
       <div
         className={styles.totalQuestion}

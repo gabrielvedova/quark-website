@@ -1,7 +1,21 @@
 #container {
-  background-color: #5660be;
-  min-height: 80vh;
+  background-color: #e9e9e9;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+}
+
+#container .text {
+  width: 45%;
+}
+#container .text h1 {
+  font-size: 42px;
+}
+
+#container .img {
+  width: 30vw;
+  height: 70vh;
+  background-color: #250f3a;
+  align-self: flex-end;
 }

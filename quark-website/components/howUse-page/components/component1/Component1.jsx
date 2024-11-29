@@ -5,10 +5,11 @@ export default function Component1() {
     <div className="component1" id={styles.container}>
       <div className={styles.text}>
         <h1>
-          Ei! Você tem dúvidas de como usar o aplicativo Quark? Então está no
-          lugar certo!
+          Ei! Você tem <strong>dúvidas</strong> de como usar o{" "}
+          <strong>aplicativo Quark</strong>? Então está no lugar certo!
         </h1>
       </div>
+      <div className={styles.img}></div>
     </div>
   );
 }

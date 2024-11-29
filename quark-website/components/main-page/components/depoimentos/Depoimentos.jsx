@@ -131,10 +131,6 @@ export default function Depoimentos() {
 
   return (
     <div className={styles.container} id="Depoimentos">
-      <div className="title">
-        <span>Depoimentos</span>
-        <h1>O que falam sobre a Quark</h1>
-      </div>
       <img
         src="https://img.freepik.com/vetores-gratis/limpe-o-modelo-do-player-de-video-com-botoes-simples_1017-27217.jpg"
         alt=""

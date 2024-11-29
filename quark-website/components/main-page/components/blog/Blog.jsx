@@ -168,7 +168,6 @@ export default function Blog() {
   return (
     <div className={styles.container} id="Blog">
       <div className="title">
-        <span>Notícias</span>
         <h1>Quark na mídia</h1>
       </div>
       <div className={styles.containerNotices}>
