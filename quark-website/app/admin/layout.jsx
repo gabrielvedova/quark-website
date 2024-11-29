@@ -5,10 +5,5 @@ import Menu from "@/components/admin/Menu/Menu";
 export default async function Layout({ children }) {
   if (!(await isAdminAuthenticated())) redirect("/login");
 
-  return (
-    <div>
-      <Menu />
-      <div>{children}</div>
-    </div>
-  );
+  return <div>{children}</div>;
 }
