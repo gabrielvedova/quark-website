@@ -1,18 +1,16 @@
-/* Estilo do container Nav */
 nav {
   display: flex;
-  align-items: center; /* Alinha os itens verticalmente */
-  justify-content: center; /* Centraliza os itens horizontalmente */
-  padding: 20px; /* Espaçamento interno para o topo */
-  background-color: #f9f9f9; /* Fundo sutil */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve para destacar o header */
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 nav > * {
-  margin: 0 5vw; /* Espaçamento entre os elementos */
+  margin: 0 5vw;
 }
 
-/* Botão do título "Admin Quark" */
 h1 {
   margin: 0;
   padding: 10px 20px;
@@ -21,14 +19,13 @@ h1 {
   border-radius: 20px;
   color: #0056b3;
   font-size: 18px;
-  white-space: nowrap; /* Evita quebra de linha */
+  white-space: nowrap;
   text-align: center;
-  flex-shrink: 0; /* Impede o título de reduzir de tamanho */
+  flex-shrink: 0;
 }
 
-/* Links */
 a {
-  text-decoration: none; /* Remove sublinhado */
+  text-decoration: none;
   color: #0056b3;
   font-size: 16px;
   font-weight: 500;
@@ -37,7 +34,7 @@ a {
 
 a:hover {
   text-decoration: underline;
-  color: #003d80; /* Cor mais escura ao passar o mouse */
+  color: #003d80;
 }
 
 .underlined {
