@@ -44,6 +44,7 @@
   color: red;
   font-size: 12px;
   margin-top: 5px;
+  margin-bottom: 5px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -67,47 +68,15 @@ h1 {
   font-family: sans-serif;
 }
 
-.messagePopUp {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  background-color: rgb(236, 236, 236);
-  padding: 20px;
-  height: 15vh;
-  width: 25vw;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-  text-align: center;
+#showPassword {
+  color: gray;
+  font-family: sans-serif;
+  font-size: 12px;
+  margin: 3px;
+  text-decoration: underline;
 }
 
-.closeBtnContainer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.closeBtn {
-  background: none;
-  border: none;
-  color: #000;
-  font-size: 33px;
-  font-weight: bold;
+#showPassword:hover {
   cursor: pointer;
-}
-
-.closeBtn:hover {
-  color: #d9534f;
-  transition: 200ms;
-}
-
-.messageContainer {
-  margin-top: 10px;
-}
-
-.message {
-  font-size: 16px;
-  color: #333;
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
+  color: black;
 }

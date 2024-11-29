@@ -6,11 +6,9 @@ import { login } from "./actions";
 import { useRouter } from "next/navigation";
 import FormErrors from "@/components/admin/FormErrors/FormErrors";
 import { IoMdClose } from "react-icons/io";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Page() {
   const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
@@ -27,10 +25,8 @@ export default function Page() {
       router.push("/admin");
     } else if (response.status === 400) {
       setErrors(response.error);
-      setMessage(null);
     } else {
-      setErrors({});
-      setMessage(response.message);
+      setErrors({ result: [response.message] });
     }
 
     setIsSubmitting(false);
@@ -46,7 +42,7 @@ export default function Page() {
             name="email"
             id="email"
             placeholder="E-mail"
-            className={errors.email ? "error" : ""}
+            className={errors.email || errors.result ? "error" : ""}
           />
           <div className="errorDiv">
             {errors.email && <FormErrors errors={errors.email} />}
@@ -58,40 +54,30 @@ export default function Page() {
             name="password"
             id="password"
             placeholder="Senha"
-            className={errors.password ? "error" : ""}
+            className={errors.password || errors.result ? "error" : ""}
           />
-          <button
+          <div className="errorDiv">
+            {errors.result ? (
+              <FormErrors errors={errors.result} />
+            ) : (
+              errors.password && <FormErrors errors={errors.password} />
+            )}
+          </div>
+          <p id="showPassword" onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? "Ocultar senha" : "Mostrar senha"}
+          </p>
+          {/* <button
             className="togglePasswordBtn"
             type="button"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? "Ocultar senha" : "Mostrar senha"}
-          </button>
-          <div className="errorDiv">
-            {errors.password && <FormErrors errors={errors.password} />}
-          </div>
+          </button> */}
         </div>
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Logando..." : "Login"}
         </button>
       </form>
-      {message && (
-        <div className="messagePopUp">
-          <div className="closeBtnContainer">
-            <div
-              className="closeBtn"
-              onClick={() => {
-                setMessage(null);
-              }}
-            >
-              <IoMdClose />
-            </div>
-          </div>
-          <div className="messageContainer">
-            <p className="message">{message}</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
