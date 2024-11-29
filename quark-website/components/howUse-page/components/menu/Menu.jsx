@@ -54,9 +54,6 @@ export default function Menu() {
           <a href="#QuemSomos">Quem Somos</a>
         </li>
         <li>
-          <a href="#ComoFunciona">Como Funciona</a>
-        </li>
-        <li>
           <a href="#Diferenciais">Diferenciais</a>
         </li>
         <li>
@@ -67,14 +64,6 @@ export default function Menu() {
         </li>
         <li>
           <a href="#Blog">Blog</a>
-        </li>
-        <li>
-          <a href="#Time">Time</a>
-        </li>
-        <li id="buttonHowUse">
-          <button id="howUseMenu">
-            <Link href="/">Como Usar</Link>
-          </button>
         </li>
       </ul>
     </nav>
