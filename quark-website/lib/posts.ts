@@ -36,6 +36,9 @@ export async function getPosts(params: {
         },
       ],
     },
+    orderBy: {
+      lastEditedAt: "desc",
+    },
   });
 
   if (params.published) {

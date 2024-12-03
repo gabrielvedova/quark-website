@@ -1,6 +1,6 @@
 import createAdmin from "@/lib/create-admin";
 import { PostSchema } from "./schema";
-import { EmailInUseError, PasswordMismatchError } from "@/lib/errors";
+import { UsernameInUseError, PasswordMismatchError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
@@ -9,7 +9,7 @@ import { adminAuthApiMiddleware } from "@/lib/auth";
  *
  * @param request.body.name The name of the admin.
  * @param request.body.role The role of the admin.
- * @param request.body.email The email of the admin.
+ * @param request.body.username The username of the admin.
  * @param request.body.password The password of the admin.
  * @param request.body.passwordConfirmation The password of the admin, confirmed.
  *
@@ -42,12 +42,13 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
       });
     }
 
-    if (error instanceof EmailInUseError) {
+    if (error instanceof UsernameInUseError) {
       return ConventionalResponse.conflict({
-        error: { email: ["Email já em uso."] },
+        error: { email: ["Nome de usuário já em uso"] },
       });
     }
 
+    console.log(error);
     return ConventionalResponse.internalServerError();
   }
 });

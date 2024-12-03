@@ -1,21 +1,14 @@
-export class EmailInUseError extends Error {
+export class UsernameInUseError extends Error {
   constructor() {
-    super("Email already in use");
-    this.name = "EmailInUseError";
+    super("Username already in use");
+    this.name = "UsernameInUseError";
   }
 }
 
-export class EmailMismatchError extends Error {
+export class UsernameMismatchError extends Error {
   constructor() {
-    super("Emails do not match");
-    this.name = "EmailMismatchError";
-  }
-}
-
-export class IncorrectEmailError extends Error {
-  constructor() {
-    super("Current email is incorrect");
-    this.name = "IncorrectEmailError";
+    super("Usernames do not match");
+    this.name = "UsernameMismatchError";
   }
 }
 

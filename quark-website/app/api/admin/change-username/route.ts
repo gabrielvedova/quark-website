@@ -1,9 +1,9 @@
-import { updateEmail } from "@/lib/change-email";
+import { updateUsername } from "@/lib/change-username";
 import { PatchSchema } from "./schema";
 import {
-  EmailInUseError,
-  EmailMismatchError,
-  IncorrectEmailError,
+  UsernameInUseError,
+  UsernameMismatchError,
+  IncorrectPasswordError,
   NotFoundError,
   UnauthorizedError,
 } from "@/lib/errors";
@@ -19,8 +19,8 @@ import { adminAuthApiMiddleware } from "@/lib/auth";
  *
  * @returns 200 - { message: "Email alterado com sucesso." }
  * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 400 - { error: { email: ["Email incorreto."] } }
  * @returns 400 - { error: { newEmailConfirmation: ["Os emails não coincidem."] } }
+ * @returns 400 - { error: { password: ["Senha incorreta."] } }
  * @returns 401 - { message: "Não autorizado." }
  * @returns 404 - { message: "Usuário não encontrado" }
  * @returns 409 - { error: { newEmail: ["Email já em uso"] } }
@@ -37,7 +37,7 @@ export const PATCH = adminAuthApiMiddleware(async (request: Request) => {
   }
 
   try {
-    await updateEmail(validatedBody.data);
+    await updateUsername(validatedBody.data);
     return ConventionalResponse.ok({ message: "Email alterado com sucesso." });
   } catch (error) {
     if (error instanceof UnauthorizedError) {
@@ -50,19 +50,19 @@ export const PATCH = adminAuthApiMiddleware(async (request: Request) => {
       });
     }
 
-    if (error instanceof IncorrectEmailError) {
+    if (error instanceof IncorrectPasswordError) {
       return ConventionalResponse.badRequest({
-        error: { email: ["Email incorreto."] },
+        error: { password: ["Senha incorreta."] },
       });
     }
 
-    if (error instanceof EmailMismatchError) {
+    if (error instanceof UsernameMismatchError) {
       return ConventionalResponse.badRequest({
-        error: { email: ["Os emails não coincidem."] },
+        error: { newEmailConfirmation: ["Os emails não coincidem."] },
       });
     }
 
-    if (error instanceof EmailInUseError) {
+    if (error instanceof UsernameInUseError) {
       return ConventionalResponse.conflict({
         error: { newEmail: ["Email já em uso"] },
       });

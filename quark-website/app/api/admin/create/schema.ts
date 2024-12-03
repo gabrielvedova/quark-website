@@ -15,7 +15,17 @@ export const PostSchema = z.object({
     .max(50, { message: "O cargo deve possuir até 50 caracteres." })
     .trim(),
 
-  email: z.string().email({ message: "Insira um email válido" }).trim(),
+  username: z
+    .string()
+    .min(4, {
+      message: "O nome de usuário deve possuir pelo menos 4 caracteres.",
+    })
+    .max(32, { message: "O nome de usuário deve possuir até 32 caracteres." })
+    .regex(/^[A-Za-z\d_.]+$/, {
+      message:
+        "O nome de usuário deve possuir apenas letras, dígitos, underscores e pontos.",
+    })
+    .trim(),
 
   password: z
     .string()
