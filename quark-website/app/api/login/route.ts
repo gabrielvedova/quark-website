@@ -1,6 +1,6 @@
 import login from "@/lib/login";
 import { PostSchema } from "./schema";
-import { IncorrectEmailOrPasswordError } from "@/lib/errors";
+import { IncorrectUsernameOrPasswordError } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
 
 /**
@@ -28,9 +28,9 @@ export const POST = async (request: Request): Promise<ConventionalResponse> => {
     await login(validatedBody.data);
     return ConventionalResponse.ok({ message: "Login efetuado com sucesso." });
   } catch (error) {
-    if (error instanceof IncorrectEmailOrPasswordError) {
+    if (error instanceof IncorrectUsernameOrPasswordError) {
       return ConventionalResponse.unauthorized({
-        message: "Email ou senha incorretos.",
+        message: "Nome de usuário ou senha incorretos.",
       });
     }
 

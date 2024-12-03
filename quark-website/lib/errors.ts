@@ -12,10 +12,10 @@ export class UsernameMismatchError extends Error {
   }
 }
 
-export class IncorrectEmailOrPasswordError extends Error {
+export class IncorrectUsernameOrPasswordError extends Error {
   constructor() {
-    super("Email or password incorrect");
-    this.name = "IncorrectEmailOrPasswordError";
+    super("Incorrect username or password");
+    this.name = "IncorrectUsernameOrPasswordError";
   }
 }
 

@@ -1,7 +1,13 @@
 import { z } from "zod";
 
 export const PostSchema = z.object({
-  email: z.string().email({ message: "Insira um email válido." }).trim(),
+  username: z
+    .string()
+    .min(1, { message: "Insira um nome de usuário." })
+    .max(128, {
+      message: "O nome de usuário deve ter no máximo 128 caracteres.",
+    })
+    .trim(),
 
   password: z
     .string()
