@@ -75,6 +75,10 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
 /**
  * Modify a post.
  *
+ * Used to semantically update two or more fields of a post. Although it is
+ * possible to update a single field, it is recommended to use PATCH for that
+ * purpose.
+ *
  * @param request.body.id The ID of the post to modify.
  * @param request.body.title The new title of the post.
  * @param request.body.content The new content of the post.
@@ -108,6 +112,13 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
     return ConventionalResponse.internalServerError();
   }
 });
+
+/**
+ * Alias for PUT.
+ *
+ * Used to semantically update a single field of a post.
+ */
+export const PATCH = PUT;
 
 /**
  * Delete a post.
