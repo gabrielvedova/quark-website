@@ -11,7 +11,7 @@ import { ConventionalResponse } from "@/lib/responses";
  *
  * @returns 200 - { message: "Login efetuado com sucesso." }
  * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 401 - { message: "Email ou senha incorretos." }
+ * @returns 401 - { message: "Nome de usuário ou senha incorretos." }
  * @returns 500 - { message: "Ocorreu um erro." }
  */
 export const POST = async (request: Request): Promise<ConventionalResponse> => {

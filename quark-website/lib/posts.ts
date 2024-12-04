@@ -24,13 +24,13 @@ export async function getPosts(params: {
   let posts = await prisma.post.findMany({
     where: {
       OR: [
-        { title: { contains: params?.search || "" } },
-        { content: { contains: params?.search || "" } },
+        { title: { contains: params?.search || "", mode: "insensitive" } },
+        { content: { contains: params?.search || "", mode: "insensitive" } },
         {
           author: {
             OR: [
-              { name: { contains: params?.search || "" } },
-              { role: { contains: params?.search || "" } },
+              { name: { contains: params?.search || "", mode: "insensitive" } },
+              { role: { contains: params?.search || "", mode: "insensitive" } },
             ],
           },
         },

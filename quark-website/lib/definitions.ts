@@ -7,9 +7,3 @@ export type Post = {
   published: boolean;
   lastEditedAt: Date;
 };
-
-export enum Published {
-  ALL,
-  PUBLISHED,
-  ARCHIVED,
-}
