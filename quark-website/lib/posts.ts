@@ -111,7 +111,10 @@ export async function updatePost(data: {
     return;
   }
 
-  await prisma.post.update({ where: { id: data.id }, data });
+  await prisma.post.update({
+    where: { id: data.id },
+    data: { ...data, lastEditedAt: new Date() },
+  });
 }
 
 /**
