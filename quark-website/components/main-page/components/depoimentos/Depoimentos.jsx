@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import "@/components/main-page/components/depoimentos/slide.css";
-import "@/styles/app/styles.css";
+import "@/app/styles.css";
 
 const NextArrow = (props) => {
   const { className, style, onClick } = props;

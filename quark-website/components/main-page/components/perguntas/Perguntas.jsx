@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from "./Perguntas.module.css";
 import { FaCirclePlus, FaCircleMinus } from "react-icons/fa6";
-import "@/styles/app/styles.css";
+import "@/app/styles.css";
 
 export default function Perguntas() {
   const [isQuestionOne, setQuestionOne] = useState(false);

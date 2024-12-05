@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Patrocinio.module.css";
-import "@/styles/app/styles.css";
+import "@/app/styles.css";
 
 export default function Patrocinio() {
   const parceiros = [

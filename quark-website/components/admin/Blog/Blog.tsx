@@ -5,9 +5,9 @@ import Menu from "@/components/admin/Menu/Menu";
 import styles from "./Blog.module.css";
 import ListMessage from "@/components/admin/ListMessage/ListMessage";
 import Link from "next/link";
-import SearchBar from "@/components/admin/SearchBar/SearchBar";
+import SearchBar from "@/components/admin/Blog/SearchBar/SearchBar";
 import { Post } from "@/lib/definitions";
-import PostOption from "@/components/admin/PostOption/PostOption";
+import PostOption from "@/components/admin/Blog/PostOption/PostOption";
 
 export default function Blog() {
   const [search, setSearch] = useState<string>("");

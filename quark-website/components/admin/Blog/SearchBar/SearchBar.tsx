@@ -2,7 +2,7 @@
 
 import FilterPosts from "../FIlterPosts/FilterPosts";
 import styles from "./SearchBar.module.css";
-import SearchInput from "@/components/admin/SearchInput/SearchInput";
+import SearchInput from "@/components/admin/Blog/SearchInput/SearchInput";
 
 export default function SearchBar({
   search,
