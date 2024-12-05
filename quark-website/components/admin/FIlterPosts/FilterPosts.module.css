@@ -1,0 +1,30 @@
+.openFiltersBtn {
+  background: none;
+  border: none;
+  color: #0056d2;
+}
+
+.openFiltersBtn:hover {
+  cursor: pointer;
+  color: #003a9d;
+}
+
+.popup {
+  padding: 7px;
+  padding-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #0056b3;
+  position: absolute;
+  background-color: white;
+  z-index: 100;
+}
+
+.popup h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.popup form {
+  display: flex;
+  flex-direction: column;
+}

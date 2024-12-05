@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./Conquistas.module.css";
 import Slide from "../slide/Slide";
 import Enrollment from "../inscricao/Enrollment";
-import "@/app/app.css";
+import "@/styles/app/styles.css";
 
 export default function Conquistas() {
   const [isFormsOpen, setForms] = useState(false);

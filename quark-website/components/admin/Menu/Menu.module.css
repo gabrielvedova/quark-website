@@ -1,23 +1,22 @@
-nav {
+.nav {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-nav > * {
+.link,
+.title {
   margin: 0 5vw;
 }
 
-h1 {
+.title {
   margin: 0;
   padding: 10px 20px;
   background-color: white;
-  border: 2px solid #0056b3;
+  border: 2px solid #0056d2;
   border-radius: 20px;
-  color: #0056b3;
+  color: #0056d2;
   font-size: 18px;
   white-space: nowrap;
   text-align: center;
@@ -25,18 +24,18 @@ h1 {
   font-family: sans-serif;
 }
 
-a {
+.link {
   text-decoration: none;
-  color: #0056b3;
+  color: #0056d2;
   font-size: 16px;
   font-weight: 500;
   transition: color 0.2s ease;
   font-family: sans-serif;
 }
 
-a:hover {
+.link:hover {
   text-decoration: underline;
-  color: #003d80;
+  color: #003a9d;
 }
 
 .underlined {

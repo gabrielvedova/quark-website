@@ -1,5 +1,6 @@
 "use client";
-import "./app.css";
+
+import "./styles.css";
 import Menu from "@/components/main-page/components/menu/Menu";
 import MainPage from "@/components/main-page/MainPage";
 

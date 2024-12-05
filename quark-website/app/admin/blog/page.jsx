@@ -1,10 +1,11 @@
-import Menu from "@/components/admin/Menu/Menu";
-import "./styles.css";
+"use client";
+
+import Blog from "@/components/admin/Blog/Blog";
 
 export default function Page() {
   return (
     <div>
-      <Menu current="blog" />
+      <Blog />
     </div>
   );
 }

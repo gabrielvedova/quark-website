@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
-import "@/app/app.css";
+import "@/styles/app/styles.css";
 import "@/components/main-page/components/blog/slide.css";
 
 const slidesToShow = () => {
