@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Depoimentos.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -10,6 +10,20 @@ import "@/app/styles.css";
 
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
+  const [innerWidth, setInnerWidth] = useState(0);
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setInnerWidth(window.innerWidth);
+      });
+    };
+  });
+
   return (
     <div
       className={className}
@@ -22,36 +36,58 @@ const NextArrow = (props) => {
       }}
       onClick={onClick}
     >
-      <MdNavigateNext
-        color="#f1296c"
-        size={window.innerWidth < 551 ? 50 : 100}
-      />
+      <MdNavigateNext color="#f1296c" size={innerWidth < 551 ? 50 : 100} />
     </div>
   );
 };
 
 const PrevArrow = (props) => {
   const { className, style, onClick } = props;
+  const [innerWidth, setInnerWidth] = useState(0);
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setInnerWidth(window.innerWidth);
+      });
+    };
+  });
+
   return (
     <div
       className={className}
       style={{
         ...style,
         display: "block",
-        left: window.innerWidth < 551 ? -55 : -105,
+        left: innerWidth < 551 ? -55 : -105,
         top: 100,
       }}
       onClick={onClick}
     >
-      <MdNavigateBefore
-        color="#f1296c"
-        size={window.innerWidth < 551 ? 50 : 100}
-      />
+      <MdNavigateBefore color="#f1296c" size={innerWidth < 551 ? 50 : 100} />
     </div>
   );
 };
 
 export default function Depoimentos() {
+  const [innerWidth, setInnerWidth] = useState(0);
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setInnerWidth(window.innerWidth);
+      });
+    };
+  });
+
   const comments = [
     {
       id: 1,
@@ -110,9 +146,9 @@ export default function Depoimentos() {
   ];
 
   const slidesToShow = () => {
-    if (window.innerWidth < 1300 && window.innerWidth > 970) {
+    if (innerWidth < 1300 && innerWidth > 970) {
       return 2;
-    } else if (window.innerWidth < 971) {
+    } else if (innerWidth < 971) {
       return 1;
     } else {
       return 3;
@@ -120,7 +156,7 @@ export default function Depoimentos() {
   };
 
   const settings = {
-    dots: window.innerWidth > 971 ? true : false,
+    dots: innerWidth > 971 ? true : false,
     infinite: true,
     slidesToShow: slidesToShow(),
     slidesToScroll: slidesToShow(),

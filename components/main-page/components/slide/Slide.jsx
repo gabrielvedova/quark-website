@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,6 +8,19 @@ import "./Slide.css";
 export default function Slide() {
   const sliderRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(1);
+  const [innerWidth, setInnerWidth] = useState(0);
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setInnerWidth(window.innerWidth);
+      });
+    };
+  });
 
   const list = [
     {
@@ -29,7 +42,7 @@ export default function Slide() {
     arrows: false,
     infinite: true,
     speed: 500,
-    slidesToShow: window.innerWidth > 450 ? 3 : 1,
+    slidesToShow: innerWidth > 450 ? 3 : 1,
     slidesToScroll: 1,
     centerMode: true, // Ativar o modo centralizado
     centerPadding: "0", // Remover padding central

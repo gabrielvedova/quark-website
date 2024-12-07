@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Perguntas.module.css";
 import { FaCirclePlus, FaCircleMinus } from "react-icons/fa6";
 import "@/app/styles.css";
@@ -8,7 +8,21 @@ export default function Perguntas() {
   const [isQuestionOne, setQuestionOne] = useState(false);
   const [isQuestionTwo, setQuestionTwo] = useState(false);
   const [isQuestionThree, setQuestionThree] = useState(false);
-  const sizeButton = window.innerWidth > 970 ? 45 : 30;
+  const [innerWidth, setInnerWidth] = useState(0);
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setInnerWidth(window.innerWidth);
+      });
+    };
+  });
+
+  const sizeButton = innerWidth > 970 ? 45 : 30;
 
   return (
     <div className={styles.container}>

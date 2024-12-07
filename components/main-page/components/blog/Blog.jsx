@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Blog.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -7,17 +7,21 @@ import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import "@/app/styles.css";
 import "@/components/main-page/components/blog/slide.css";
 
-const slidesToShow = () => {
-  if (window.innerWidth < 1300 && window.innerWidth > 970) {
-    return 2;
-  } else if (window.innerWidth < 971) {
-    return 1;
-  } else {
-    return 3;
-  }
-};
-
 export default function Blog() {
+  const [innerWidth, setInnerWidth] = useState(0);
+
+  useEffect(() => {
+    setInnerWidth(window.innerWidth);
+    window.addEventListener("resize", () => {
+      setInnerWidth(window.innerWidth);
+    });
+    return () => {
+      window.removeEventListener("resize", () => {
+        setInnerWidth(window.innerWidth);
+      });
+    };
+  });
+
   const notices = [
     {
       id: 1,
@@ -112,14 +116,11 @@ export default function Blog() {
           display: "block",
           color: "transparent",
           top: 100,
-          right: window.innerWidth > 971 ? -50 : -30,
+          right: innerWidth > 971 ? -50 : -30,
         }}
         onClick={onClick}
       >
-        <MdNavigateNext
-          color="#f1296c"
-          size={window.innerWidth < 551 ? 50 : 100}
-        />
+        <MdNavigateNext color="#f1296c" size={innerWidth < 551 ? 50 : 100} />
       </div>
     );
   };
@@ -132,15 +133,12 @@ export default function Blog() {
         style={{
           ...style,
           display: "block",
-          left: window.innerWidth < 551 ? -55 : -85,
+          left: innerWidth < 551 ? -55 : -85,
           top: 100,
         }}
         onClick={onClick}
       >
-        <MdNavigateBefore
-          color="#f1296c"
-          size={window.innerWidth < 551 ? 50 : 100}
-        />
+        <MdNavigateBefore color="#f1296c" size={innerWidth < 551 ? 50 : 100} />
       </div>
     );
   };
@@ -149,10 +147,10 @@ export default function Blog() {
   notices.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const settings = {
-    dots: window.innerWidth > 971 ? true : false,
+    dots: innerWidth > 971 ? true : false,
     arrows: true,
     infinite: true,
-    slidesToShow: slidesToShow(),
+    slidesToShow: innerWidth < 971 ? 1 : innerWidth < 1300 ? 2 : 3,
     slidesToScroll: 1,
     speed: 500,
     nextArrow: <NextArrow />,
