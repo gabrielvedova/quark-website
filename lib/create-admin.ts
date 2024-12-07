@@ -1,4 +1,4 @@
-import prisma from "./db";
+import prisma from "./prisma";
 import argon2 from "argon2";
 import { UsernameInUseError, PasswordMismatchError } from "./errors";
 

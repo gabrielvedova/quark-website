@@ -34,6 +34,8 @@ export const POST = async (request: Request): Promise<ConventionalResponse> => {
       });
     }
 
-    return ConventionalResponse.internalServerError();
+    return ConventionalResponse.internalServerError({
+      message: error instanceof Error ? error.message : "Ocorreu um erro.",
+    });
   }
 };

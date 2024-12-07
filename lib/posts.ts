@@ -1,4 +1,4 @@
-import prisma from "./db";
+import prisma from "./prisma";
 import { NotFoundError, UnauthorizedError } from "./errors";
 import { getAdminId } from "./session";
 

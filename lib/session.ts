@@ -1,5 +1,5 @@
 import "server-only";
-import prisma from "./db";
+import prisma from "./prisma";
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 import { UnauthorizedError } from "./errors";
