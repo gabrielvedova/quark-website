@@ -13,22 +13,24 @@ export default function Diferenciais() {
         <div className={styles.text1}>
           <div className={styles.topic1}>
             <h2>
-              Micro<span className={styles.circle}>learn</span>ing
+              Me<span className={styles.circle}>todo</span>logia
             </h2>
             <p>
-              A utilização de diversas tecnologias educacionais, como
-              microlearning, traz para a Quark uma linguagem muito lúdica e
-              focada no nosso usuário: jovens que estão ingressando no mercado
-              ou dando os primeiros passos na sua trajetória profissional.
+              Criamos uma metodologia específica para motivar o público jovem na
+              nossa plataforma. Essa metodologia é baseada em três pilares
+              principais: microlerning, gamificação e diferentes formatos de
+              conteúdo. Assim a gente garante que o aprendizado dos nossos
+              alunos seja leve e engajador.
             </p>
           </div>
           <div className={styles.topic2}>
             <h2>
-              <span className={styles.circle}>Gami</span>ficação
+              <span className={styles.circle}>Certi</span>ficados
             </h2>
             <p>
-              O visual clean e a gamificação também estão relacionados com a
-              alta taxa de engajamento da plataforma, chegando em até 87%.
+              A cada trilha que nosso aluno finaliza, ele ganha um certificado.
+              Essa é uma frma de demonstrar para o aluno, e para o mercado, o
+              progresso do estudante na Quark
             </p>
           </div>
         </div>
@@ -39,23 +41,13 @@ export default function Diferenciais() {
         <div className={styles.text2}>
           <div className={styles.topic3}>
             <h2>
-              I<span className={styles.circle}>nova</span>ção
+              IA <span className={styles.circle}>Gene</span>rativa
             </h2>
             <p>
-              Além disso, a Quark foi criada em um dos maiores ecossistemas de
-              inovação do país, por isso, o conteúdo da plataforma é alinhado
-              com as necessidades reais do mercado.
-            </p>
-          </div>
-          <div className={styles.topic4}>
-            <h2>
-              Inova
-              <span className={styles.circle}>ção</span>
-            </h2>
-            <p>
-              Além disso, a Quark foi criada em um dos maiores ecossistemas de
-              inovação do país, por isso, o conteúdo da plataforma é alinhado
-              com as necessidades reais do mercado.
+              Todo o conteúdo da Quark é criada pel nosso time com o auxilio de
+              uma ferramenta de IA Generativa. Dessa forma, o conteúdo sempre
+              vai ser persnalizado para a necessidade de cada aluno e com o selo
+              Quark de qualidade
             </p>
           </div>
         </div>

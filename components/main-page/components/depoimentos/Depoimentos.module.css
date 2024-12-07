@@ -8,9 +8,10 @@
   min-height: 100vh;
 }
 
-img.video {
-  width: 70%;
+.video {
+  aspect-ratio: 4/3;
   margin: 2% 0;
+  border: none;
 }
 
 .comments {
@@ -31,24 +32,25 @@ img.video {
   margin: auto;
   padding: 25% 10%;
   background-color: rgb(238, 238, 238);
-  height: 100%;
+  height: 200px; /* Altura fixa para todos os comentários */
   width: 70%;
   border-radius: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Centraliza o conteúdo verticalmente */
 }
 
 .comment h4 {
   margin-top: 0;
-  font-size: 18px;
+  font-size: 16px;
   text-align: center;
   color: #000;
   width: 90%;
 }
 
 .comment span {
-  font-size: 18px;
+  font-size: 16px;
   font-style: oblique;
 }
 

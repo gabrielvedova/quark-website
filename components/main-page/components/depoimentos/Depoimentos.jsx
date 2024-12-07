@@ -92,56 +92,32 @@ export default function Depoimentos() {
     {
       id: 1,
       comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
+        "Eu ser líder? Antes da Quark eu nem imaginava isso. Mas hoje em dia eu vejo que eu posso. Se eu quiser, eu posso",
+      author: "- Liliana, aluna Embarque Digital",
     },
     {
       id: 2,
       comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
+        "Eu achei a experiência incrível. Eu já gostava de temas como comunicação, mas aprendi como isso se aplica a visa profissional.",
+      author: "- Mariana, aluna ETEMAC",
     },
     {
       id: 3,
       comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
+        "Com a Quark consegui colocar em prática esses conteúdos do soft skills tanto no meu dia a dia profissional, como no pessoal. Quando você entende esses conceitos, fica mais fácil conviver em comunidade. Eu coloquei todos os certificados no meu Linkedin",
+      author: "- Evelyn, ADS",
     },
     {
       id: 4,
       comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
+        "A minha experiência com a Quark foi muito positiva. Principalmente a de comunicação, que foi a que eu mais me interessei. Muita gente pensa que profissionais de TI são  só nerds, mas hoje em dia você não pode só saber codar. Se você não sabe sobre essas outras habilidades, você tá perdendo tempo",
+      author: "- Rennan Lima, SI",
     },
     {
       id: 5,
       comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
-    },
-    {
-      id: 6,
-      comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
-    },
-    {
-      id: 7,
-      comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
-    },
-    {
-      id: 8,
-      comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
-    },
-    {
-      id: 9,
-      comment:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      author: "- Tony, aluno da UNICAP",
+        "Eu achei o app Quark muito bom, principalmente dos cursos de comunicação e empreendedorismo. Você tem vários conteúdos legais e os quizes tambem sao otimos",
+      author: "- Flávio Gabriel , aluno ETEMAC",
     },
   ];
 
@@ -155,8 +131,20 @@ export default function Depoimentos() {
     }
   };
 
+  const heightVideo = () => {
+    if (innerWidth < 420) {
+      return 250;
+    } else if (innerWidth < 551) {
+      return 300;
+    } else if (innerWidth < 971) {
+      return 400;
+    } else {
+      return 600;
+    }
+  };
+
   const settings = {
-    dots: innerWidth > 971 ? true : false,
+    dots: false,
     infinite: true,
     slidesToShow: slidesToShow(),
     slidesToScroll: slidesToShow(),
@@ -167,11 +155,13 @@ export default function Depoimentos() {
 
   return (
     <div className={styles.container} id="Depoimentos">
-      <img
-        src="https://img.freepik.com/vetores-gratis/limpe-o-modelo-do-player-de-video-com-botoes-simples_1017-27217.jpg"
-        alt=""
+      <iframe
+        src="https://www.youtube.com/embed/LAolZVFiNuI"
+        height={heightVideo()}
         className={styles.video}
-      />
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
       <div className={styles.comments}>
         <Slider {...settings} className={styles.slideContainer}>
           {comments.map((comment) => (
