@@ -75,6 +75,11 @@
   outline: none;
 }
 
+.enrollment .itemEnrollment span {
+  display: none;
+  color: #ff5c5c;
+}
+
 .enrollment #formsSend {
   width: 85%;
   height: 8%;
