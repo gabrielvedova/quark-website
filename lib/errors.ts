@@ -53,3 +53,10 @@ export class EmailSendingError extends Error {
     this.name = "EmailSendingError";
   }
 }
+
+export class ImageAccessError extends Error {
+  constructor() {
+    super("Error accessing image");
+    this.name = "ImageAccessError";
+  }
+}
