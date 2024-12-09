@@ -46,3 +46,10 @@ export class UnauthorizedError extends Error {
     this.name = "UnauthorizedError";
   }
 }
+
+export class EmailSendingError extends Error {
+  constructor() {
+    super("Error sending email");
+    this.name = "EmailSendingError";
+  }
+}

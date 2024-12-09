@@ -2,6 +2,7 @@ import { ConventionalResponse } from "@/lib/responses";
 import { PostSchema } from "./schema";
 import { sendContactEmail } from "@/lib/email";
 import { bearerAuthMiddleware } from "@/lib/auth";
+import { EmailSendingError } from "@/lib/errors";
 
 /**
  * Send an email with the contact information.
@@ -33,7 +34,13 @@ export const POST = bearerAuthMiddleware(
       return ConventionalResponse.ok({
         message: "Informações enviadas com sucesso.",
       });
-    } catch (err) {
+    } catch (error) {
+      if (error instanceof EmailSendingError) {
+        return ConventionalResponse.internalServerError({
+          message: "Ocorreu um erro no envio do email.",
+        });
+      }
+
       return ConventionalResponse.internalServerError();
     }
   }
