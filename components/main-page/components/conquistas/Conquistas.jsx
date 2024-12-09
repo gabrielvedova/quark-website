@@ -24,7 +24,7 @@ export default function Conquistas() {
             </span>
           </div>
           <div className={styles.info}>
-            <h1>+40.00</h1>
+            <h1>+40.000</h1>
             <span>
               Mais de <strong>40.000 alunos</strong> já usam nosso aplicativo
             </span>
