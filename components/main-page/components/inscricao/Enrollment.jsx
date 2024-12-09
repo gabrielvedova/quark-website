@@ -23,13 +23,27 @@ export default function Enrollment(props) {
       institution,
     };
 
-    const response = await fetch("/api/enrollment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch("/api/fale-conosco", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok && response.status === 200) {
+        console.log("Formulário enviado com sucesso");
+      } else {
+        console.log(
+          "Erro ao enviar formulário",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+    }
   }
 
   return (
@@ -42,7 +56,7 @@ export default function Enrollment(props) {
         <button id="closeContainer" onClick={() => props.setter(!props.forms)}>
           <IoIosClose size={70} color="#d5d5d5" />
         </button>
-        <form className="mainEnrollment">
+        <form className="mainEnrollment" onSubmit={sendForm}>
           <div className="itemEnrollment">
             <div>Nome</div>
             <input
