@@ -9,6 +9,29 @@ export default function Enrollment(props) {
   const [isPhone, setPhone] = useState(false);
   const [isEmail, setEmail] = useState(false);
   const [isInstitution, setInstitution] = useState(false);
+
+  async function sendForm() {
+    const name = document.querySelector("#name").value;
+    const phone = document.querySelector("#phone").value;
+    const email = document.querySelector("#e-mail").value;
+    const institution = document.querySelector("#institution").value;
+
+    const data = {
+      name,
+      phone,
+      email,
+      institution,
+    };
+
+    const response = await fetch("/api/enrollment", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  }
+
   return (
     <div
       className={
@@ -19,7 +42,7 @@ export default function Enrollment(props) {
         <button id="closeContainer" onClick={() => props.setter(!props.forms)}>
           <IoIosClose size={70} color="#d5d5d5" />
         </button>
-        <div className="mainEnrollment">
+        <form className="mainEnrollment">
           <div className="itemEnrollment">
             <div>Nome</div>
             <input
@@ -125,12 +148,11 @@ export default function Enrollment(props) {
             />
             <span>Instituição Inválida</span>
           </div>
-        </div>
+        </form>
         <button
           id="formsSend"
-          disabled={
-            !setName && !setEmail && !setPhone && !setInstitution ? true : false
-          }
+          type="submit"
+          disabled={!(isName && isPhone && isEmail && isInstitution)}
           onClick={() => console.log("Funciona")}
         >
           Enviar
