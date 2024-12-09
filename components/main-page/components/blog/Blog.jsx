@@ -22,6 +22,17 @@ export default function Blog() {
     };
   });
 
+  async function getNotices() {
+    const response = await fetch("/api/quark-na-midia")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   const notices = [
     {
       id: 1,
@@ -147,7 +158,7 @@ export default function Blog() {
   notices.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const settings = {
-    dots: innerWidth > 971 ? true : false,
+    dots: false,
     arrows: true,
     infinite: true,
     slidesToShow: innerWidth < 971 ? 1 : innerWidth < 1300 ? 2 : 3,
