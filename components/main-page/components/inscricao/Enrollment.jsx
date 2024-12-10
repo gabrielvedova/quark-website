@@ -5,16 +5,16 @@ import { IoIosClose } from "react-icons/io";
 import { set } from "date-fns";
 
 export default function Enrollment(props) {
-  const [isName, setName] = useState(false);
-  const [isPhone, setPhone] = useState(false);
-  const [isEmail, setEmail] = useState(false);
-  const [isInstitution, setInstitution] = useState(false);
+  const [isName, setName] = useState("");
+  const [isPhone, setPhone] = useState("");
+  const [isEmail, setEmail] = useState("");
+  const [isInstitution, setInstitution] = useState("");
 
   async function sendForm() {
-    const name = document.querySelector("#name").value;
-    const phone = document.querySelector("#phone").value;
-    const email = document.querySelector("#e-mail").value;
-    const institution = document.querySelector("#institution").value;
+    const name = isName;
+    const phone = isPhone;
+    const email = isEmail;
+    const institution = isInstitution;
 
     const data = {
       name,
@@ -68,11 +68,11 @@ export default function Enrollment(props) {
                     "1px solid red";
                   document.querySelector("#name + span").style.display =
                     "block";
-                  setName(false);
+                  setName("");
                 } else {
                   document.querySelector("#name").style.border = "none";
                   document.querySelector("#name + span").style.display = "none";
-                  setName(true);
+                  setName(document.querySelector("#name").value);
                 }
               }}
             />
@@ -89,29 +89,29 @@ export default function Enrollment(props) {
 
                 e.target.value =
                   phone.length === 11
-                    ? `(${phone.slice(0, 2)}) ${phone.slice(
+                    ? (phone = `(${phone.slice(0, 2)}) ${phone.slice(
                         2,
                         7
-                      )}-${phone.slice(7)}`
+                      )}-${phone.slice(7)}`)
                     : phone.length === 10
-                    ? `(${phone.slice(0, 2)}) ${phone.slice(
+                    ? (phone = `(${phone.slice(0, 2)}) ${phone.slice(
                         2,
                         6
-                      )}-${phone.slice(6)}`
+                      )}-${phone.slice(6)}`)
                     : phone;
 
                 if (phone.length < 10) {
                   e.target.style.border = "1px solid red";
                   e.target.nextElementSibling.style.display = "block";
-                  setPhone(false);
+                  setPhone("");
                 } else {
                   e.target.style.border = "none";
                   e.target.nextElementSibling.style.display = "none";
-                  setPhone(true);
+                  setPhone(phone);
                 }
               }}
             />
-            <span>Senha Inválida</span>
+            <span>Telefone Inválido</span>
           </div>
           <div className="itemEnrollment">
             <div>E-mail</div>
@@ -129,12 +129,12 @@ export default function Enrollment(props) {
                     "1px solid red";
                   document.querySelector("#e-mail + span").style.display =
                     "block";
-                  setEmail(false);
+                  setEmail("");
                 } else {
                   document.querySelector("#e-mail").style.border = "none";
                   document.querySelector("#e-mail + span").style.display =
                     "none";
-                  setEmail(true);
+                  setEmail(document.querySelector("#e-mail").value);
                 }
               }}
             />
@@ -151,26 +151,25 @@ export default function Enrollment(props) {
                     "1px solid red";
                   document.querySelector("#institution + span").style.display =
                     "block";
-                  setInstitution(false);
+                  setInstitution("");
                 } else {
                   document.querySelector("#institution").style.border = "none";
                   document.querySelector("#institution + span").style.display =
                     "none";
-                  setInstitution(true);
+                  setInstitution(document.querySelector("#institution").value);
                 }
               }}
             />
             <span>Instituição Inválida</span>
           </div>
+          <button
+            id="formsSend"
+            type="submit"
+            disabled={!(isName && isPhone && isEmail && isInstitution)}
+          >
+            Enviar
+          </button>
         </form>
-        <button
-          id="formsSend"
-          type="submit"
-          disabled={!(isName && isPhone && isEmail && isInstitution)}
-          onClick={() => console.log("Funciona")}
-        >
-          Enviar
-        </button>
       </div>
     </div>
   );

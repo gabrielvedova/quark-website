@@ -24,13 +24,13 @@
   top: 5vh;
   width: 30vw;
   height: 90vh;
-  background-color: #8a2be2;
+  background-color: #645f68;
   border-radius: 20px;
   z-index: 100000;
 }
 
 .mainEnrollment {
-  height: 60%;
+  height: 75%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -81,11 +81,12 @@
 }
 
 .enrollment #formsSend {
+  align-self: center;
   width: 85%;
   height: 8%;
   border-radius: 10px;
   border: none;
-  color: #473595;
+  color: #645f68;
   font-size: 18px;
   margin-top: 5%;
 }
