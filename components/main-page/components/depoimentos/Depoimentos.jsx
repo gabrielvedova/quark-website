@@ -88,6 +88,39 @@ export default function Depoimentos() {
     };
   });
 
+  const comments = [
+    {
+      id: 1,
+      comment:
+        "Eu ser líder? Antes da Quark eu nem imaginava isso. Mas hoje em dia eu vejo que eu posso. Se eu quiser, eu posso",
+      author: "- Liliana, aluna Embarque Digital",
+    },
+    {
+      id: 2,
+      comment:
+        "Eu achei a experiência incrível. Eu já gostava de temas como comunicação, mas aprendi como isso se aplica a visa profissional.",
+      author: "- Mariana, aluna ETEMAC",
+    },
+    {
+      id: 3,
+      comment:
+        "Com a Quark consegui colocar em prática esses conteúdos do soft skills tanto no meu dia a dia profissional, como no pessoal. Quando você entende esses conceitos, fica mais fácil conviver em comunidade. Eu coloquei todos os certificados no meu Linkedin",
+      author: "- Evelyn, ADS",
+    },
+    {
+      id: 4,
+      comment:
+        "A minha experiência com a Quark foi muito positiva. Principalmente a de comunicação, que foi a que eu mais me interessei. Muita gente pensa que profissionais de TI são  só nerds, mas hoje em dia você não pode só saber codar. Se você não sabe sobre essas outras habilidades, você tá perdendo tempo",
+      author: "- Rennan Lima, SI",
+    },
+    {
+      id: 5,
+      comment:
+        "Eu achei o app Quark muito bom, principalmente dos cursos de comunicação e empreendedorismo. Você tem vários conteúdos legais e os quizes tambem sao otimos",
+      author: "- Flávio Gabriel , aluno ETEMAC",
+    },
+  ];
+
   const slidesToShow = () => {
     if (innerWidth < 1300 && innerWidth > 970) {
       return 2;
