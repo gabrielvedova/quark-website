@@ -6,7 +6,6 @@ import styles from "./NewPost.module.css";
 export default function NewPost() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [url, setUrl] = useState("");
   const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
@@ -50,10 +49,12 @@ export default function NewPost() {
           response.statusText
         );
       }
+      setTitle("");
+      setDescription("");
+      setImage(null);
     } catch (error) {
       console.error("Erro na requisição:", error);
     }
-    console.log(data);
   }
 
   return (
@@ -79,15 +80,6 @@ export default function NewPost() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
-          </div>
-          <div className={styles.item}>
-            <h3>URL</h3>
-            <input
-              type="text"
-              placeholder="URL"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-            />
           </div>
           <div className={styles.item}>
             <h3>Imagem</h3>
