@@ -61,9 +61,16 @@ export class ImageAccessError extends Error {
   }
 }
 
-export class UploadNotAcceptedError extends Error {
+export class FileKeyAlreadyInUseError extends Error {
   constructor() {
-    super("Upload not accepted");
-    this.name = "UploadNotAcceptedError";
+    super("File key already in use");
+    this.name = "FileKeyAlreadyInUseError";
+  }
+}
+
+export class UploadError extends Error {
+  constructor() {
+    super("Error uploading file");
+    this.name = "UploadError";
   }
 }
