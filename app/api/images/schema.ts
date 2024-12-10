@@ -56,3 +56,10 @@ export const PostSchema = z.object({
       };
     }),
 });
+
+export const PutSchema = z.object({
+  currentKey: z.string().min(1, { message: "A chave atual é obrigatória" }),
+  currentlyPublic: z.boolean().default(true),
+  newKey: z.string().min(1, { message: "A nova chave é obrigatória" }),
+  newPublic: z.boolean().optional(),
+});

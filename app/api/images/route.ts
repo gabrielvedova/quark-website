@@ -1,10 +1,13 @@
 import { ConventionalResponse } from "@/lib/responses";
-import { GetSchema, PostSchema } from "./schema";
+import { GetSchema, PostSchema, PutSchema } from "./schema";
 import { adminAuthApiMiddleware } from "@/lib/auth";
-import { getImage, uploadImage } from "@/lib/images";
+import { getImage, moveImage, uploadImage } from "@/lib/images";
 import {
+  FileDeleteError,
   FileKeyAlreadyInUseError,
-  ImageAccessError,
+  FileMoveError,
+  FileNotFoundError,
+  ImageNotFoundError,
   UploadError,
 } from "@/lib/errors";
 
@@ -28,9 +31,9 @@ export const GET = async (request: Request) => {
       const data = await getImage(body);
       return ConventionalResponse.ok({ data });
     } catch (error) {
-      if (error instanceof ImageAccessError) {
-        return ConventionalResponse.internalServerError({
-          message: "Ocorreu um erro ao acessar a imagem.",
+      if (error instanceof ImageNotFoundError) {
+        return ConventionalResponse.notFound({
+          message: "Imagem não encontrada.",
         });
       }
 
@@ -54,12 +57,13 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
   }
 
   try {
-    const key = await uploadImage(validatedBody.data);
-
-    return ConventionalResponse.created({ data: { key } });
+    await uploadImage(validatedBody.data);
+    return ConventionalResponse.created({
+      message: "Imagem enviada com sucesso.",
+    });
   } catch (error) {
     if (error instanceof FileKeyAlreadyInUseError) {
-      return ConventionalResponse.badRequest({
+      return ConventionalResponse.conflict({
         error: {
           key: ["Chave já utilizada."],
         },
@@ -69,6 +73,58 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
     if (error instanceof UploadError) {
       return ConventionalResponse.internalServerError({
         message: "Ocorreu um erro no upload da imagem.",
+      });
+    }
+
+    return ConventionalResponse.internalServerError();
+  }
+});
+
+export const PUT = adminAuthApiMiddleware(async (request: Request) => {
+  const body = await request.json();
+  const validatedBody = PutSchema.safeParse(body);
+
+  if (!validatedBody.success) {
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten().fieldErrors,
+    });
+  }
+
+  const data = {
+    ...validatedBody.data,
+    newPublic:
+      validatedBody.data.newPublic === undefined
+        ? validatedBody.data.currentlyPublic
+        : validatedBody.data.newPublic,
+  };
+
+  try {
+    await moveImage(data);
+    return ConventionalResponse.noContent();
+  } catch (error) {
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({
+        message: "Imagem não encontrada.",
+      });
+    }
+
+    if (error instanceof FileKeyAlreadyInUseError) {
+      return ConventionalResponse.conflict({
+        error: {
+          newKey: ["Chave já utilizada."],
+        },
+      });
+    }
+
+    if (error instanceof FileMoveError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao mover a imagem.",
+      });
+    }
+
+    if (error instanceof FileDeleteError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao deletar a imagem.",
       });
     }
 

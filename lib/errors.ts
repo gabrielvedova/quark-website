@@ -54,7 +54,7 @@ export class EmailSendingError extends Error {
   }
 }
 
-export class ImageAccessError extends Error {
+export class ImageNotFoundError extends Error {
   constructor() {
     super("Error accessing image");
     this.name = "ImageAccessError";
@@ -72,5 +72,26 @@ export class UploadError extends Error {
   constructor() {
     super("Error uploading file");
     this.name = "UploadError";
+  }
+}
+
+export class FileNotFoundError extends Error {
+  constructor() {
+    super("File not found");
+    this.name = "FileNotFoundError";
+  }
+}
+
+export class FileMoveError extends Error {
+  constructor() {
+    super("Error moving file");
+    this.name = "FileMoveError";
+  }
+}
+
+export class FileDeleteError extends Error {
+  constructor() {
+    super("Error deleting file");
+    this.name = "FileDeleteError";
   }
 }
