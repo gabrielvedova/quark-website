@@ -8,6 +8,7 @@ import "@/app/styles.css";
 import "@/components/main-page/components/blog/slide.css";
 
 export default function Blog() {
+  const [notices, setNotices] = useState([]);
   const [innerWidth, setInnerWidth] = useState(0);
 
   useEffect(() => {
@@ -22,100 +23,21 @@ export default function Blog() {
     };
   });
 
-  async function getNotices() {
-    const response = await fetch("/api/quark-na-midia")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+  useEffect(() => {
+    fetch("/api/quark-na-midia")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.text(); // Change to text to log the raw response
       })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-  const notices = [
-    {
-      id: 1,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2024-11-14",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 2,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2023-12-22",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 3,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2024-10-10",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 4,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2022-11-01",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 5,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2019-10-03",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 6,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2021-05-10",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 7,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2021-10-09",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 8,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2022-10-10",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-    {
-      id: 9,
-      title: "Quark na mídia",
-      description:
-        "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-      date: "2021-11-10",
-      image:
-        "https://www.plataformaquark.com/_next/static/media/amcham.856c302b.png",
-    },
-  ];
+      .then((text) => {
+        console.log("Raw response:", text); // Log the raw response
+        return JSON.parse(text); // Parse the text to JSON
+      })
+      .then((data) => setNotices(data.data))
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
 
   const NextArrow = (props) => {
     const { className, style, onClick } = props;
@@ -154,9 +76,6 @@ export default function Blog() {
     );
   };
 
-  // Ordenar as notícias pela data, do mais recente para o mais antigo
-  notices.sort((a, b) => new Date(b.date) - new Date(a.date));
-
   const settings = {
     dots: false,
     arrows: true,
@@ -182,7 +101,7 @@ export default function Blog() {
       <div className={styles.containerNotices}>
         <Slider {...settings} className={styles.sliderContainer}>
           {notices.map((notice) => {
-            const date = new Date(notice.date);
+            const date = new Date(notice.publishingDate);
             let formattedDate = date.toLocaleDateString("pt-BR", {
               month: "long",
               year: "numeric",
@@ -195,7 +114,7 @@ export default function Blog() {
                 style={{ width: 80 }}
               >
                 <div className={styles.notice}>
-                  <img src={notice.image} alt={notice.title} />
+                  <img src={notice.miniature} alt={notice.title} />
                   <div className={styles.noticeContent}>
                     <h2>{notice.title}</h2>
                     <p>{notice.description}</p>
