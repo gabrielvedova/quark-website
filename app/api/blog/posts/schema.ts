@@ -45,7 +45,7 @@ export const PostSchema = z.object({
 
   miniature: z.string().url({ message: "Insira uma URL válida." }).min(1),
 
-  published: z.boolean(),
+  published: z.boolean().default(false),
 });
 
 export const PutSchema = z.object({

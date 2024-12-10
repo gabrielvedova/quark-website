@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.container form {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.item textarea {
+  resize: none;
+}
+
+.item input {
+  width: 96%;
+  padding: 6px;
+  margin: 6px 0;
+}
+
+.container form button {
+  align-self: center;
+  width: 40%;
+  height: 40px;
+  border-radius: 30px;
+  border: none;
+  background-color: rgb(104, 168, 241);
+}

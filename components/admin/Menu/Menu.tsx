@@ -1,7 +1,11 @@
 import Link from "next/link";
 import styles from "./Menu.module.css";
 
-export default function Menu({ current }: { current: string }) {
+export default function Menu({
+  current,
+}: {
+  current: "blog" | "quark-na-midia" | "alterar-perfil" | "criar";
+}) {
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
