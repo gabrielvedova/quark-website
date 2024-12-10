@@ -63,3 +63,8 @@ export const PutSchema = z.object({
   newKey: z.string().min(1, { message: "A nova chave é obrigatória" }),
   newPublic: z.boolean().optional(),
 });
+
+export const DeleteSchema = z.object({
+  key: z.string().min(1, { message: "A chave é obrigatória" }),
+  public: z.boolean().default(true),
+});

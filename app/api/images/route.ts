@@ -1,7 +1,7 @@
 import { ConventionalResponse } from "@/lib/responses";
-import { GetSchema, PostSchema, PutSchema } from "./schema";
+import { DeleteSchema, GetSchema, PostSchema, PutSchema } from "./schema";
 import { adminAuthApiMiddleware } from "@/lib/auth";
-import { getImage, moveImage, uploadImage } from "@/lib/images";
+import { deleteImage, getImage, moveImage, uploadImage } from "@/lib/images";
 import {
   FileDeleteError,
   FileKeyAlreadyInUseError,
@@ -119,6 +119,36 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
     if (error instanceof FileMoveError) {
       return ConventionalResponse.internalServerError({
         message: "Ocorreu um erro ao mover a imagem.",
+      });
+    }
+
+    if (error instanceof FileDeleteError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao deletar a imagem.",
+      });
+    }
+
+    return ConventionalResponse.internalServerError();
+  }
+});
+
+export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
+  const body = await request.json();
+  const validatedBody = DeleteSchema.safeParse(body);
+
+  if (!validatedBody.success) {
+    return ConventionalResponse.badRequest({
+      error: validatedBody.error.flatten().fieldErrors,
+    });
+  }
+
+  try {
+    await deleteImage(validatedBody.data);
+    return ConventionalResponse.noContent();
+  } catch (error) {
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({
+        message: "Imagem não encontrada.",
       });
     }
 

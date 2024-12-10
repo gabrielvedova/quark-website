@@ -102,3 +102,18 @@ export async function moveImage(data: {
     throw new FileDeleteError();
   }
 }
+
+export async function deleteImage(data: { key: string; public: boolean }) {
+  if (await fileExists(data.key, data.public)) throw new FileNotFoundError();
+
+  try {
+    await s3
+      .deleteObject({
+        Bucket: process.env.IMAGES_BUCKET_NAME || "",
+        Key: `${data.public ? "public" : "private"}/images/${data.key}`,
+      })
+      .promise();
+  } catch (error) {
+    throw new FileDeleteError();
+  }
+}
