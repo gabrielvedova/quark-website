@@ -60,3 +60,10 @@ export class ImageAccessError extends Error {
     this.name = "ImageAccessError";
   }
 }
+
+export class UploadNotAcceptedError extends Error {
+  constructor() {
+    super("Upload not accepted");
+    this.name = "UploadNotAcceptedError";
+  }
+}

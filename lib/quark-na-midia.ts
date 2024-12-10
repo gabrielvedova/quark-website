@@ -34,6 +34,7 @@ export async function createHeadline(data: {
   publishingDate: string;
   url: string;
 }) {
+  data.publishingDate = new Date(data.publishingDate).toISOString();
   return (await prisma.headline.create({ data })).id;
 }
 
