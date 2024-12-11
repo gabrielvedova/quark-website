@@ -1,6 +1,10 @@
 import createAdmin from "@/lib/create-admin";
 import { PostSchema } from "./schema";
-import { UsernameInUseError, PasswordMismatchError } from "@/lib/errors";
+import {
+  UsernameInUseError,
+  PasswordMismatchError,
+  FileUploadError,
+} from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
@@ -12,6 +16,7 @@ import { adminAuthApiMiddleware } from "@/lib/auth";
  * @param request.body.username The username of the admin.
  * @param request.body.password The password of the admin.
  * @param request.body.passwordConfirmation The password of the admin, confirmed.
+ * @param request.body.profilePicture The profile picture of the admin.
  *
  * @returns 200 - { message: "Admin criado com sucesso." }
  * @returns 400 - { error: validatedBody.error.flatten() }
@@ -48,7 +53,12 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
       });
     }
 
-    console.log(error);
+    if (error instanceof FileUploadError) {
+      return ConventionalResponse.internalServerError({
+        message: error.message,
+      });
+    }
+
     return ConventionalResponse.internalServerError();
   }
 });

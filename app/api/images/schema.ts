@@ -3,12 +3,10 @@ import { z } from "zod";
 
 export const GetSchema = z.object({
   key: z.string(),
-  public: z.boolean().default(true),
 });
 
 export const PostSchema = z.object({
   key: z.string().min(1, { message: "Nome é obrigatório" }),
-  public: z.boolean().default(true),
   file: z
     .string()
     .min(1, { message: "O arquivo é obrigatório." })
@@ -59,12 +57,9 @@ export const PostSchema = z.object({
 
 export const PutSchema = z.object({
   currentKey: z.string().min(1, { message: "A chave atual é obrigatória" }),
-  currentlyPublic: z.boolean().default(true),
   newKey: z.string().min(1, { message: "A nova chave é obrigatória" }),
-  newPublic: z.boolean().optional(),
 });
 
 export const DeleteSchema = z.object({
   key: z.string().min(1, { message: "A chave é obrigatória" }),
-  public: z.boolean().default(true),
 });

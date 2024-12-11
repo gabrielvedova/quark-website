@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Admin {
-  id             String    @id @default(uuid())
-  username       String    @unique
-  name           String
-  role           String
-  password       String
-  profilePicture String?
-  posts          Post[]
-  sessions       Session[]
+  id                String    @id @default(uuid())
+  username          String    @unique
+  name              String
+  role              String
+  password          String
+  profilePictureKey String    @default("no-profile-picture")
+  posts             Post[]
+  sessions          Session[]
 }
 
 model Session {
@@ -29,7 +29,7 @@ model Post {
   id           Int      @id @default(autoincrement())
   title        String
   content      String
-  miniature    String
+  miniatureKey String
   author       Admin    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId     String
   published    Boolean  @default(true)
@@ -40,7 +40,7 @@ model Headline {
   id             Int      @id @default(autoincrement())
   title          String
   description    String
-  miniature      String
+  miniatureKey   String
   publishingDate DateTime
   url            String
 }

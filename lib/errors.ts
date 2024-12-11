@@ -54,13 +54,6 @@ export class EmailSendingError extends Error {
   }
 }
 
-export class ImageNotFoundError extends Error {
-  constructor() {
-    super("Error accessing image");
-    this.name = "ImageAccessError";
-  }
-}
-
 export class FileKeyAlreadyInUseError extends Error {
   constructor() {
     super("File key already in use");
@@ -68,30 +61,30 @@ export class FileKeyAlreadyInUseError extends Error {
   }
 }
 
-export class UploadError extends Error {
-  constructor() {
-    super("Error uploading file");
+export class FileUploadError extends Error {
+  constructor(message?: string) {
+    super(message || "Error uploading file");
     this.name = "UploadError";
   }
 }
 
 export class FileNotFoundError extends Error {
-  constructor() {
-    super("File not found");
+  constructor(message?: string) {
+    super(message || "File not found");
     this.name = "FileNotFoundError";
   }
 }
 
-export class FileMoveError extends Error {
+export class FileMovingError extends Error {
   constructor() {
     super("Error moving file");
     this.name = "FileMoveError";
   }
 }
 
-export class FileDeleteError extends Error {
-  constructor() {
-    super("Error deleting file");
+export class FileDeletionError extends Error {
+  constructor(message?: string) {
+    super(message || "Error deleting file");
     this.name = "FileDeleteError";
   }
 }

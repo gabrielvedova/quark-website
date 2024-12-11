@@ -6,7 +6,13 @@ import {
   PostSchema,
   PutSchema,
 } from "./schema";
-import { NotFoundError, UnauthorizedError } from "@/lib/errors";
+import {
+  FileDeletionError,
+  FileNotFoundError,
+  FileUploadError,
+  NotFoundError,
+  UnauthorizedError,
+} from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware, protectUnpublishedPosts } from "@/lib/auth";
 
@@ -33,8 +39,17 @@ export const GET = protectUnpublishedPosts(async (request: Request) => {
   }
 
   const params = convertGetParams(validatedParams.data);
-  const data = await getPosts(params);
-  return ConventionalResponse.ok({ data });
+
+  try {
+    const data = await getPosts(params);
+    return ConventionalResponse.ok({ data });
+  } catch (error) {
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({ message: error.message });
+    }
+
+    return ConventionalResponse.internalServerError();
+  }
 });
 
 /**
@@ -66,6 +81,12 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
   } catch (error) {
     if (error instanceof UnauthorizedError) {
       return ConventionalResponse.unauthorized();
+    }
+
+    if (error instanceof FileUploadError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao fazer upload da imagem.",
+      });
     }
 
     return ConventionalResponse.internalServerError();
@@ -109,6 +130,24 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
       return ConventionalResponse.notFound({ message: "Post não encontrado." });
     }
 
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({
+        message: "Miniatura antiga não encontrada.",
+      });
+    }
+
+    if (error instanceof FileDeletionError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao deletar a miniatura antiga.",
+      });
+    }
+
+    if (error instanceof FileUploadError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao fazer upload da imagem.",
+      });
+    }
+
     return ConventionalResponse.internalServerError();
   }
 });
@@ -147,6 +186,18 @@ export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
   } catch (error) {
     if (error instanceof NotFoundError) {
       return ConventionalResponse.notFound({ message: "Post não encontrado." });
+    }
+
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({
+        message: "Miniatura não encontrada.",
+      });
+    }
+
+    if (error instanceof FileDeletionError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao deletar a miniatura.",
+      });
     }
 
     return ConventionalResponse.internalServerError();
