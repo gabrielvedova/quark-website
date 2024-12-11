@@ -25,7 +25,7 @@ import { adminAuthApiMiddleware } from "@/lib/auth";
  */
 export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   const body = request.json();
-  const validatedBody = PutSchema.safeParse(body);
+  const validatedBody = await PutSchema.safeParseAsync(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({

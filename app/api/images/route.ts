@@ -39,7 +39,7 @@ export const GET = bearerAuthMiddleware(
 
 export const POST = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
-  const validatedBody = PostSchema.safeParse(body);
+  const validatedBody = await PostSchema.safeParseAsync(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({

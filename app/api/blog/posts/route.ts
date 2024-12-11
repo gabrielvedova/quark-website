@@ -67,7 +67,7 @@ export const GET = protectUnpublishedPosts(async (request: Request) => {
  */
 export const POST = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
-  const validatedBody = PostSchema.safeParse(body);
+  const validatedBody = await PostSchema.safeParseAsync(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
@@ -114,7 +114,7 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
  */
 export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
-  const validatedBody = PutSchema.safeParse(body);
+  const validatedBody = await PutSchema.safeParseAsync(body);
 
   if (!validatedBody.success) {
     return ConventionalResponse.badRequest({
