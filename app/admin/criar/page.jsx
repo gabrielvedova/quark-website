@@ -1,7 +1,5 @@
+import NewAdmin from "@/components/admin/blog/NewAdmin/NewAdmin";
+
 export default function Page() {
-  return (
-    <div>
-      <h1>Novo Admin</h1>
-    </div>
-  );
+  return <NewAdmin />;
 }
