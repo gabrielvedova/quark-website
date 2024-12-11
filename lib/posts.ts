@@ -36,8 +36,9 @@ async function fetchRequiredImages(
     body: JSON.stringify({ key: postWithImageKeys.miniatureKey }),
   });
 
-  if (postMiniatureResponse.status === 404)
+  if (postMiniatureResponse.status === 404) {
     throw new FileNotFoundError("Miniatura do post não encontrada");
+  }
 
   if (!postMiniatureResponse.ok) throw new Error();
 
@@ -56,8 +57,9 @@ async function fetchRequiredImages(
     body: JSON.stringify({ key: postWithImageKeys.author.profilePictureKey }),
   });
 
-  if (authorProfilePictureResponse.status === 404)
+  if (authorProfilePictureResponse.status === 404) {
     throw new FileNotFoundError("Foto de perfil do autor não encontrada");
+  }
 
   if (!authorProfilePictureResponse.ok) throw new Error();
 
