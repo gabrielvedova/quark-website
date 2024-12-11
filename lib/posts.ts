@@ -10,7 +10,7 @@ import { getAdminId } from "./session";
 import { generateUniqueFilename } from "./utils";
 
 async function fetchRequiredImages(
-  post: {
+  postWithImageKeys: {
     author: {
       id: string;
       name: string;
@@ -33,7 +33,7 @@ async function fetchRequiredImages(
       "Content-Type": "application/json",
       authorization: `Bearer ${process.env.IMAGE_API_KEY}`,
     },
-    body: JSON.stringify({ key: post.miniatureKey }),
+    body: JSON.stringify({ key: postWithImageKeys.miniatureKey }),
   });
 
   if (postMiniatureResponse.status === 404)
@@ -53,7 +53,7 @@ async function fetchRequiredImages(
       "Content-Type": "application/json",
       authorization: `Bearer ${process.env.IMAGE_API_KEY}`,
     },
-    body: JSON.stringify({ key: post.author.profilePictureKey }),
+    body: JSON.stringify({ key: postWithImageKeys.author.profilePictureKey }),
   });
 
   if (authorProfilePictureResponse.status === 404)
@@ -68,19 +68,19 @@ async function fetchRequiredImages(
   ).data.url;
 
   return {
-    id: post.id,
-    title: post.title,
-    content: post.content,
+    id: postWithImageKeys.id,
+    title: postWithImageKeys.title,
+    content: postWithImageKeys.content,
     miniatureUrl: postMiniatureUrl,
-    authorId: post.authorId,
+    authorId: postWithImageKeys.authorId,
     author: {
-      id: post.author.id,
-      name: post.author.name,
-      role: post.author.role,
+      id: postWithImageKeys.author.id,
+      name: postWithImageKeys.author.name,
+      role: postWithImageKeys.author.role,
       profilePictureUrl: authorProfilePictureUrl,
     },
-    published: post.published,
-    lastEditedAt: post.lastEditedAt,
+    published: postWithImageKeys.published,
+    lastEditedAt: postWithImageKeys.lastEditedAt,
   };
 }
 
