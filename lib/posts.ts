@@ -312,6 +312,6 @@ export async function deletePost(data: { id: number }) {
   const post = await prisma.post.findUnique({ where: { id: data.id } });
   if (!post) throw new NotFoundError();
 
-  const { miniatureKey } = await prisma.post.delete({ where: { id: data.id } });
-  deleteMiniature(miniatureKey);
+  await prisma.post.delete({ where: { id: data.id } });
+  deleteMiniature(post.miniatureKey);
 }

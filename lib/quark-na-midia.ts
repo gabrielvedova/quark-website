@@ -1,5 +1,47 @@
 import prisma from "./prisma";
-import { NotFoundError } from "./errors";
+import {
+  FileDeletionError,
+  FileNotFoundError,
+  FileUploadError,
+  NotFoundError,
+} from "./errors";
+import { generateUniqueFilename } from "./utils";
+
+async function fetchRequiredImages(headlineWithImageKey: {
+  id: number;
+  title: string;
+  description: string;
+  miniatureKey: string;
+  publishingDate: Date;
+  url: string;
+}) {
+  const response = await fetch("/api/images", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: headlineWithImageKey.miniatureKey }),
+  });
+
+  if (response.status === 404) {
+    throw new FileNotFoundError();
+  }
+
+  if (!response.ok) throw new Error();
+
+  const headlineMiniatureUrl = (
+    (await response.json()) as {
+      data: { url: string };
+    }
+  ).data.url;
+
+  return {
+    id: headlineWithImageKey.id,
+    title: headlineWithImageKey.title,
+    description: headlineWithImageKey.description,
+    miniatureUrl: headlineMiniatureUrl,
+    publishingDate: headlineWithImageKey.publishingDate,
+    url: headlineWithImageKey.url,
+  };
+}
 
 /**
  * Get all headlines or a specific headline.
@@ -10,10 +52,39 @@ import { NotFoundError } from "./errors";
  */
 export async function getHeadline(params: { id?: number }) {
   if (params.id) {
-    const news = await prisma.headline.findUnique({ where: { id: params.id } });
-    return news ? [news] : [];
+    const headlineWithImageKey = await prisma.headline.findUnique({
+      where: { id: params.id },
+    });
+
+    if (!headlineWithImageKey) return [];
+
+    const headlineWithImageUrl = await fetchRequiredImages(
+      headlineWithImageKey
+    );
+
+    return [headlineWithImageUrl];
   }
-  return await prisma.headline.findMany();
+  const headlinesWithImageKey = await prisma.headline.findMany();
+
+  const headlinesWithImageUrl = await Promise.all(
+    headlinesWithImageKey.map(fetchRequiredImages)
+  );
+
+  return headlinesWithImageUrl;
+}
+
+async function uploadNewMiniature(miniatureFile: string) {
+  const miniatureKey = generateUniqueFilename();
+
+  const response = await fetch("/api/images", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: miniatureKey, file: miniatureFile }),
+  });
+
+  if (!response.ok) throw new FileUploadError();
+
+  return miniatureKey;
 }
 
 /**
@@ -30,12 +101,50 @@ export async function getHeadline(params: { id?: number }) {
 export async function createHeadline(data: {
   title: string;
   description: string;
-  miniature: string;
+  miniatureFile: string;
   publishingDate: string;
   url: string;
 }) {
   data.publishingDate = new Date(data.publishingDate).toISOString();
-  return (await prisma.headline.create({ data })).id;
+  const miniatureKey = await uploadNewMiniature(data.miniatureFile);
+
+  const { id } = await prisma.headline.create({
+    data: {
+      title: data.title,
+      description: data.description,
+      miniatureKey,
+      publishingDate: data.publishingDate,
+      url: data.url,
+    },
+  });
+
+  return id;
+}
+
+async function updateMiniature(
+  oldMiniatureKey: string,
+  newMiniatureFile: string
+) {
+  const deleteResponse = await fetch("/api/images", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: oldMiniatureKey }),
+  });
+
+  if (deleteResponse.status === 404) throw new FileNotFoundError();
+  if (!deleteResponse.ok) throw new FileDeletionError();
+
+  const newMiniatureKey = generateUniqueFilename();
+
+  const uploadResponse = await fetch("/api/images", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: newMiniatureKey, file: newMiniatureFile }),
+  });
+
+  if (!uploadResponse.ok) throw new FileUploadError();
+
+  return newMiniatureKey;
 }
 
 /**
@@ -54,24 +163,44 @@ export async function updateHeadline(data: {
   id: number;
   title?: string;
   description?: string;
-  miniature?: string;
+  miniatureFile?: string;
   publishingDate?: string;
   url?: string;
 }) {
-  const news = await prisma.headline.findUnique({ where: { id: data.id } });
-  if (!news) throw new NotFoundError();
+  const headline = await prisma.headline.findUnique({ where: { id: data.id } });
+  if (!headline) throw new NotFoundError();
 
   if (
     !data.title &&
     !data.description &&
-    !data.miniature &&
+    !data.miniatureFile &&
     !data.publishingDate &&
     !data.url
   ) {
     return;
   }
 
+  let miniatureKey: string | undefined;
+
+  if (data.miniatureFile) {
+    miniatureKey = await updateMiniature(
+      headline.miniatureKey,
+      data.miniatureFile
+    );
+  }
+
   await prisma.headline.update({ where: { id: data.id }, data });
+}
+
+async function deleteMiniature(miniatureKey: string) {
+  const response = await fetch("/api/images", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: miniatureKey }),
+  });
+
+  if (response.status === 404) throw new FileNotFoundError();
+  if (!response.ok) throw new FileDeletionError();
 }
 
 /**
@@ -82,8 +211,9 @@ export async function updateHeadline(data: {
  * @throws {NotFoundError} If the headline is not found.
  */
 export async function deleteHeadline(data: { id: number }) {
-  const news = await prisma.headline.findUnique({ where: { id: data.id } });
-  if (!news) throw new NotFoundError();
+  const headline = await prisma.headline.findUnique({ where: { id: data.id } });
+  if (!headline) throw new NotFoundError();
 
   await prisma.headline.delete({ where: { id: data.id } });
+  deleteMiniature(headline.miniatureKey);
 }

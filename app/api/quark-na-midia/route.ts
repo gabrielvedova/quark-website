@@ -11,7 +11,12 @@ import {
   PostSchema,
   PutSchema,
 } from "./schema";
-import { NotFoundError } from "@/lib/errors";
+import {
+  FileDeletionError,
+  FileNotFoundError,
+  FileUploadError,
+  NotFoundError,
+} from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
@@ -38,8 +43,19 @@ export const GET = async (request: Request): Promise<ConventionalResponse> => {
   }
 
   const params = convertGetParams(validatedParams.data);
-  const data = await getHeadline(params);
-  return ConventionalResponse.ok({ data });
+
+  try {
+    const data = await getHeadline(params);
+    return ConventionalResponse.ok({ data });
+  } catch (error) {
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({
+        message: "Miniatura da manchete não encontrada.",
+      });
+    }
+
+    return ConventionalResponse.internalServerError();
+  }
 };
 
 /**
@@ -65,8 +81,18 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
     });
   }
 
-  const id = await createHeadline(validatedBody.data);
-  return ConventionalResponse.created({ data: { id } });
+  try {
+    const id = await createHeadline(validatedBody.data);
+    return ConventionalResponse.created({ data: { id } });
+  } catch (error) {
+    if (error instanceof FileUploadError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao fazer o upload da miniatura.",
+      });
+    }
+
+    return ConventionalResponse.internalServerError();
+  }
 });
 
 /**
@@ -105,9 +131,34 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
       });
     }
 
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({
+        message: "Miniatura antiga não encontrada.",
+      });
+    }
+
+    if (error instanceof FileDeletionError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao deletar a miniatura antiga.",
+      });
+    }
+
+    if (error instanceof FileUploadError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao fazer upload da imagem.",
+      });
+    }
+
     return ConventionalResponse.internalServerError();
   }
 });
+
+/**
+ * Alias for PUT.
+ *
+ * Used to semantically update a single field of a headline.
+ */
+export const PATCH = PUT;
 
 /**
  * Delete a headline.
@@ -137,6 +188,18 @@ export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
     if (error instanceof NotFoundError) {
       return ConventionalResponse.notFound({
         message: "Manchete não encontrada.",
+      });
+    }
+
+    if (error instanceof FileNotFoundError) {
+      return ConventionalResponse.notFound({
+        message: "Miniatura da manchete não encontrada.",
+      });
+    }
+
+    if (error instanceof FileDeletionError) {
+      return ConventionalResponse.internalServerError({
+        message: "Ocorreu um erro ao deletar a miniatura da manchete.",
       });
     }
 
