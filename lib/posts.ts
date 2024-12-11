@@ -170,7 +170,7 @@ async function uploadNewMiniature(miniatureFile: string) {
   const response = await fetch("/api/images", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ key: miniatureKey, data: miniatureFile }),
+    body: JSON.stringify({ key: miniatureKey, file: miniatureFile }),
   });
 
   if (!response.ok) throw new FileUploadError();
@@ -234,7 +234,7 @@ async function updateMiniature(
   const uploadResponse = await fetch("/api/images", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ key: newMiniatureKey, data: newMiniatureFile }),
+    body: JSON.stringify({ key: newMiniatureKey, file: newMiniatureFile }),
   });
 
   if (!uploadResponse.ok) throw new FileUploadError();
