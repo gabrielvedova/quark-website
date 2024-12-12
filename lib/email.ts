@@ -1,40 +1,40 @@
-import { EmailSendingError } from "./errors";
-import ses from "./ses";
+// import { EmailSendingError } from "./errors";
+// import sesClient from "./ses";
 
-export async function sendContactEmail(data: {
-  name: string;
-  email: string;
-  phoneNumber: string;
-  institution: string;
-}) {
-  const { name, email, phoneNumber, institution } = data;
-  const params = {
-    Destination: {
-      ToAddresses: [process.env.CONTACT_RECIPIENT_ADDRESS || ""],
-    },
-    Message: {
-      Subject: {
-        Data: `Solicitação de contato de ${name} da instituição ${institution}`,
-      },
-      Body: {
-        Html: {
-          Data: `
-        <ul>
-          <li><strong>Nome:</strong> ${name}</li>
-          <li><strong>Email:</strong> ${email}</li>
-          <li><strong>Telefone:</strong> ${phoneNumber}</li>
-          <li><strong>Instituição:</strong> ${institution}</li>
-        </ul>
-        `,
-        },
-      },
-    },
-    Source: email,
-  };
+// export async function sendContactEmail(data: {
+//   name: string;
+//   email: string;
+//   phoneNumber: string;
+//   institution: string;
+// }) {
+//   const { name, email, phoneNumber, institution } = data;
+//   const params = {
+//     Destination: {
+//       ToAddresses: [process.env.CONTACT_RECIPIENT_ADDRESS || ""],
+//     },
+//     Message: {
+//       Subject: {
+//         Data: `Solicitação de contato de ${name} da instituição ${institution}`,
+//       },
+//       Body: {
+//         Html: {
+//           Data: `
+//         <ul>
+//           <li><strong>Nome:</strong> ${name}</li>
+//           <li><strong>Email:</strong> ${email}</li>
+//           <li><strong>Telefone:</strong> ${phoneNumber}</li>
+//           <li><strong>Instituição:</strong> ${institution}</li>
+//         </ul>
+//         `,
+//         },
+//       },
+//     },
+//     Source: email,
+//   };
 
-  try {
-    await ses.sendEmail(params).promise();
-  } catch (error) {
-    throw new EmailSendingError();
-  }
-}
+//   try {
+//     await sesClient.sendEmail(params).promise();
+//   } catch (error) {
+//     throw new EmailSendingError();
+//   }
+// }

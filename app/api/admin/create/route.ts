@@ -4,28 +4,14 @@ import {
   UsernameInUseError,
   PasswordMismatchError,
   FileUploadError,
+  UnauthorizedError,
 } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
-/**
- * Create a new admin account.
- *
- * @param request.body.name The name of the admin.
- * @param request.body.role The role of the admin.
- * @param request.body.username The username of the admin.
- * @param request.body.password The password of the admin.
- * @param request.body.passwordConfirmation The password of the admin, confirmed.
- * @param request.body.profilePicture The profile picture of the admin.
- *
- * @returns 200 - { message: "Admin criado com sucesso." }
- * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 400 - { error: { passwordConfirmation: ["As senhas não coincidem."] } }
- * @returns 401 - { message: "Não autorizado." }
- * @returns 409 - { error: { email: ["Email já em uso."] } }
- * @returns 500 - { message: "Ocorreu um erro." }
- */
 export const POST = adminAuthApiMiddleware(async (request: Request) => {
+  const requestMetadata = { origin: new URL(request.url).origin };
+
   const body = await request.json();
   const validatedBody = await PostSchema.safeParseAsync(body);
 
@@ -36,7 +22,7 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
   }
 
   try {
-    await createAdmin(validatedBody.data);
+    await createAdmin(validatedBody.data, requestMetadata);
     return ConventionalResponse.created({
       message: "Admin criado com sucesso.",
     });

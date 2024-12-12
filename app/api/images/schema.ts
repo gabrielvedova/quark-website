@@ -1,7 +1,7 @@
 import { fileTypeFromBuffer } from "file-type";
 import { z } from "zod";
 
-export const GetSchema = z.object({
+export const GetParamsSchema = z.object({
   key: z.string(),
 });
 

@@ -6,7 +6,7 @@ export const PutSchema = z.object({
     .string()
     .min(3, { message: "O nome deve possuir pelo menos 3 caracteres." })
     .max(100, { message: "O nome deve possuir até 100 caracteres." })
-    .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, {
+    .regex(/^[A-Za-zÀ-ÿ\u0100-\u017F\s]+$/, {
       message: "O nome deve possuir apenas letras e espaços.",
     })
     .trim()
@@ -55,5 +55,6 @@ export const PutSchema = z.object({
       {
         message: "O arquivo deve ser uma imagem JPEG, PNG, WEBP ou GIF.",
       }
-    ),
+    )
+    .optional(),
 });

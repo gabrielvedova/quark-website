@@ -33,7 +33,6 @@ export default function Blog() {
   const fetchPosts = async () => {
     setLoading(true);
 
-    console.log(buildUrl().toString());
     const response = await fetch(buildUrl());
 
     if (response.ok) {

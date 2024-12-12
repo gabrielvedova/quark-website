@@ -1,4 +1,4 @@
-import prisma from "./prisma";
+import prismaClient from "./prisma";
 import {
   FileDeletionError,
   FileNotFoundError,
@@ -25,16 +25,13 @@ async function fetchRequiredImages(
     authorId: string;
     published: boolean;
     lastEditedAt: Date;
-  }
+  },
+  requestMetadata: { origin: string }
 ) {
-  const postMiniatureResponse = await fetch("/api/images", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${process.env.IMAGE_API_KEY}`,
-    },
-    body: JSON.stringify({ key: postWithImageKeys.miniatureKey }),
-  });
+  const postMiniatureResponse = await fetch(
+    `${requestMetadata.origin}/api/images?key=${postWithImageKeys.miniatureKey}`,
+    { headers: { Authorization: `Bearer ${process.env.IMAGE_API_SECRET}` } }
+  );
 
   if (postMiniatureResponse.status === 404) {
     throw new FileNotFoundError("Miniatura do post não encontrada");
@@ -48,14 +45,10 @@ async function fetchRequiredImages(
     }
   ).data.url;
 
-  const authorProfilePictureResponse = await fetch("/api/images", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${process.env.IMAGE_API_KEY}`,
-    },
-    body: JSON.stringify({ key: postWithImageKeys.author.profilePictureKey }),
-  });
+  const authorProfilePictureResponse = await fetch(
+    `${requestMetadata.origin}/api/images?key=${postWithImageKeys.author.profilePictureKey}`,
+    { headers: { Authorization: `Bearer ${process.env.IMAGE_API_SECRET}` } }
+  );
 
   if (authorProfilePictureResponse.status === 404) {
     throw new FileNotFoundError("Foto de perfil do autor não encontrada");
@@ -86,22 +79,16 @@ async function fetchRequiredImages(
   };
 }
 
-/**
- * Get a filtered or unfiltered list of posts.
- *
- * @param params.id The ID of the post to retrieve.
- * @param params.search The search query to filter posts by.
- * @param params.published Filter posts by their published status.
- *
- * @returns The list of posts that match the search query.
- */
-export async function getPosts(params: {
-  id?: number;
-  search?: string;
-  published?: boolean;
-}) {
+export async function getPosts(
+  params: {
+    id?: number;
+    search?: string;
+    published?: boolean;
+  },
+  requestMetadata: { origin: string }
+) {
   if (params.id) {
-    const postWithImageKeys = await prisma.post.findUnique({
+    const postWithImageKeys = await prismaClient.post.findUnique({
       where: { id: params.id },
       include: {
         author: {
@@ -117,11 +104,14 @@ export async function getPosts(params: {
 
     if (!postWithImageKeys) return [];
 
-    const postWithImageUrls = await fetchRequiredImages(postWithImageKeys);
+    const postWithImageUrls = await fetchRequiredImages(
+      postWithImageKeys,
+      requestMetadata
+    );
     return [postWithImageUrls];
   }
 
-  let postsWithImageKeys = await prisma.post.findMany({
+  let postsWithImageKeys = await prismaClient.post.findMany({
     where: {
       OR: [
         { title: { contains: params?.search || "", mode: "insensitive" } },
@@ -158,18 +148,26 @@ export async function getPosts(params: {
   }
 
   const postsWithImageUrls = await Promise.all(
-    postsWithImageKeys.map(fetchRequiredImages)
+    postsWithImageKeys.map((postWithImageKeys) => {
+      return fetchRequiredImages(postWithImageKeys, requestMetadata);
+    })
   );
 
   return postsWithImageUrls;
 }
 
-async function uploadNewMiniature(miniatureFile: string) {
+async function uploadNewMiniature(
+  miniatureFile: string,
+  requestMetadata: { origin: string }
+) {
   const miniatureKey = generateUniqueFilename();
 
-  const response = await fetch("/api/images", {
+  const response = await fetch(`${requestMetadata.origin}/api/images`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+    },
     body: JSON.stringify({ key: miniatureKey, file: miniatureFile }),
   });
 
@@ -178,31 +176,25 @@ async function uploadNewMiniature(miniatureFile: string) {
   return miniatureKey;
 }
 
-/**
- * Create a new post.
- *
- * @param data.title The title of the post.
- * @param data.content The content of the post.
- * @param data.miniature The miniature of the post.
- * @param data.published The published status of the post.
- *
- * @throws {UnauthorizedError} If the user is not authenticated.
- *
- * @returns The ID of the created post.
- */
-export async function createPost(data: {
-  title: string;
-  content: string;
-  miniatureFile: string;
-  published: boolean;
-}) {
+export async function createPost(
+  data: {
+    title: string;
+    content: string;
+    miniatureFile: string;
+    published: boolean;
+  },
+  requestMetadata: { origin: string }
+) {
   const adminId = await getAdminId();
 
   if (!adminId) throw new UnauthorizedError();
 
-  const miniatureKey = await uploadNewMiniature(data.miniatureFile);
+  const miniatureKey = await uploadNewMiniature(
+    data.miniatureFile,
+    requestMetadata
+  );
 
-  const { id } = await prisma.post.create({
+  const { id } = await prismaClient.post.create({
     data: {
       title: data.title,
       content: data.content,
@@ -218,11 +210,15 @@ export async function createPost(data: {
 
 async function updateMiniature(
   oldMiniatureKey: string,
-  newMiniatureFile: string
+  newMiniatureFile: string,
+  requestMetadata: { origin: string }
 ) {
-  const deletionResponse = await fetch("/api/images", {
+  const deletionResponse = await fetch(`${requestMetadata.origin}/api/images`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+    },
     body: JSON.stringify({ key: oldMiniatureKey }),
   });
 
@@ -231,9 +227,12 @@ async function updateMiniature(
 
   const newMiniatureKey = generateUniqueFilename();
 
-  const uploadResponse = await fetch("/api/images", {
+  const uploadResponse = await fetch(`${requestMetadata.origin}/api/images`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+    },
     body: JSON.stringify({ key: newMiniatureKey, file: newMiniatureFile }),
   });
 
@@ -242,25 +241,17 @@ async function updateMiniature(
   return newMiniatureKey;
 }
 
-/**
- * Update a post.
- *
- * @param data.id The ID of the post to update.
- * @param data.title The new title of the post.
- * @param data.content The new content of the post.
- * @param data.miniature The new miniature of the post.
- * @param data.published The new published status of the post.
- *
- * @throws {NotFoundError} If the post is not found.
- */
-export async function updatePost(data: {
-  id: number;
-  title?: string;
-  content?: string;
-  miniatureFile?: string;
-  published?: boolean;
-}) {
-  const post = await prisma.post.findUnique({ where: { id: data.id } });
+export async function updatePost(
+  data: {
+    id: number;
+    title?: string;
+    content?: string;
+    miniatureFile?: string;
+    published?: boolean;
+  },
+  requestMetadata: { origin: string }
+) {
+  const post = await prismaClient.post.findUnique({ where: { id: data.id } });
   if (!post) throw new NotFoundError();
 
   if (
@@ -275,10 +266,14 @@ export async function updatePost(data: {
   let miniatureKey: string | undefined;
 
   if (data.miniatureFile) {
-    miniatureKey = await updateMiniature(post.miniatureKey, data.miniatureFile);
+    miniatureKey = await updateMiniature(
+      post.miniatureKey,
+      data.miniatureFile,
+      requestMetadata
+    );
   }
 
-  await prisma.post.update({
+  await prismaClient.post.update({
     where: { id: data.id },
     data: {
       title: data.title,
@@ -290,10 +285,16 @@ export async function updatePost(data: {
   });
 }
 
-async function deleteMiniature(miniatureKey: string) {
-  const response = await fetch("/api/images", {
+async function deleteMiniature(
+  miniatureKey: string,
+  requestMetadata: { origin: string }
+) {
+  const response = await fetch(`${requestMetadata.origin}/api/images`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+    },
     body: JSON.stringify({ key: miniatureKey }),
   });
 
@@ -301,17 +302,13 @@ async function deleteMiniature(miniatureKey: string) {
   if (!response.ok) throw new FileDeletionError();
 }
 
-/**
- * Delete a post.
- *
- * @param data.id The ID of the post to delete.
- *
- * @throws {NotFoundError} If the post is not found.
- */
-export async function deletePost(data: { id: number }) {
-  const post = await prisma.post.findUnique({ where: { id: data.id } });
+export async function deletePost(
+  data: { id: number },
+  requestMetadata: { origin: string }
+) {
+  const post = await prismaClient.post.findUnique({ where: { id: data.id } });
   if (!post) throw new NotFoundError();
 
-  await prisma.post.delete({ where: { id: data.id } });
-  deleteMiniature(post.miniatureKey);
+  await prismaClient.post.delete({ where: { id: data.id } });
+  deleteMiniature(post.miniatureKey, requestMetadata);
 }

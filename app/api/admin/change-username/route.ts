@@ -10,22 +10,6 @@ import {
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
-/**
- * Update the email of the current user.
- *
- * @param request.body.email The current email of the user.
- * @param request.body.newEmail The new email of the user.
- * @param request.body.newEmailConfirmation The new email of the user, confirmed.
- *
- * @returns 200 - { message: "Email alterado com sucesso." }
- * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 400 - { error: { newEmailConfirmation: ["Os emails não coincidem."] } }
- * @returns 400 - { error: { password: ["Senha incorreta."] } }
- * @returns 401 - { message: "Não autorizado." }
- * @returns 404 - { message: "Usuário não encontrado" }
- * @returns 409 - { error: { newEmail: ["Email já em uso"] } }
- * @returns 500 - { error: { message: "Ocorreu um erro." } }
- */
 export const PATCH = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PatchSchema.safeParse(body);

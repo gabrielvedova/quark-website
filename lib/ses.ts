@@ -1,18 +1,15 @@
-import AWS from "aws-sdk";
+import { SES } from "@aws-sdk/client-ses";
 
 function sesSingleton() {
-  return new AWS.SES();
+  return new SES();
 }
 
 declare const globalThis: {
   sesGlobal: ReturnType<typeof sesSingleton>;
 } & typeof global;
 
-/**
- * A singleton instance of SES.
- */
-const ses = globalThis.sesGlobal || sesSingleton();
+const sesClient = globalThis.sesGlobal || sesSingleton();
 
-export default ses;
+export default sesClient;
 
-if (process.env.NODE_ENV !== "production") globalThis.sesGlobal = ses;
+if (process.env.NODE_ENV !== "production") globalThis.sesGlobal = sesClient;

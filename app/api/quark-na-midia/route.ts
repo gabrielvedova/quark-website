@@ -20,19 +20,9 @@ import {
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
-/**
- * Get a list of headlines.
- *
- * @param request.url.searchParams.id The ID of the headline to retrieve.
- *
- * @returns 200 - The list of headlines that match the search query.
- * @returns 400 - { error: validatedParams.error.flatten() }
- * @returns 401 - { message: "Não autorizado." }
- * @returns 404 - { message: "Manchete não encontrada" }
- * @returns 500 - { message: "Ocorreu um erro." }
- */
 export const GET = async (request: Request): Promise<ConventionalResponse> => {
-  const { searchParams } = new URL(request.url);
+  const { searchParams, origin } = new URL(request.url);
+  const requestMetadata = { origin };
   const paramsObject = Object.fromEntries(searchParams);
   const validatedParams = GetParamsSchema.safeParse(paramsObject);
 
@@ -45,7 +35,7 @@ export const GET = async (request: Request): Promise<ConventionalResponse> => {
   const params = convertGetParams(validatedParams.data);
 
   try {
-    const data = await getHeadline(params);
+    const data = await getHeadline(params, requestMetadata);
     return ConventionalResponse.ok({ data });
   } catch (error) {
     if (error instanceof FileNotFoundError) {
@@ -58,20 +48,9 @@ export const GET = async (request: Request): Promise<ConventionalResponse> => {
   }
 };
 
-/**
- * Create a new headline.
- *
- * @param request.body.title The title of the headline.
- * @param request.body.description The description of the headline.
- * @param request.body.miniature The miniature of the headline.
- * @param request.body.publishingDate The publishing date of the headline.
- * @param request.body.url The URL of the headline.
- *
- * @returns 201 - { id }
- * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 401 - { message: "Não autorizado." }
- */
 export const POST = adminAuthApiMiddleware(async (request: Request) => {
+  const requestMetadata = { origin: new URL(request.url).origin };
+
   const body = await request.json();
   const validatedBody = await PostSchema.safeParseAsync(body);
 
@@ -82,7 +61,7 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
   }
 
   try {
-    const id = await createHeadline(validatedBody.data);
+    const id = await createHeadline(validatedBody.data, requestMetadata);
     return ConventionalResponse.created({ data: { id } });
   } catch (error) {
     if (error instanceof FileUploadError) {
@@ -95,23 +74,9 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
   }
 });
 
-/**
- * Modify a headline.
- *
- * @param request.body.id The ID of the headline to modify.
- * @param request.body.title The new title of the headline.
- * @param request.body.description The new description of the headline.
- * @param request.body.miniature The new miniature of the headline.
- * @param request.body.publishingDate The new publishing date of the headline.
- * @param request.body.url The new URL of the headline.
- *
- * @returns 204
- * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 401 - { message: "Não autorizado." }
- * @returns 404 - { message: "Manchete não encontrada" }
- * @returns 500 - { message: "Ocorreu um erro." }
- */
 export const PUT = adminAuthApiMiddleware(async (request: Request) => {
+  const requestMetadata = { origin: new URL(request.url).origin };
+
   const body = request.json();
   const validatedBody = await PutSchema.safeParseAsync(body);
 
@@ -122,7 +87,7 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   }
 
   try {
-    await updateHeadline(validatedBody.data);
+    await updateHeadline(validatedBody.data, requestMetadata);
     return ConventionalResponse.noContent();
   } catch (error) {
     if (error instanceof NotFoundError) {
@@ -153,25 +118,11 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   }
 });
 
-/**
- * Alias for PUT.
- *
- * Used to semantically update a single field of a headline.
- */
 export const PATCH = PUT;
 
-/**
- * Delete a headline.
- *
- * @param request.body.id The ID of the headline to delete.
- *
- * @returns 204
- * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 401 - { message: "Não autorizado." }
- * @returns 404 - { message: "Manchete não encontrada" }
- * @returns 500 - { message: "Ocorreu um erro." }
- */
 export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
+  const requestMetadata = { origin: new URL(request.url).origin };
+
   const body = await request.json();
   const validatedBody = DeleteSchema.safeParse(body);
 
@@ -182,7 +133,7 @@ export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
   }
 
   try {
-    await deleteHeadline(validatedBody.data);
+    await deleteHeadline(validatedBody.data, requestMetadata);
     return ConventionalResponse.noContent();
   } catch (error) {
     if (error instanceof NotFoundError) {

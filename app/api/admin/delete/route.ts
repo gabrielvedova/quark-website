@@ -7,16 +7,11 @@ import {
 } from "@/lib/errors";
 import { ConventionalResponse } from "@/lib/responses";
 
-/**
- * Delete the current user account.
- *
- * @returns 204
- * @returns 401 - { message: "Não autorizado." }
- * @returns 500 - { message: "Ocorreu um erro." }
- */
 export const DELETE = adminAuthApiMiddleware(async (request: Request) => {
+  const requestMetadata = { origin: new URL(request.url).origin };
+
   try {
-    await deleteAccount();
+    await deleteAccount(requestMetadata);
     return ConventionalResponse.noContent();
   } catch (error) {
     if (error instanceof UnauthorizedError) {

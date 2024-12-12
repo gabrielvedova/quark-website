@@ -3,13 +3,6 @@ import { UnauthorizedError } from "@/lib/errors";
 import logout from "@/lib/logout";
 import { ConventionalResponse } from "@/lib/responses";
 
-/**
- * Log out the current user.
- *
- * @returns 204
- * @returns 401 - { message: "Não autorizado." }
- * @returns 500 - { message: "Ocorreu um erro." }
- */
 export const POST = adminAuthApiMiddleware(async (request: Request) => {
   try {
     await logout();

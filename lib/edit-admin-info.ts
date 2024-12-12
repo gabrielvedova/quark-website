@@ -1,4 +1,4 @@
-import prisma from "./prisma";
+import prismaClient from "./prisma";
 import {
   FileDeletionError,
   NotFoundError,
@@ -11,16 +11,23 @@ import { generateUniqueFilename } from "./utils";
 
 async function changeProfilePicture(
   oldProfilePictureKey: string,
-  newProfilePictureFile: string
+  newProfilePictureFile: string,
+  requestMetadata: { origin: string }
 ) {
   if (oldProfilePictureKey !== "no-profile-picture") {
-    const deletionResponse = await fetch("/api/images", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        key: oldProfilePictureKey,
-      }),
-    });
+    const deletionResponse = await fetch(
+      `${requestMetadata.origin}/api/images`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+        },
+        body: JSON.stringify({
+          key: oldProfilePictureKey,
+        }),
+      }
+    );
 
     if (deletionResponse.status === 404) throw new FileNotFoundError();
 
@@ -36,9 +43,12 @@ async function changeProfilePicture(
 
   const newProfilePictureKey = generateUniqueFilename();
 
-  const uploadResponse = await fetch("/api/images", {
+  const uploadResponse = await fetch(`${requestMetadata.origin}/api/images`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+    },
     body: JSON.stringify({
       key: newProfilePictureKey,
       file: newProfilePictureFile,
@@ -55,25 +65,18 @@ async function changeProfilePicture(
   return newProfilePictureKey;
 }
 
-/**
- * Update the information of the current admin.
- *
- * @param data.name The name of the admin.
- * @param data.role The role of the admin.
- * @param data.profilePicture The profile picture of the admin.
- *
- * @throws {UnauthorizedError} If the admin is not authenticated.
- * @throws {NotFoundError} If the admin is not found.
- */
-export async function updateAdminInfo(data: {
-  name?: string;
-  role?: string;
-  profilePictureFile?: string;
-}) {
+export async function updateAdminInfo(
+  data: {
+    name?: string;
+    role?: string;
+    profilePictureFile?: string;
+  },
+  requestMetadata: { origin: string }
+) {
   const id = await getAdminId();
   if (!id) throw new UnauthorizedError();
 
-  const admin = await prisma.admin.findUnique({ where: { id } });
+  const admin = await prismaClient.admin.findUnique({ where: { id } });
   if (!admin) throw new NotFoundError();
 
   if (!data.name && !data.role && !data.profilePictureFile) {
@@ -85,11 +88,12 @@ export async function updateAdminInfo(data: {
   if (data.profilePictureFile) {
     profilePictureKey = await changeProfilePicture(
       admin.profilePictureKey,
-      data.profilePictureFile
+      data.profilePictureFile,
+      requestMetadata
     );
   }
 
-  await prisma.admin.update({
+  await prismaClient.admin.update({
     where: { id },
     data: {
       name: data.name,

@@ -1,4 +1,4 @@
-import prisma from "./prisma";
+import prismaClient from "./prisma";
 import {
   FileDeletionError,
   FileNotFoundError,
@@ -6,10 +6,16 @@ import {
 } from "./errors";
 import { deleteSession, getAdminId } from "./session";
 
-async function deleteProfilePicture(profilePictureKey: string) {
-  const response = await fetch("/api/images", {
+async function deleteProfilePicture(
+  profilePictureKey: string,
+  requestMetadata: { origin: string }
+) {
+  const response = await fetch(`${requestMetadata.origin}/api/images`, {
     method: "DELETE",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+    },
     body: JSON.stringify({
       key: profilePictureKey,
     }),
@@ -25,19 +31,18 @@ async function deleteProfilePicture(profilePictureKey: string) {
   if (!response.ok) throw new Error();
 }
 
-/**
- * Delete the current user account.
- *
- * @throws {UnauthorizedError} If the user is not authenticated.
- */
-export default async function deleteAccount() {
+export default async function deleteAccount(requestMetadata: {
+  origin: string;
+}) {
   const id = await getAdminId();
   if (!id) throw new UnauthorizedError();
 
   await deleteSession();
-  const { profilePictureKey } = await prisma.admin.delete({ where: { id } });
+  const { profilePictureKey } = await prismaClient.admin.delete({
+    where: { id },
+  });
 
   if (profilePictureKey !== "no-profile-picture") {
-    await deleteProfilePicture(profilePictureKey);
+    await deleteProfilePicture(profilePictureKey, requestMetadata);
   }
 }

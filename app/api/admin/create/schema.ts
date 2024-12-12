@@ -6,7 +6,7 @@ export const PostSchema = z.object({
     .string()
     .min(3, { message: "O nome deve possuir pelo menos 3 caracteres." })
     .max(50, { message: "O nome deve possuir até 50 caracteres." })
-    .regex(/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/, {
+    .regex(/^[A-Za-zÀ-ÿ\u0100-\u017F\s]+$/, {
       message: "O nome deve possuir apenas letras e espaços.",
     })
     .trim(),

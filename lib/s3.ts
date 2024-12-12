@@ -1,18 +1,15 @@
-import AWS from "aws-sdk";
+import { S3 } from "@aws-sdk/client-s3";
 
 function s3Singleton() {
-  return new AWS.S3();
+  return new S3();
 }
 
 declare const globalThis: {
   s3Global: ReturnType<typeof s3Singleton>;
 } & typeof global;
 
-/**
- * A singleton instance of S3.
- */
-const s3 = globalThis.s3Global || s3Singleton();
+const s3Client = globalThis.s3Global || s3Singleton();
 
-export default s3;
+export default s3Client;
 
-if (process.env.NODE_ENV !== "production") globalThis.s3Global = s3;
+if (process.env.NODE_ENV !== "production") globalThis.s3Global = s3Client;

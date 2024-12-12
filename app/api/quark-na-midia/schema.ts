@@ -127,7 +127,9 @@ export const PutSchema = z.object({
       {
         message: "O arquivo deve ser uma imagem JPEG, PNG, WEBP ou GIF.",
       }
-    ),
+    )
+    .optional(),
+
   publishingDate: z
     .string()
     .regex(/^\d{4}-\d{2}-\d{2}$/, { message: "Insira uma data válida." })

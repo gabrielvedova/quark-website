@@ -61,7 +61,7 @@ export const PostSchema = z.object({
         const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
         return sizeInBytes <= maxSizeInBytes;
       },
-      { message: "O arquivo deve até 10MB." }
+      { message: "O arquivo deve ter até 10MB." }
     )
     .refine(
       async (data) => {
@@ -132,7 +132,8 @@ export const PutSchema = z.object({
       {
         message: "O arquivo deve ser uma imagem JPEG, PNG, WEBP ou GIF.",
       }
-    ),
+    )
+    .optional(),
 
   published: z.boolean().optional(),
 });

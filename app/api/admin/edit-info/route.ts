@@ -10,21 +10,10 @@ import {
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
-/**
- * Update the information of the current admin.
- *
- * @param request.body.name The new name of the admin.
- * @param request.body.role The new role of the admin.
- * @param request.body.profilePicture The new profile picture of the admin.
- *
- * @returns 200 - { message: "Informações alteradas com sucesso." }
- * @returns 400 - { error: validatedBody.error.flatten() }
- * @returns 401 - { message: "Não autorizado." }
- * @returns 404 - { message: "Perfil não encontrado" }
- * @returns 500 - { message: "Ocorreu um erro." }
- */
 export const PUT = adminAuthApiMiddleware(async (request: Request) => {
-  const body = request.json();
+  const requestMetadata = { origin: new URL(request.url).origin };
+
+  const body = await request.json();
   const validatedBody = await PutSchema.safeParseAsync(body);
 
   if (!validatedBody.success) {
@@ -34,7 +23,7 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   }
 
   try {
-    await updateAdminInfo(validatedBody.data);
+    await updateAdminInfo(validatedBody.data, requestMetadata);
     return ConventionalResponse.ok({
       message: "Informações alteradas com sucesso.",
     });

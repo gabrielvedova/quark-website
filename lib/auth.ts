@@ -1,14 +1,6 @@
 import { ConventionalResponse } from "./responses";
 import { isAdminAuthenticated } from "./session";
 
-/**
- * Middleware that checks if the user is authenticated with a Bearer token.
- *
- * @param token - The Bearer token to be checked.
- * @param handler - The handler to be executed if the user is authenticated.
- *
- * @returns The handler if the user is authenticated, otherwise a 401 response.
- */
 export function bearerAuthMiddleware(
   token: string | undefined,
   handler: (request: Request) => Promise<ConventionalResponse>
@@ -28,13 +20,6 @@ export function bearerAuthMiddleware(
   };
 }
 
-/**
- * Middleware that checks if the user is authenticated.
- *
- * @param handler - The handler to be executed if the user is authenticated.
- *
- * @returns The handler if the user is authenticated, otherwise a 401 response.
- */
 export function adminAuthApiMiddleware(
   handler: (request: Request) => Promise<ConventionalResponse>
 ) {
@@ -47,20 +32,12 @@ export function adminAuthApiMiddleware(
   };
 }
 
-/**
- * Middleware that checks if the user is authenticated to access unpublished posts.
- *
- * @param handler - The handler to be executed if the user is authenticated.
- *
- * @returns The handler if the user is authenticated, otherwise a 401 response.
- */
 export function protectUnpublishedPosts(
   handler: (request: Request) => Promise<ConventionalResponse>
 ) {
   return async function (request: Request): Promise<ConventionalResponse> {
     const url = new URL(request.url);
     const searchParams = url.searchParams;
-    console.log(searchParams.get("published"));
     const isProtected = searchParams.get("published") !== "true";
 
     if (isProtected && !(await isAdminAuthenticated())) {
