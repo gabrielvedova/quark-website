@@ -114,7 +114,7 @@ export default function Blog() {
                 style={{ width: 80 }}
               >
                 <div className={styles.notice}>
-                  <img src={notice.miniature} alt={notice.title} />
+                  <img src={notice.miniatureUrl} alt={notice.title} />
                   <div className={styles.noticeContent}>
                     <h2>{notice.title}</h2>
                     <p>{notice.description}</p>

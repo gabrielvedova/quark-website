@@ -21,7 +21,7 @@ export default function NewPost() {
   async function sendNewPost(e) {
     e.preventDefault();
 
-    if (!title || !description || !url || !image) {
+    if (!title || !description || !image) {
       console.log("Todos os campos são obrigatórios");
       return;
     }
@@ -29,7 +29,7 @@ export default function NewPost() {
     const data = {
       title,
       content: description,
-      miniature: image,
+      miniatureFile: image,
     };
 
     try {

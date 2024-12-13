@@ -1,5 +1,11 @@
-import NewAdmin from "@/components/admin/blog/NewAdmin/NewAdmin";
+import NewAdmin from "@/components/admin/Blog/NewAdmin/NewAdmin";
+import Menu from "@/components/admin/Menu/Menu";
 
 export default function Page() {
-  return <NewAdmin />;
+  return (
+    <>
+      <Menu />
+      <NewAdmin />
+    </>
+  );
 }
