@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import styles from "./NewAdmin.module.css";
 import { MdModeEdit } from "react-icons/md";
 import FormErrors from "../../FormErrors/FormErrors";
+import { getImage } from "@/lib/images";
+import { useRouter } from "next/navigation";
 
 export default function NewAdmin() {
   const [image, setImage] = useState("");
@@ -12,7 +14,10 @@ export default function NewAdmin() {
   const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [errors, setErros] = useState({});
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -24,47 +29,22 @@ export default function NewAdmin() {
   };
 
   async function getImg() {
-    const response = await fetch("/api/images?key=no-profile-picture");
+    try {
+      const response = await fetch("/api/images?key=no-profile-picture");
 
-    if (response.ok) {
-      const { url } = (await response.json()).data;
-      setImage(url);
-    } else {
-      console.error("Erro ao buscar imagem");
+      if (response.ok) {
+        const { url } = (await response.json()).data;
+        setImage(url);
+      } else {
+        console.error("Erro ao buscar imagem");
+      }
+    } catch (error) {
+      console.error("Erro na requisição de imagem:", error);
     }
   }
 
-  // // function validateInputs() {
-  // //   const newErrors = {
-  // //     name: [],
-  // //     role: [],
-  // //     username: [],
-  // //     password: [],
-  // //     confirmPassword: [],
-  // //     image: [],
-  // //   };
-
-  // //   if (!name) newErrors.name.push("Nome é obrigatório.");
-  // //   if (!role) newErrors.role.push("Cargo é obrigatório.");
-  // //   if (!username) newErrors.username.push("Username é obrigatório.");
-  // //   if (!password) newErrors.password.push("Senha é obrigatória.");
-  // //   if (password !== confirmPassword)
-  // //     newErrors.confirmPassword.push("As senhas não coincidem.");
-  // //   if (!image) newErrors.image.push("Imagem é obrigatória.");
-
-  // //   setErros(newErrors);
-
-  //   return Object.values(newErrors).every(
-  //     (errorList) => errorList.length === 0
-  //   );
-  // }
-
   async function sendNewAdmin(e) {
     e.preventDefault(); // Prevenir o comportamento padrão do botão de submit
-
-    // if (!validateInputs()) {
-    //   return;
-    // }
 
     const data = {
       name: name,
@@ -83,8 +63,31 @@ export default function NewAdmin() {
         },
         body: JSON.stringify(data),
       });
-      if (response.ok && response.status === 200) {
+
+      const result = await response.json();
+
+      if (response.ok && response.status === 201) {
         console.log("Post enviado com sucesso");
+        // Limpar os campos de entrada após o envio bem-sucedido
+        getImg();
+        setName("");
+        setRole("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+        // Definir a imagem padrão
+        getImg();
+        // Redirecionar para a página /admin/alterar
+        router.push("/admin/alterar");
+      } else if (result.error) {
+        // Exibir apenas a primeira mensagem de erro para cada campo
+        const firstErrors = {};
+        for (const key in result.error) {
+          if (result.error[key].length > 0) {
+            firstErrors[key] = [result.error[key][0]];
+          }
+        }
+        setErrors(firstErrors);
       } else {
         console.log(
           "Erro ao enviar post",
@@ -103,7 +106,7 @@ export default function NewAdmin() {
 
   return (
     <div className={styles.container}>
-      <form>
+      <form onSubmit={sendNewAdmin}>
         <div className={styles.imageContainer}>
           <img src={image} alt="mano dá n" className={styles.imageProfile} />
           <input
@@ -112,7 +115,9 @@ export default function NewAdmin() {
             className={styles.fileInput}
             onChange={handleImageChange}
           />
-          {errors.miniatureFile && <div>Esta merda deu erro</div>}
+          {errors.profilePictureFile && (
+            <FormErrors errors={errors.profilePictureFile} />
+          )}
           <label htmlFor="fileInput" className={styles.fileInputLabel}>
             <MdModeEdit size={60} color="#fff" />
           </label>
@@ -126,6 +131,7 @@ export default function NewAdmin() {
             <input
               type="text"
               id="name"
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <div className={styles.errorsContainer}>
@@ -137,6 +143,7 @@ export default function NewAdmin() {
             <input
               type="text"
               id="role"
+              value={role}
               onChange={(e) => setRole(e.target.value)}
             />
             <div className={styles.errorsContainer}>
@@ -148,6 +155,7 @@ export default function NewAdmin() {
             <input
               type="text"
               id="username"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <div className={styles.errorsContainer}>
@@ -157,10 +165,17 @@ export default function NewAdmin() {
           <div>
             <h3>Senha</h3>
             <input
-              type="password"
-              id="password"
+              type="text"
+              type={showPassword ? "text" : "password"}
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <p
+              className={styles.showPassword}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Ocultar senha" : "Mostrar senha"}
+            </p>
             <div className={styles.errorsContainer}>
               {errors.password && <FormErrors errors={errors.password} />}
             </div>
@@ -168,17 +183,24 @@ export default function NewAdmin() {
           <div>
             <h3>Confirmar Senha</h3>
             <input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               id="confirmPassword"
+              value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
+            <p
+              className={styles.showPassword}
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+            </p>
             <div className={styles.errorsContainer}>
-              {errors.confirmPassword && (
-                <FormErrors errors={errors.confirmPassword} />
+              {errors.passwordConfirmation && (
+                <FormErrors errors={errors.passwordConfirmation} />
               )}
             </div>
           </div>
-          <button onClick={sendNewAdmin}>Salvar</button>
+          <button type="submit">Salvar</button>
         </div>
       </form>
     </div>
