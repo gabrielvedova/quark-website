@@ -1,13 +1,37 @@
 "use client";
-import Menu from "../../Menu/Menu";
+import styles from "./EditAdmin.module.css";
 import { useEffect, useState } from "react";
-import styles from "./NewAdmin.module.css";
 import { MdModeEdit } from "react-icons/md";
-import FormErrors from "../../FormErrors/FormErrors";
-import { getImage } from "@/lib/images";
-import { useRouter } from "next/navigation";
 
-export default function NewAdmin() {
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    setImage(reader.result);
+  };
+  reader.readAsDataURL(file);
+};
+
+async function getAdmin() {
+  try {
+    const response = await fetch("/api/admin/edit-info");
+
+    if (response.ok) {
+      const data = (await response.json()).data;
+      console.log(data);
+    } else {
+      const errorData = (await response.json()).data;
+      console.error(
+        "Erro ao buscar admin:",
+        errorData.message || "Unknown error"
+      );
+    }
+  } catch (error) {
+    console.error("Erro ao buscar admin:", error.message);
+  }
+}
+
+export default function EditAdmin() {
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -17,16 +41,6 @@ export default function NewAdmin() {
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const router = useRouter();
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImage(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
 
   async function getImg() {
     try {
@@ -43,70 +57,14 @@ export default function NewAdmin() {
     }
   }
 
-  async function sendNewAdmin(e) {
-    e.preventDefault(); // Prevenir o comportamento padrão do botão de submit
-
-    const data = {
-      name: name,
-      role: role,
-      password: password,
-      passwordConfirmation: confirmPassword,
-      username: username,
-      profilePictureFile: image.split(",")[1],
-    };
-
-    try {
-      const response = await fetch("/api/admin/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (response.ok && response.status === 201) {
-        console.log("Post enviado com sucesso");
-        // Limpar os campos de entrada após o envio bem-sucedido
-        getImg();
-        setName("");
-        setRole("");
-        setUsername("");
-        setPassword("");
-        setConfirmPassword("");
-        // Definir a imagem padrão
-        getImg();
-        // Redirecionar para a página /admin/alterar
-        router.push("/admin/alterar-perfil");
-      } else if (result.error) {
-        // Exibir apenas a primeira mensagem de erro para cada campo
-        const firstErrors = {};
-        for (const key in result.error) {
-          if (result.error[key].length > 0) {
-            firstErrors[key] = [result.error[key][0]];
-          }
-        }
-        setErrors(firstErrors);
-      } else {
-        console.log(
-          "Erro ao enviar post",
-          response.status,
-          response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-    }
-  }
-
   useEffect(() => {
+    getAdmin();
     getImg();
-  }, []);
+  });
 
   return (
     <div className={styles.container}>
-      <form onSubmit={sendNewAdmin}>
+      <form>
         <div className={styles.imageContainer}>
           <img src={image} alt="mano dá n" className={styles.imageProfile} />
           <input
