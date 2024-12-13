@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Menu from "../../Menu/Menu";
 import styles from "./NewPost.module.css";
+import { IoMdCloudDownload } from "react-icons/io";
 
 export default function NewPost() {
   const [title, setTitle] = useState("");
@@ -74,20 +75,27 @@ export default function NewPost() {
             <h3>Descrição</h3>
             <textarea
               placeholder="Descrição"
-              rows={4}
-              cols={55}
+              rows={6}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
           <div className={styles.item}>
             <h3>Imagem</h3>
-            <input type="file" onChange={handleImageChange} />
+            <input
+              type="file"
+              onChange={handleImageChange}
+              id="fileInput"
+              className={styles.fileInput}
+            />
+            <label htmlFor="fileInput">
+              <IoMdCloudDownload size={60} color="#fff" />
+            </label>
             {image && (
               <img
                 src={image}
                 alt="Preview"
-                style={{ marginTop: "10px", maxWidth: "100%" }}
+                style={{ marginTop: "10px", maxWidth: "150px" }}
               />
             )}
           </div>

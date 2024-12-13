@@ -4,12 +4,29 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 80vh;
 }
 
 .container form {
   width: 40%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  background-color: #003a9d;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.item h3 {
+  color: #fff;
+  font-weight: 700;
 }
 
 .item textarea {
@@ -29,4 +46,8 @@
   border-radius: 30px;
   border: none;
   background-color: rgb(104, 168, 241);
+}
+
+.fileInput {
+  display: none;
 }
