@@ -13,7 +13,6 @@ export default function NewPost() {
     const reader = new FileReader();
     reader.onloadend = () => {
       setImage(reader.result);
-      console.log(reader.result);
     };
     reader.readAsDataURL(file);
   };
@@ -29,7 +28,7 @@ export default function NewPost() {
     const data = {
       title,
       content: description,
-      miniatureFile: image,
+      miniatureFile: image.split(",")[1],
     };
 
     try {
