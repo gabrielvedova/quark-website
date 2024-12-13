@@ -14,9 +14,7 @@ export default function NewAdmin() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   async function getImg() {
-    const response = await fetch("/api/images?key=no-profile-picture", {
-      headers: { Authorization: `Bearer ${process.env.IMAGE_API_SECRET}` },
-    });
+    const response = await fetch("/api/images?key=no-profile-picture");
 
     if (response.ok) {
       const { url } = (await response.json()).data;

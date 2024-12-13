@@ -1,18 +1,11 @@
 import { ConventionalResponse } from "./responses";
 import { isAdminAuthenticated } from "./session";
 
-export function bearerAuthMiddleware(
-  token: string | undefined,
+export function restrictAccessMiddleware(
   handler: (request: Request) => Promise<ConventionalResponse>
 ) {
-  return async function (request: Request): Promise<ConventionalResponse> {
-    if (!token) {
-      return ConventionalResponse.internalServerError({
-        message: "Token não definido.",
-      });
-    }
-
-    if (request.headers.get("Authorization") !== `Bearer ${token}`) {
+  return async function (request: Request) {
+    if (request.headers.get("origin") !== new URL(request.url).origin) {
       return ConventionalResponse.unauthorized();
     }
 

@@ -7,6 +7,7 @@ import {
   UnauthorizedError,
 } from "./errors";
 import { generateUniqueFilename } from "./utils";
+import { cookies } from "next/headers";
 
 async function fetchRequiredImages(
   headlineWithImageKey: {
@@ -20,10 +21,7 @@ async function fetchRequiredImages(
   requestMetadata: { origin: string }
 ) {
   const response = await fetch(
-    `${requestMetadata.origin}//api/images?key=${headlineWithImageKey.miniatureKey}`,
-    {
-      headers: { Authorization: `Bearer ${process.env.IMAGE_API_SECRET}` },
-    }
+    `${requestMetadata.origin}/api/images?key=${headlineWithImageKey.miniatureKey}`
   );
 
   if (response.status === 404) {
@@ -87,7 +85,7 @@ async function uploadNewMiniature(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: miniatureKey, file: miniatureFile }),
   });
@@ -135,7 +133,7 @@ async function updateMiniature(
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: oldMiniatureKey }),
   });
@@ -149,7 +147,7 @@ async function updateMiniature(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: newMiniatureKey, file: newMiniatureFile }),
   });
@@ -206,7 +204,7 @@ async function deleteMiniature(
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: miniatureKey }),
   });

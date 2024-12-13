@@ -19,7 +19,7 @@ async function uploadProfilePicture(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({
       key: profilePictureKey,

@@ -8,6 +8,7 @@ import {
 } from "./errors";
 import { getAdminId } from "./session";
 import { generateUniqueFilename } from "./utils";
+import { cookies } from "next/headers";
 
 async function changeProfilePicture(
   oldProfilePictureKey: string,
@@ -21,7 +22,7 @@ async function changeProfilePicture(
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+          Cookie: (await cookies()).toString(),
         },
         body: JSON.stringify({
           key: oldProfilePictureKey,
@@ -47,7 +48,7 @@ async function changeProfilePicture(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({
       key: newProfilePictureKey,

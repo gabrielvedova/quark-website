@@ -8,6 +8,7 @@ import {
 } from "./errors";
 import { getAdminId } from "./session";
 import { generateUniqueFilename } from "./utils";
+import { cookies } from "next/headers";
 
 async function fetchRequiredImages(
   postWithImageKeys: {
@@ -29,8 +30,7 @@ async function fetchRequiredImages(
   requestMetadata: { origin: string }
 ) {
   const postMiniatureResponse = await fetch(
-    `${requestMetadata.origin}/api/images?key=${postWithImageKeys.miniatureKey}`,
-    { headers: { Authorization: `Bearer ${process.env.IMAGE_API_SECRET}` } }
+    `${requestMetadata.origin}/api/images?key=${postWithImageKeys.miniatureKey}`
   );
 
   if (postMiniatureResponse.status === 404) {
@@ -46,8 +46,7 @@ async function fetchRequiredImages(
   ).data.url;
 
   const authorProfilePictureResponse = await fetch(
-    `${requestMetadata.origin}/api/images?key=${postWithImageKeys.author.profilePictureKey}`,
-    { headers: { Authorization: `Bearer ${process.env.IMAGE_API_SECRET}` } }
+    `${requestMetadata.origin}/api/images?key=${postWithImageKeys.author.profilePictureKey}`
   );
 
   if (authorProfilePictureResponse.status === 404) {
@@ -166,7 +165,7 @@ async function uploadNewMiniature(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: miniatureKey, file: miniatureFile }),
   });
@@ -217,7 +216,7 @@ async function updateMiniature(
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: oldMiniatureKey }),
   });
@@ -231,7 +230,7 @@ async function updateMiniature(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: newMiniatureKey, file: newMiniatureFile }),
   });
@@ -293,7 +292,7 @@ async function deleteMiniature(
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({ key: miniatureKey }),
   });

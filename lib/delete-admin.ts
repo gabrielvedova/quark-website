@@ -5,6 +5,7 @@ import {
   UnauthorizedError,
 } from "./errors";
 import { deleteSession, getAdminId } from "./session";
+import { cookies } from "next/headers";
 
 async function deleteProfilePicture(
   profilePictureKey: string,
@@ -14,7 +15,7 @@ async function deleteProfilePicture(
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.IMAGE_API_SECRET}`,
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify({
       key: profilePictureKey,
