@@ -78,7 +78,7 @@ export default function NewAdmin() {
         // Definir a imagem padrão
         getImg();
         // Redirecionar para a página /admin/alterar
-        router.push("/admin/alterar");
+        router.push("/admin/alterar-perfil");
       } else if (result.error) {
         // Exibir apenas a primeira mensagem de erro para cada campo
         const firstErrors = {};
