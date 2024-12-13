@@ -11,13 +11,9 @@ import {
 import { format } from "date-fns";
 import DOMPurify from "dompurify";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function PostOption({
-  post,
-  fetchPosts,
-  setError,
-  setConfirmationPopup,
-}: {
+export default function PostOption(props: {
   post: Post;
   fetchPosts: () => Promise<void>;
   setError: (error: string) => void;
@@ -28,6 +24,8 @@ export default function PostOption({
     } | null
   ) => void;
 }) {
+  const { post, fetchPosts, setError, setConfirmationPopup } = props;
+
   const formattedDate = format(post.lastEditedAt, "dd/MM/yyyy");
   const sanitizedContent = DOMPurify.sanitize(post.content);
   const router = useRouter();
@@ -122,9 +120,11 @@ export default function PostOption({
                 <MdOutlineUnarchive size={25} />
               )}
             </button>
-            <button className={styles.edit} title="Editar">
-              <MdOutlineEdit size={25} />
-            </button>
+            <Link href={`/admin/blog/posts/editar/${post.id}`}>
+              <button className={styles.edit} title="Editar">
+                <MdOutlineEdit size={25} />
+              </button>
+            </Link>
             <button
               className={styles.delete}
               title="Excluir"

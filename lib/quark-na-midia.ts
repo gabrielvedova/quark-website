@@ -47,7 +47,7 @@ async function fetchRequiredImages(
 }
 
 export async function getHeadline(
-  params: { id?: number },
+  params: { id?: number; search?: string },
   requestMetadata: { origin: string }
 ) {
   if (params.id) {
@@ -64,7 +64,15 @@ export async function getHeadline(
 
     return [headlineWithImageUrl];
   }
-  const headlinesWithImageKey = await prismaClient.headline.findMany();
+  const headlinesWithImageKey = await prismaClient.headline.findMany({
+    where: {
+      OR: [
+        { title: { contains: params.search || "", mode: "insensitive" } },
+        { description: { contains: params.search || "", mode: "insensitive" } },
+      ],
+    },
+    orderBy: { publishingDate: "desc" },
+  });
 
   const headlinesWithImageUrl = await Promise.all(
     headlinesWithImageKey.map((headlineWithImageKey) => {

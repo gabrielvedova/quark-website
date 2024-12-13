@@ -8,6 +8,8 @@ import Link from "next/link";
 import SearchBar from "@/components/admin/Blog/SearchBar/SearchBar";
 import { Post } from "@/lib/definitions";
 import PostOption from "@/components/admin/Blog/PostOption/PostOption";
+import ConfirmationPopup from "../ConfirmationPopup/ConfirmationPopup";
+import Button from "../Button/Button";
 
 export default function Blog() {
   const [search, setSearch] = useState<string>("");
@@ -92,14 +94,14 @@ export default function Blog() {
           published={published}
           setPublished={setPublished}
         />
-        <div className={styles.postsContainer}>
+        <div className={styles.postContainer}>
           {loading ? (
             <ListMessage message="Carregando..." />
           ) : error ? (
             <ListMessage message={error} />
           ) : posts.length ? (
             posts.map((post) => (
-              <div key={post.id} className={styles.posts}>
+              <div key={post.id}>
                 <PostOption
                   post={post}
                   fetchPosts={fetchPosts}
@@ -113,40 +115,17 @@ export default function Blog() {
           )}
         </div>
         <div className={styles.addPostsContainer}>
-          <Link href="/admin/blog/posts/novo" className={styles.addPostsBtn}>
-            Adicionar postagem
+          <Link href="/admin/blog/posts/novo">
+            <Button text="Adicionar postagem" />
           </Link>
         </div>
       </main>
       {confirmationPopup && (
-        <div className={styles.popupBackground} ref={confirmationPopupRef}>
-          <div className={styles.confirmationPopup}>
-            <p className={styles.confirmationMessage}>
-              {confirmationPopup.message}
-            </p>
-            <div className={styles.confirmationButtons}>
-              <button
-                className={styles.cancelBtn}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setConfirmationPopup(null);
-                }}
-              >
-                Cancelar
-              </button>
-              <button
-                className={styles.confirmationBtn}
-                onClick={async (e) => {
-                  e.preventDefault();
-                  await confirmationPopup.onConfirm();
-                  setConfirmationPopup(null);
-                }}
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmationPopup
+          confirmationPopup={confirmationPopup}
+          setConfirmationPopup={setConfirmationPopup}
+          confirmationPopupRef={confirmationPopupRef}
+        />
       )}
     </div>
   );

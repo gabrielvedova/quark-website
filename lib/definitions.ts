@@ -11,7 +11,7 @@ export type Post = {
     profilePictureUrl: string;
   };
   published: boolean;
-  lastEditedAt: Date;
+  lastEditedAt: string;
 };
 
 export type Headline = {
@@ -19,6 +19,6 @@ export type Headline = {
   title: string;
   description: string;
   miniatureUrl: string;
-  publishingDate: Date;
+  publishingDate: string;
   url: string;
 };

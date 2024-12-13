@@ -1,6 +1,8 @@
 import styles from "./FormErrors.module.css";
 
-export default function FormErrors({ errors }: { errors: string[] }) {
+export default function FormErrors(props: { errors: string[] }) {
+  const { errors } = props;
+
   return (
     <ul className={styles.errorList}>
       {errors.map((error, index) => (

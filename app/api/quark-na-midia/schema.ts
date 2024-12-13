@@ -6,12 +6,15 @@ export const GetParamsSchema = z.object({
     .string()
     .regex(/^\d+$/, { message: "Parameter 'id' must be numeric." })
     .optional(),
+
+  search: z.string().optional(),
 });
 
-export function convertGetParams(params: { id?: string }) {
-  const convertedParams: { id?: number } = {};
+export function convertGetParams(params: { id?: string; search?: string }) {
+  const convertedParams: { id?: number; search?: string } = {};
 
   if (params.id) convertedParams.id = parseInt(params.id);
+  if (params.search) convertedParams.search = params.search;
 
   return convertedParams;
 }

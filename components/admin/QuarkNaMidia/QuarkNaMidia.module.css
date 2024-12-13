@@ -1,0 +1,14 @@
+.postsContainer,
+.addHeadlinesContainer {
+  display: flex;
+  justify-content: center;
+  margin: 5vh;
+}
+
+.headlineContainer {
+  flex-direction: column;
+}
+
+.headlineContainer div:not(:last-child) {
+  margin-bottom: 20px;
+}

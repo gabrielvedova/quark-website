@@ -1,100 +1,14 @@
-.postsContainer,
+.postContainer,
 .addPostsContainer {
   display: flex;
   justify-content: center;
   margin: 5vh;
 }
 
-.postsContainer {
+.postContainer {
   flex-direction: column;
 }
 
-.addPostsBtn {
-  background-color: #0056d2;
-  color: whitesmoke;
-  border-radius: 20px;
-  border: none;
-  padding: 14px 20px;
-  font-size: 16px;
-  text-decoration: none;
-}
-
-.addPostsBtn:hover {
-  background-color: #003a9d;
-  cursor: pointer;
-}
-
-.postsContainer .posts:not(:last-child) {
+.postContainer div:not(:last-child) {
   margin-bottom: 20px;
-}
-
-.popupBackground {
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
-}
-
-.confirmationPopup {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  min-width: 15vw;
-  max-width: 20vw;
-  align-items: center;
-}
-
-.confirmationMessage {
-  margin: 10px 0 30px 0;
-  color: #333333;
-  text-align: center;
-  font-size: 18px;
-}
-
-.confirmationButtons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.cancelBtn {
-  background-color: white;
-  color: #333333;
-  border: 0.5px solid #333333;
-  padding: 10px 20px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-size: 15px;
-  transition: 200ms;
-}
-
-.cancelBtn:hover {
-  background-color: #f2f2f2;
-  cursor: pointer;
-}
-
-.confirmationBtn {
-  background-color: #0056d2;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 700;
-  transition: 200ms;
-}
-
-.confirmationBtn:hover {
-  background-color: #003a9d;
-  cursor: pointer;
 }
