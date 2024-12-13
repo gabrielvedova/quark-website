@@ -12,31 +12,33 @@ export default function Menu({
         <h1 className={styles.title}>Admin Quark</h1>
         <Link
           href="/admin/blog"
-          className={`${styles.link} ${current === "blog" ? "underlined" : ""}`}
+          className={styles.link}
+          style={{ textDecoration: current === "blog" ? "underline" : "none" }}
         >
           Blog
         </Link>
         <Link
           href="/admin/quark-na-midia"
-          className={`${styles.link} ${
-            current === "quark-na-midia" ? "underlined" : ""
-          }`}
+          className={styles.link}
+          style={{
+            textDecoration: current === "quark-na-midia" ? "underline" : "none",
+          }}
         >
           Quark na Mídia
         </Link>
         <Link
           href="/admin/alterar-perfil"
-          className={`${styles.link} ${
-            current === "alterar-perfil" ? "underlined" : ""
-          }`}
+          className={styles.link}
+          style={{
+            textDecoration: current === "alterar-perfil" ? "underline" : "none",
+          }}
         >
           Alterar perfil
         </Link>
         <Link
           href="/admin/criar"
-          className={`${styles.link} ${
-            current === "criar" ? "underlined" : ""
-          }`}
+          className={styles.link}
+          style={{ textDecoration: current === "criar" ? "underline" : "none" }}
         >
           Novo Admin
         </Link>
