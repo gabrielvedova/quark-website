@@ -4,7 +4,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 80vh;
+  min-height: 80vh;
+  margin: 8vh 0;
 }
 
 .container form {
@@ -46,6 +47,7 @@
   border-radius: 30px;
   border: none;
   background-color: rgb(104, 168, 241);
+  margin-top: 20px;
 }
 
 .fileInput {

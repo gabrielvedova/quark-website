@@ -40,7 +40,7 @@ export default function NewPost() {
         },
         body: JSON.stringify(data),
       });
-      if (response.ok && response.status === 200) {
+      if (response.ok && response.status === 201) {
         console.log("Post enviado com sucesso");
       } else {
         console.log(
@@ -95,7 +95,7 @@ export default function NewPost() {
               <img
                 src={image}
                 alt="Preview"
-                style={{ marginTop: "10px", maxWidth: "150px" }}
+                style={{ marginTop: "10px", maxWidth: "100%" }}
               />
             )}
           </div>
