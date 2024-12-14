@@ -1,3 +1,9 @@
+import Menu from "@/components/admin/Menu/Menu";
+
 export default function Page() {
-  return <h1>Olá mano alterar a senha né</h1>;
+  return (
+    <>
+      <Menu current="meu-perfil" />
+    </>
+  );
 }

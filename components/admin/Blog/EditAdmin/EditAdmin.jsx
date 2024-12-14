@@ -90,7 +90,7 @@ export default function EditAdmin() {
         <div className={styles.imageContainer}>
           <img
             src={admin.profilePictureUrl}
-            alt="mano dá n"
+            alt="Imagem de perfil"
             className={styles.imageProfile}
           />
           <input

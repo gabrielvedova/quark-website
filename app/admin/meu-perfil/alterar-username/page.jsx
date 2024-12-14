@@ -1,3 +1,11 @@
+import Menu from "@/components/admin/Menu/Menu";
+import ChangeUsername from "@/components/admin/Blog/EditAdmin/ChangeUsername/ChangeUsername";
+
 export default function Page() {
-  return <h1>Olá mano alterar o username né</h1>;
+  return (
+    <>
+      <Menu current="meu-perfil" />
+      <ChangeUsername />
+    </>
+  );
 }
