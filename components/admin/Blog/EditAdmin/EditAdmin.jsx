@@ -32,7 +32,7 @@ async function getAdmin() {
 }
 
 export default function EditAdmin() {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
