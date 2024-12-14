@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./Menu.module.css";
 
 export default function Menu(props: {
-  current: "blog" | "quark-na-midia" | "alterar-perfil" | "criar";
+  current: "blog" | "quark-na-midia" | "meu-perfil" | "novo";
 }) {
   const { current } = props;
 
@@ -27,18 +27,18 @@ export default function Menu(props: {
           Quark na Mídia
         </Link>
         <Link
-          href="/admin/alterar-perfil"
+          href="/admin/meu-perfil"
           className={styles.link}
           style={{
-            textDecoration: current === "alterar-perfil" ? "underline" : "none",
+            textDecoration: current === "meu-perfil" ? "underline" : "none",
           }}
         >
-          Alterar perfil
+          Meu Perfil
         </Link>
         <Link
-          href="/admin/criar"
+          href="/admin/novo"
           className={styles.link}
-          style={{ textDecoration: current === "criar" ? "underline" : "none" }}
+          style={{ textDecoration: current === "novo" ? "underline" : "none" }}
         >
           Novo Admin
         </Link>

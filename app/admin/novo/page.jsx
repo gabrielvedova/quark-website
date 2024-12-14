@@ -4,7 +4,7 @@ import Menu from "@/components/admin/Menu/Menu";
 export default function Page() {
   return (
     <>
-      <Menu current="criar" />
+      <Menu current="novo" />
       <NewAdmin />
     </>
   );

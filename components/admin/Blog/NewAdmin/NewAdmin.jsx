@@ -8,7 +8,7 @@ import { getImage } from "@/lib/images";
 import { useRouter } from "next/navigation";
 
 export default function NewAdmin() {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
