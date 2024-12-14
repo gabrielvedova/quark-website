@@ -69,6 +69,7 @@ export async function getHeadline(
       OR: [
         { title: { contains: params.search || "", mode: "insensitive" } },
         { description: { contains: params.search || "", mode: "insensitive" } },
+        { url: { contains: params.search || "", mode: "insensitive" } },
       ],
     },
     orderBy: { publishingDate: "desc" },

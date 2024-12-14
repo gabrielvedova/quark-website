@@ -9,9 +9,11 @@ import HeadlineOption from "./HeadlineOption/HeadlineOption";
 import ConfirmationPopup from "../ConfirmationPopup/ConfirmationPopup";
 import Link from "next/link";
 import Button from "../Button/Button";
+import SearchBar from "./SearchBar/SearchBar";
 
 export default function QuarkNaMidia({}) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
   const [headlines, setHeadlines] = useState<Headline[]>([]);
   const [error, setError] = useState<string>("");
   const [confirmationPopup, setConfirmationPopup] = useState<{
@@ -21,7 +23,11 @@ export default function QuarkNaMidia({}) {
   const confirmationPopupRef = useRef<HTMLDivElement>(null);
 
   const buildUrl = () => {
-    return new URL("/api/quark-na-midia", window.location.origin);
+    const url = new URL("/api/quark-na-midia", window.location.origin);
+
+    if (search) url.searchParams.set("search", search);
+
+    return url;
   };
 
   const fetchHeadlines = async () => {
@@ -79,6 +85,11 @@ export default function QuarkNaMidia({}) {
     <div>
       <Menu current="quark-na-midia" />
       <main>
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          fetchHeadlines={fetchHeadlines}
+        />
         <div className={styles.headlineContainer}>
           {loading ? (
             <ListMessage message="Carregando..." />
