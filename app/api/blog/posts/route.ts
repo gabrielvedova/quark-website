@@ -16,6 +16,12 @@ import {
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware, protectUnpublishedPosts } from "@/lib/auth";
 
+export const OPTIONS = async () => {
+  return ConventionalResponse.ok({
+    data: { methods: ["GET", "POST", "PUT", "DELETE"] },
+  });
+};
+
 export const GET = protectUnpublishedPosts(async (request: Request) => {
   const { searchParams, origin } = new URL(request.url);
   const requestMetadata = { origin };

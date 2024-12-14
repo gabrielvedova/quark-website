@@ -3,6 +3,10 @@
 // import { sendContactEmail } from "@/lib/email";
 // import { EmailSendingError } from "@/lib/errors";
 
+// export const OPTIONS = async () => {
+//   return ConventionalResponse.ok({ data: { methods: ["POST"] } });
+// };
+
 // export const POST = async (request: Request) => {
 //   const body = await request.json();
 //   const validatedBody = PostSchema.safeParse(body);

@@ -9,6 +9,10 @@ import {
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
+export const OPTIONS = async () => {
+  return ConventionalResponse.ok({ data: { methods: ["PATCH"] } });
+};
+
 export const PATCH = adminAuthApiMiddleware(async (request: Request) => {
   const body = await request.json();
   const validatedBody = PatchSchema.safeParse(body);

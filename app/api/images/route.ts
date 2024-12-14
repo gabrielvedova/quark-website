@@ -10,6 +10,12 @@ import {
   FileUploadError,
 } from "@/lib/errors";
 
+export const OPTIONS = async () => {
+  return ConventionalResponse.ok({
+    data: { methods: ["GET", "POST", "PUT", "DELETE"] },
+  });
+};
+
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const paramsObject = Object.fromEntries(searchParams);

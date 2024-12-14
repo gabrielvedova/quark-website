@@ -20,7 +20,13 @@ import {
 import { ConventionalResponse } from "@/lib/responses";
 import { adminAuthApiMiddleware } from "@/lib/auth";
 
-export const GET = async (request: Request): Promise<ConventionalResponse> => {
+export const OPTIONS = async () => {
+  return ConventionalResponse.ok({
+    data: { methods: ["GET", "POST", "PUT", "DELETE"] },
+  });
+};
+
+export const GET = async (request: Request) => {
   const { searchParams, origin } = new URL(request.url);
   const requestMetadata = { origin };
   const paramsObject = Object.fromEntries(searchParams);

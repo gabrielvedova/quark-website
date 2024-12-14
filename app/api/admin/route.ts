@@ -17,6 +17,12 @@ import {
 } from "@/lib/admin";
 import { PostSchema, PutSchema } from "./schema";
 
+export const OPTIONS = async () => {
+  return ConventionalResponse.ok({
+    data: { methods: ["GET", "POST", "PUT", "DELETE"] },
+  });
+};
+
 export const GET = adminAuthApiMiddleware(async (request: Request) => {
   const requestMetadata = { origin: new URL(request.url).origin };
 

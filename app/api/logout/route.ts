@@ -3,6 +3,10 @@ import { UnauthorizedError } from "@/lib/errors";
 import logout from "@/lib/logout";
 import { ConventionalResponse } from "@/lib/responses";
 
+export const OPTIONS = async () => {
+  return ConventionalResponse.ok({ data: { methods: ["POST"] } });
+};
+
 export const POST = adminAuthApiMiddleware(async (request: Request) => {
   try {
     await logout();
