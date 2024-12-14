@@ -98,7 +98,12 @@ export default function QuarkNaMidia({}) {
           ) : headlines.length ? (
             headlines.map((headline) => (
               <div key={headline.id}>
-                <HeadlineOption headline={headline} />
+                <HeadlineOption
+                  headline={headline}
+                  fetchHeadlines={fetchHeadlines}
+                  setError={setError}
+                  setConfirmationPopup={setConfirmationPopup}
+                />
               </div>
             ))
           ) : (
