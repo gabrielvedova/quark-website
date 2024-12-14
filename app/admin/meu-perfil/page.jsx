@@ -4,7 +4,7 @@ import EditAdmin from "@/components/admin/Blog/EditAdmin/EditAdmin";
 export default function Page() {
   return (
     <>
-      <Menu current="alterar-informacoes" />
+      <Menu current="meu-perfil" />
       <EditAdmin />
     </>
   );
