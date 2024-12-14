@@ -1,72 +1,58 @@
 "use client";
+import { useRouter } from "next/navigation";
 import styles from "./EditAdmin.module.css";
 import { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 
-const handleImageChange = (e) => {
-  const file = e.target.files[0];
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    setImage(reader.result);
-  };
-  reader.readAsDataURL(file);
-};
-
-async function getAdmin() {
-  try {
-    const response = await fetch("/api/admin/edit-info");
-
-    if (response.ok) {
-      const data = (await response.json()).data;
-      console.log(data);
-    } else {
-      const errorData = (await response.json()).data;
-      console.error(
-        "Erro ao buscar admin:",
-        errorData.message || "Unknown error"
-      );
-    }
-  } catch (error) {
-    console.error("Erro ao buscar admin:", error.message);
-  }
-}
-
 export default function EditAdmin() {
-  const [image, setImage] = useState(null);
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [admin, setAdmin] = useState({
+    name: "",
+    role: "",
+    profilePictureUrl: null,
+  });
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const router = useRouter();
 
-  async function getImg() {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAdmin({ ...admin, profilePictureUrl: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  async function getAdmin() {
     try {
-      const response = await fetch("/api/images?key=no-profile-picture");
+      const response = await fetch("/api/admin");
 
       if (response.ok) {
-        const { url } = (await response.json()).data;
-        setImage(url);
+        const data = (await response.json()).data;
+        setAdmin(data.admin);
       } else {
-        console.error("Erro ao buscar imagem");
+        const errorData = (await response.json()).data;
+        console.error(
+          "Erro ao buscar admin:",
+          errorData.message || "Unknown error"
+        );
       }
     } catch (error) {
-      console.error("Erro na requisição de imagem:", error);
+      console.error("Erro ao buscar admin:", error.message);
     }
   }
-
   useEffect(() => {
     getAdmin();
-    getImg();
-  });
+  }, []);
 
   return (
     <div className={styles.container}>
       <form>
         <div className={styles.imageContainer}>
-          <img src={image} alt="mano dá n" className={styles.imageProfile} />
+          <img
+            src={admin.profilePictureUrl}
+            alt="mano dá n"
+            className={styles.imageProfile}
+          />
           <input
             type="file"
             id="fileInput"
@@ -89,8 +75,8 @@ export default function EditAdmin() {
             <input
               type="text"
               id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={admin.name}
+              onChange={(e) => setAdmin({ ...admin, name: e.target.value })}
             />
             <div className={styles.errorsContainer}>
               {errors.name && <FormErrors errors={errors.name} />}
@@ -101,61 +87,25 @@ export default function EditAdmin() {
             <input
               type="text"
               id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
+              value={admin.role}
+              onChange={(e) => setAdmin({ ...admin, role: e.target.value })}
             />
             <div className={styles.errorsContainer}>
               {errors.role && <FormErrors errors={errors.role} />}
             </div>
           </div>
-          <div>
-            <h3>Username</h3>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <div className={styles.errorsContainer}>
-              {errors.username && <FormErrors errors={errors.username} />}
-            </div>
-          </div>
-          <div>
-            <h3>Senha</h3>
-            <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <p
-              className={styles.showPassword}
-              onClick={() => setShowPassword(!showPassword)}
+          <div className={styles.buttons}>
+            <button
+              onClick={() => router.push("/admin/meu-perfil/alterar-username")}
             >
-              {showPassword ? "Ocultar senha" : "Mostrar senha"}
-            </p>
-            <div className={styles.errorsContainer}>
-              {errors.password && <FormErrors errors={errors.password} />}
-            </div>
-          </div>
-          <div>
-            <h3>Confirmar Senha</h3>
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <p
-              className={styles.showPassword}
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              Editar Username
+            </button>
+            <button
+              onClick={() => router.push("/admin/meu-perfil/alterar-senha")}
             >
-              {showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
-            </p>
-            <div className={styles.errorsContainer}>
-              {errors.passwordConfirmation && (
-                <FormErrors errors={errors.passwordConfirmation} />
-              )}
-            </div>
+              Editar Senha
+            </button>
+            <button>Deletar Admin</button>
           </div>
           <button type="submit">Salvar</button>
         </div>
