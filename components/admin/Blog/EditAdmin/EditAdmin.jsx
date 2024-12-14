@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import styles from "./EditAdmin.module.css";
 import { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
+import PopUp from "./PopUp/PopUp";
 
 export default function EditAdmin() {
   const [admin, setAdmin] = useState({
@@ -11,6 +12,10 @@ export default function EditAdmin() {
     profilePictureUrl: null,
   });
   const [errors, setErrors] = useState({});
+  const [save, setSave] = useState({
+    message: "",
+    submit: false,
+  });
   const router = useRouter();
 
   const handleImageChange = (e) => {
@@ -40,13 +45,48 @@ export default function EditAdmin() {
       console.error("Erro ao buscar admin:", error.message);
     }
   }
+
+  async function PutAdmin(e) {
+    e.preventDefault();
+    const data = {
+      name: admin.name,
+      role: admin.role,
+      profilePictureFile: admin.profilePictureUrl.split(",")[1],
+    };
+    try {
+      const response = await fetch("/api/admin", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const { message } = await response.json();
+        console.log("Admin atualizado com sucesso:", message);
+        setSave({ message, submit: true });
+        console.log(save);
+      } else {
+        const errorData = await response.json();
+        console.error(
+          "Erro ao atualizar admin:",
+          errorData.message || "Unknown error"
+        );
+        console.log(data);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar admin:", error.message);
+    }
+  }
   useEffect(() => {
     getAdmin();
   }, []);
 
   return (
     <div className={styles.container}>
-      <form>
+      {save.submit && <PopUp data={save} setData={setSave} />}
+      <form onSubmit={PutAdmin}>
         <div className={styles.imageContainer}>
           <img
             src={admin.profilePictureUrl}
@@ -70,7 +110,7 @@ export default function EditAdmin() {
           </div>
         </div>
         <div className={styles.inputContainer}>
-          <div>
+          <div className={styles.item}>
             <h3>Nome</h3>
             <input
               type="text"
@@ -82,7 +122,7 @@ export default function EditAdmin() {
               {errors.name && <FormErrors errors={errors.name} />}
             </div>
           </div>
-          <div>
+          <div className={styles.item}>
             <h3>Cargo</h3>
             <input
               type="text"
@@ -95,19 +135,25 @@ export default function EditAdmin() {
             </div>
           </div>
           <div className={styles.buttons}>
-            <button
-              onClick={() => router.push("/admin/meu-perfil/alterar-username")}
-            >
-              Editar Username
-            </button>
-            <button
-              onClick={() => router.push("/admin/meu-perfil/alterar-senha")}
-            >
-              Editar Senha
-            </button>
-            <button>Deletar Admin</button>
+            <div className={styles.editButton}>
+              <button
+                onClick={() =>
+                  router.push("/admin/meu-perfil/alterar-username")
+                }
+              >
+                Editar Username
+              </button>
+              <button
+                onClick={() => router.push("/admin/meu-perfil/alterar-senha")}
+              >
+                Editar Senha
+              </button>
+            </div>
+            <div className={styles.importantButton}>
+              <button type="submit">Salvar</button>
+              <button style={{ backgroundColor: "#FF0000" }}>Deletar</button>
+            </div>
           </div>
-          <button type="submit">Salvar</button>
         </div>
       </form>
     </div>
