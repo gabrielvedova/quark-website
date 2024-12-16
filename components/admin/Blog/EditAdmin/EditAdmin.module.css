@@ -7,7 +7,7 @@
   min-height: 70vh;
 }
 
-.container form {
+.container .form {
   display: flex;
   width: 100%;
   height: 100%;

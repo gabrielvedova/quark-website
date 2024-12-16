@@ -16,6 +16,10 @@ export default function EditAdmin() {
     message: "",
     submit: false,
   });
+  const [remove, setRemove] = useState({
+    message: "",
+    submit: false,
+  });
   const router = useRouter();
 
   const handleImageChange = (e) => {
@@ -66,7 +70,7 @@ export default function EditAdmin() {
         const { message } = await response.json();
         console.log("Admin atualizado com sucesso:", message);
         setSave({ message, submit: true });
-        console.log(save);
+        router.push("/admin/logout");
       } else {
         const errorData = await response.json();
         console.error(
@@ -79,14 +83,48 @@ export default function EditAdmin() {
       console.error("Erro ao atualizar admin:", error.message);
     }
   }
+
+  async function DelAdmin(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/admin", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const { message } = await response.json();
+        console.log("Admin deletado com sucesso:", message);
+        setRemove({ message, submit: true });
+        console.log(remove);
+      } else {
+        const errorData = await response.json();
+        console.error(
+          "Erro ao deletar admin1:",
+          errorData.message || "Unknown error"
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao deletar admin:", error.message);
+    }
+  }
+
   useEffect(() => {
     getAdmin();
   }, []);
 
+  const onClickSave = () => {
+    router.push("/admin/blog");
+    setSave({ ...save, submit: false });
+  };
+
   return (
     <div className={styles.container}>
-      {save.submit && <PopUp data={save} setData={setSave} />}
-      <form onSubmit={PutAdmin}>
+      {save.submit && <PopUp data={save} onClick={onClickSave} />}
+      {remove.submit && <PopUp data={remove} onClick={DelAdmin} />}
+      <div className={styles.form}>
         <div className={styles.imageContainer}>
           <img
             src={admin.profilePictureUrl}
@@ -150,12 +188,22 @@ export default function EditAdmin() {
               </button>
             </div>
             <div className={styles.importantButton}>
-              <button type="submit">Salvar</button>
-              <button style={{ backgroundColor: "#FF0000" }}>Deletar</button>
+              <button onClick={PutAdmin}>Salvar</button>
+              <button
+                style={{ backgroundColor: "#FF0000" }}
+                onClick={() =>
+                  setRemove({
+                    message: "Tem certeza que deseja deletar sua conta?",
+                    submit: true,
+                  })
+                }
+              >
+                Deletar
+              </button>
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

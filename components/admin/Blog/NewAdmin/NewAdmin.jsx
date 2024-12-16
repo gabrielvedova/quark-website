@@ -56,7 +56,7 @@ export default function NewAdmin() {
     };
 
     try {
-      const response = await fetch("/api/admin/create", {
+      const response = await fetch("/api/admin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function NewAdmin() {
         // Definir a imagem padrão
         getImg();
         // Redirecionar para a página /admin/alterar
-        router.push("/admin/alterar-perfil");
+        router.push("/admin/meu-perfil");
       } else if (result.error) {
         // Exibir apenas a primeira mensagem de erro para cada campo
         const firstErrors = {};
