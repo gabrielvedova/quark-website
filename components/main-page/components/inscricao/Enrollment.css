@@ -24,7 +24,7 @@
   top: 5vh;
   width: 30vw;
   height: 90vh;
-  background-color: #645f68;
+  background-color: #8a2be2;
   border-radius: 20px;
   z-index: 100000;
 }
@@ -86,7 +86,7 @@
   height: 8%;
   border-radius: 10px;
   border: none;
-  color: #645f68;
+  color: #8a2be2;
   font-size: 18px;
   margin-top: 5%;
 }

@@ -23,20 +23,22 @@ export default function Blog() {
     };
   });
 
+  async function getNotices() {
+    const response = await fetch("api/quark-na-midia");
+    const data = (await response.json()).data;
+    setNotices(data);
+    console.log(data);
+    console.log(notices);
+
+    if (response.status !== 200) {
+      console.log("Erro ao buscar notícias");
+    } else {
+      console.log("Notícias carregadas com sucesso");
+    }
+  }
+
   useEffect(() => {
-    fetch("/api/quark-na-midia")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.text(); // Change to text to log the raw response
-      })
-      .then((text) => {
-        console.log("Raw response:", text); // Log the raw response
-        return JSON.parse(text); // Parse the text to JSON
-      })
-      .then((data) => setNotices(data.data))
-      .catch((error) => console.error("Error fetching data:", error));
+    getNotices();
   }, []);
 
   const NextArrow = (props) => {

@@ -3,8 +3,8 @@
   position: fixed;
   top: 40vh;
   left: 40vw;
-  width: 20vw;
-  height: 20vh;
+  min-width: 22vw;
+  min-height: 22vh;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
