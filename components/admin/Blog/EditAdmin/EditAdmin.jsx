@@ -70,7 +70,7 @@ export default function EditAdmin() {
         const { message } = await response.json();
         console.log("Admin atualizado com sucesso:", message);
         setSave({ message, submit: true });
-        router.push("/admin/logout");
+        router.push("/admin/blog");
       } else {
         const errorData = await response.json();
         console.error(
@@ -115,15 +115,14 @@ export default function EditAdmin() {
     getAdmin();
   }, []);
 
-  const onClickSave = () => {
-    router.push("/admin/blog");
-    setSave({ ...save, submit: false });
-  };
-
   return (
     <div className={styles.container}>
-      {save.submit && <PopUp data={save} onClick={onClickSave} />}
-      {remove.submit && <PopUp data={remove} onClick={DelAdmin} />}
+      {save.submit && (
+        <PopUp data={save} setData={setSave} onClick={PutAdmin} />
+      )}
+      {remove.submit && (
+        <PopUp data={remove} setData={setRemove} onClick={DelAdmin} />
+      )}
       <div className={styles.form}>
         <div className={styles.imageContainer}>
           <img
@@ -188,7 +187,16 @@ export default function EditAdmin() {
               </button>
             </div>
             <div className={styles.importantButton}>
-              <button onClick={PutAdmin}>Salvar</button>
+              <button
+                onClick={() => {
+                  setSave({
+                    message: "Tem certeza que deseja salvar as alterações?",
+                    submit: true,
+                  });
+                }}
+              >
+                Salvar
+              </button>
               <button
                 style={{ backgroundColor: "#FF0000" }}
                 onClick={() =>

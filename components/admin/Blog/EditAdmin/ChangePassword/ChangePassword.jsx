@@ -13,10 +13,10 @@ export default function ChangePassword() {
   });
   const [cancel, setCancel] = useState({
     message: "Tem certeza que deseja cancelar?",
-    cancel: false,
+    submit: false,
   });
   const [save, setSave] = useState({
-    message: "",
+    message: "Deseja salvar as alterações?",
     submit: false,
   });
   const router = useRouter();
@@ -37,7 +37,8 @@ export default function ChangePassword() {
     if (response.ok) {
       const { message } = await response.json();
       console.log(message);
-      setSave({ message, submit: true });
+      setSave({ submit: !save.submit });
+      router.push("/admin/logout");
     } else {
       const { message } = await response.json();
       console.error(message);
@@ -86,17 +87,22 @@ export default function ChangePassword() {
         </p>
       </div>
       <div className={styles.buttons}>
-        <button onClick={() => router.push("/admin/meu-perfil")}>
+        <button
+          onClick={() => setCancel({ ...cancel, submit: !cancel.submit })}
+        >
           Cancelar
         </button>
-        <button onClick={PatchPassword}>Salvar</button>
+        <button onClick={() => setSave({ ...save, submit: !save.submit })}>
+          Salvar
+        </button>
         {save.submit && (
+          <PopUp data={save} setData={setSave} onClick={PatchPassword} />
+        )}
+        {cancel.submit && (
           <PopUp
-            data={save}
-            onClick={() => {
-              router.push("/admin/meu-perfil");
-              setSave({ ...save, submit: false });
-            }}
+            data={cancel}
+            setData={setCancel}
+            onClick={() => router.push("/admin/meu-perfil")}
           />
         )}
       </div>
