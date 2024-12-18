@@ -84,30 +84,21 @@ export default function EditAdmin() {
     }
   }
 
-  async function DelAdmin(e) {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/admin", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  async function DelAdmin() {
+    const response = await fetch("/api/admin", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // Adicione qualquer outro cabeçalho necessário, como o token de autenticação
+      },
+    });
 
-      if (response.ok) {
-        const { message } = await response.json();
-        console.log("Admin deletado com sucesso:", message);
-        setRemove({ message, submit: true });
-        console.log(remove);
-      } else {
-        const errorData = await response.json();
-        console.error(
-          "Erro ao deletar admin1:",
-          errorData.message || "Unknown error"
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao deletar admin:", error.message);
+    if (response.ok) {
+      console.log("Admin deletado com sucesso.");
+      router.push("/login");
+    } else {
+      const errorData = await response.json();
+      console.error("Erro ao deletar admin:", errorData);
     }
   }
 
