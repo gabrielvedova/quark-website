@@ -6,12 +6,17 @@ import { useRouter } from "next/navigation";
 
 import PopUp from "@/components/admin/AdminEdit/PopUp/PopUp";
 
+const id = parseInt(
+  window.location.href.split("/")[window.location.href.split("/").length - 1]
+);
+
 export default function EditPost() {
   const router = useRouter();
-  const [post, setPost] = useState({
+  const [posts, setPost] = useState({
+    id: id,
     title: "",
     content: "",
-    miniatureUrl: "",
+    miniatureUrl: null,
   });
   const [submit, setSubmit] = useState({
     submit: false,
@@ -21,10 +26,7 @@ export default function EditPost() {
   async function getPost() {
     const response = await fetch("/api/blog/posts");
     const data = (await response.json()).data;
-    const id = window.location.href.split("/");
-    const post = data.find(
-      (post) => post.id === parseInt(id[id.length - 1], 10)
-    );
+    const post = data.find((post) => post.id === id);
 
     setPost(post);
 
@@ -34,12 +36,18 @@ export default function EditPost() {
   }
 
   async function putPost() {
+    const data = {
+      id: posts.id,
+      title: posts.title,
+      content: posts.content,
+      miniatureFile: posts.miniatureUrl.split(",")[1],
+    };
     const response = await fetch("/api/blog/posts", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(post),
+      body: JSON.stringify(data),
     });
 
     if (response.ok) {
@@ -54,7 +62,12 @@ export default function EditPost() {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
-      setPost({ ...post, image: reader.result });
+      const newMiniatureUrl = reader.result;
+      setPost((prevPost) => {
+        const updatedPost = { ...prevPost, miniatureUrl: newMiniatureUrl };
+        console.log("Updated miniatureUrl:", updatedPost.miniatureUrl);
+        return updatedPost;
+      });
     };
     reader.readAsDataURL(file);
   };
@@ -62,6 +75,7 @@ export default function EditPost() {
   useEffect(() => {
     getPost();
     console.log("Current URL:", window.location.href);
+    console.log("Current ID:", id);
   }, []);
 
   return (
@@ -72,8 +86,8 @@ export default function EditPost() {
           <input
             type="text"
             placeholder="Título"
-            value={post.title}
-            onChange={(e) => setPost({ ...post, title: e.target.value })}
+            value={posts.title}
+            onChange={(e) => setPost({ ...posts, title: e.target.value })}
           />
         </div>
         <div className={styles.item}>
@@ -81,8 +95,8 @@ export default function EditPost() {
           <textarea
             placeholder="Descrição"
             rows={6}
-            value={post.content}
-            onChange={(e) => setPost({ ...post, description: e.target.value })}
+            value={posts.content}
+            onChange={(e) => setPost({ ...posts, description: e.target.value })}
           ></textarea>
         </div>
         <div className={styles.item}>
@@ -96,9 +110,9 @@ export default function EditPost() {
           <label htmlFor="fileInput">
             <IoMdCloudDownload size={60} color="#fff" />
           </label>
-          {post.miniatureUrl && (
+          {posts.miniatureUrl && (
             <img
-              src={post.miniatureUrl}
+              src={posts.miniatureUrl}
               alt="Preview"
               style={{ marginTop: "10px", maxWidth: "100%" }}
             />
