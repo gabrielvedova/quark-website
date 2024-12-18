@@ -1,10 +1,8 @@
 "use client";
-import Menu from "../../Menu/Menu";
 import { useEffect, useState } from "react";
 import styles from "./NewAdmin.module.css";
 import { MdModeEdit } from "react-icons/md";
-import FormErrors from "../../FormErrors/FormErrors";
-import { getImage } from "@/lib/images";
+import FormErrors from "@/components/admin/FormErrors/FormErrors";
 import { useRouter } from "next/navigation";
 
 export default function NewAdmin() {

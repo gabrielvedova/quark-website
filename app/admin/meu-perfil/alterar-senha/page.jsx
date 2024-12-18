@@ -1,5 +1,5 @@
 import Menu from "@/components/admin/Menu/Menu";
-import ChangePassword from "@/components/admin/Blog/EditAdmin/ChangePassword/ChangePassword";
+import ChangePassword from "@/components/admin/AdminEdit/ChangePassword/ChangePassword";
 
 export default function Page() {
   return (
