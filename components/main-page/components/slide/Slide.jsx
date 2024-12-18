@@ -25,15 +25,15 @@ export default function Slide() {
   const list = [
     {
       id: 1,
-      img: "https://img.lojasrenner.com.br/item/922258788/original/3.jpg",
+      img: "https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png",
     },
     {
       id: 2,
-      img: "https://img.lojasrenner.com.br/item/913864225/original/3.jpg",
+      img: "https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png",
     },
     {
       id: 3,
-      img: "https://img.lojasrenner.com.br/item/913864815/original/3.jpg",
+      img: "https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png",
     },
   ];
 
