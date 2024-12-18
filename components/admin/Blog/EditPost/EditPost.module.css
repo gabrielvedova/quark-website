@@ -1,0 +1,55 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 80vh;
+  margin: 8vh 0;
+}
+
+.container .form {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #003a9d;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.item h3 {
+  color: #fff;
+  font-weight: 700;
+}
+
+.item textarea {
+  resize: none;
+}
+
+.item input {
+  width: 96%;
+  padding: 6px;
+  margin: 6px 0;
+}
+
+.container .form button {
+  align-self: center;
+  width: 40%;
+  height: 40px;
+  border-radius: 30px;
+  border: none;
+  background-color: rgb(104, 168, 241);
+  margin-top: 20px;
+}
+
+.fileInput {
+  display: none;
+}

@@ -120,7 +120,7 @@ export default function PostOption(props: {
                 <MdOutlineUnarchive size={25} />
               )}
             </button>
-            <Link href={`/admin/blog/posts/editar/${post.id}`}>
+            <Link href={`/admin/blog/posts/${post.id}`}>
               <button className={styles.edit} title="Editar">
                 <MdOutlineEdit size={25} />
               </button>
