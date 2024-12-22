@@ -155,11 +155,12 @@ export async function getPosts(
   return postsWithImageUrls;
 }
 
-async function uploadNewMiniature(
-  miniatureFile: string,
-  requestMetadata: { origin: string }
+async function uploadImage(
+  file: string,
+  requestMetadata: { origin: string },
+  key?: string
 ) {
-  const miniatureKey = generateUniqueFilename();
+  key = key ? key : generateUniqueFilename();
 
   const response = await fetch(`${requestMetadata.origin}/api/images`, {
     method: "POST",
@@ -167,12 +168,76 @@ async function uploadNewMiniature(
       "Content-Type": "application/json",
       Cookie: (await cookies()).toString(),
     },
-    body: JSON.stringify({ key: miniatureKey, file: miniatureFile }),
+    body: JSON.stringify({ key, file }),
   });
 
   if (!response.ok) throw new FileUploadError();
 
-  return miniatureKey;
+  return key;
+}
+
+async function deleteImage(key: string, requestMetadata: { origin: string }) {
+  const response = await fetch(`${requestMetadata.origin}/api/images`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: (await cookies()).toString(),
+    },
+    body: JSON.stringify({ key }),
+  });
+
+  if (response.status === 404) throw new FileNotFoundError();
+  if (!response.ok) throw new FileDeletionError();
+}
+
+function listPostContentImageRaws(content: string) {
+  const contentHTML = new DOMParser().parseFromString(content, "text/html");
+  const images = contentHTML.querySelectorAll("img");
+
+  return Array.from(images)
+    .map((image) => image.src)
+    .filter((src) => !src.startsWith("http"))
+    .map((src) => src.split(",")[1]);
+}
+
+async function uploadPostContentImages(
+  raws: string[],
+  requestMetadata: { origin: string }
+) {
+  const keys: string[] = [];
+
+  try {
+    await Promise.all(
+      raws.map(async (raw) => {
+        const key = await uploadImage(raw, requestMetadata);
+        keys.push(key);
+      })
+    );
+    return keys;
+  } catch (error) {
+    await Promise.all(
+      keys.map(async (key) => await deleteImage(key, requestMetadata))
+    );
+
+    throw error;
+  }
+}
+
+function changeRawImageSourcesToUrls(
+  content: string,
+  keys: string[],
+  requestMetadata: { origin: string }
+) {
+  const contentHTML = new DOMParser().parseFromString(content, "text/html");
+  const images = contentHTML.querySelectorAll("img");
+
+  images.forEach((image, index) => {
+    if (!image.src.startsWith("http")) {
+      image.src = `${requestMetadata.origin}/api/images/raw/${keys[index]}`;
+    }
+  });
+
+  return contentHTML.body.innerHTML;
 }
 
 export async function createPost(
@@ -188,23 +253,39 @@ export async function createPost(
 
   if (!adminId) throw new UnauthorizedError();
 
-  const miniatureKey = await uploadNewMiniature(
-    data.miniatureFile,
-    requestMetadata
-  );
+  const miniatureKey = await uploadImage(data.miniatureFile, requestMetadata);
+  const imageRaws = listPostContentImageRaws(data.content);
 
-  const { id } = await prismaClient.post.create({
-    data: {
-      title: data.title,
-      content: data.content,
-      miniatureKey,
-      published: data.published,
-      authorId: adminId,
-      lastEditedAt: new Date(),
-    },
-  });
+  try {
+    const imageKeys = await uploadPostContentImages(imageRaws, requestMetadata);
 
-  return id;
+    const contentWithImageUrls = changeRawImageSourcesToUrls(
+      data.content,
+      imageKeys,
+      requestMetadata
+    );
+
+    const { id } = await prismaClient.post.create({
+      data: {
+        title: data.title,
+        content: contentWithImageUrls,
+        miniatureKey,
+        published: data.published,
+        authorId: adminId,
+        lastEditedAt: new Date(),
+        postContentImages: {
+          createMany: {
+            data: imageKeys.map((imageKey) => ({ imageKey })),
+          },
+        },
+      },
+    });
+
+    return id;
+  } catch (error) {
+    await deleteMiniature(miniatureKey, requestMetadata);
+    throw error;
+  }
 }
 
 async function updateMiniature(
@@ -212,32 +293,86 @@ async function updateMiniature(
   newMiniatureFile: string,
   requestMetadata: { origin: string }
 ) {
-  const deletionResponse = await fetch(`${requestMetadata.origin}/api/images`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: (await cookies()).toString(),
-    },
-    body: JSON.stringify({ key: oldMiniatureKey }),
+  await deleteImage(oldMiniatureKey, requestMetadata);
+  return await uploadImage(newMiniatureFile, requestMetadata);
+}
+
+function listUnusedPostContentImages(
+  oldImageKeys: string[],
+  newContent: string,
+  requestMetadata: { origin: string }
+) {
+  const newContentHTML = new DOMParser().parseFromString(
+    newContent,
+    "text/html"
+  );
+  const newImages = newContentHTML.querySelectorAll("img");
+  const newImageSrcs = Array.from(newImages).map((image) => image.src);
+
+  return oldImageKeys.filter(
+    (keys) =>
+      !newImageSrcs
+        .map((src) =>
+          src.replace(`${requestMetadata.origin}/api/images/raw/`, "")
+        )
+        .includes(keys)
+  );
+}
+
+async function deleteUnusedPostContentImages(
+  oldImageKeys: string[],
+  newContent: string,
+  requestMetadata: { origin: string }
+) {
+  const unusedImageKeys = listUnusedPostContentImages(
+    oldImageKeys,
+    newContent,
+    requestMetadata
+  );
+
+  const imagesBackup = await Promise.all(
+    unusedImageKeys.map(async (key) => {
+      const response = await fetch(
+        `${requestMetadata.origin}/api/images/raw/${key}`
+      );
+
+      if (response.status === 404) throw new FileNotFoundError();
+      if (!response.ok) throw new Error();
+
+      return await response.blob();
+    })
+  );
+
+  const successfullyDeletedImageKeys: string[] = [];
+
+  try {
+    await Promise.all(
+      unusedImageKeys.map(async (key) => {
+        await deleteImage(key, requestMetadata);
+        successfullyDeletedImageKeys.push(key);
+      })
+    );
+  } catch (error) {
+    await Promise.all(
+      successfullyDeletedImageKeys.map(async (key, index) => {
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          await uploadImage(
+            (reader.result as string).split(",")[1],
+            requestMetadata,
+            unusedImageKeys[index]
+          );
+        };
+        reader.readAsDataURL(imagesBackup[index]);
+      })
+    );
+
+    throw error;
+  }
+
+  await prismaClient.postContentImage.deleteMany({
+    where: { imageKey: { in: unusedImageKeys } },
   });
-
-  if (deletionResponse.status === 404) throw new FileNotFoundError();
-  if (!deletionResponse.ok) throw new FileDeletionError();
-
-  const newMiniatureKey = generateUniqueFilename();
-
-  const uploadResponse = await fetch(`${requestMetadata.origin}/api/images`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Cookie: (await cookies()).toString(),
-    },
-    body: JSON.stringify({ key: newMiniatureKey, file: newMiniatureFile }),
-  });
-
-  if (!uploadResponse.ok) throw new FileUploadError();
-
-  return newMiniatureKey;
 }
 
 export async function updatePost(
@@ -250,7 +385,10 @@ export async function updatePost(
   },
   requestMetadata: { origin: string }
 ) {
-  const post = await prismaClient.post.findUnique({ where: { id: data.id } });
+  const post = await prismaClient.post.findUnique({
+    where: { id: data.id },
+    include: { postContentImages: true },
+  });
   if (!post) throw new NotFoundError();
 
   if (
@@ -262,14 +400,55 @@ export async function updatePost(
     return;
   }
 
-  let miniatureKey: string | undefined;
+  if (data.content) {
+    const newImageRaws = listPostContentImageRaws(data.content);
 
-  if (data.miniatureFile) {
-    miniatureKey = await updateMiniature(
-      post.miniatureKey,
-      data.miniatureFile,
+    const newImageKeys = await uploadPostContentImages(
+      newImageRaws,
       requestMetadata
     );
+
+    data.content = changeRawImageSourcesToUrls(
+      data.content,
+      newImageKeys,
+      requestMetadata
+    );
+
+    try {
+      await deleteUnusedPostContentImages(
+        post.postContentImages.map((image) => image.imageKey),
+        post.content,
+        requestMetadata
+      );
+
+      await prismaClient.postContentImage.createMany({
+        data: newImageKeys.map((imageKey) => ({
+          imageKey,
+          postId: data.id,
+        })),
+      });
+    } catch (error) {
+      await Promise.all(
+        newImageKeys.map(async (key) => await deleteImage(key, requestMetadata))
+      );
+
+      throw error;
+    }
+  }
+
+  let miniatureKey: string | undefined;
+  let miniatureError: Error | undefined;
+
+  if (data.miniatureFile) {
+    try {
+      miniatureKey = await updateMiniature(
+        post.miniatureKey,
+        data.miniatureFile,
+        requestMetadata
+      );
+    } catch (error) {
+      if (error instanceof Error) miniatureError = error;
+    }
   }
 
   await prismaClient.post.update({
@@ -282,6 +461,8 @@ export async function updatePost(
       lastEditedAt: new Date(),
     },
   });
+
+  if (miniatureError) throw miniatureError; // Update everything except the miniature key if there was an error updating it, then throw the error
 }
 
 async function deleteMiniature(
@@ -305,9 +486,53 @@ export async function deletePost(
   data: { id: number },
   requestMetadata: { origin: string }
 ) {
-  const post = await prismaClient.post.findUnique({ where: { id: data.id } });
+  const post = await prismaClient.post.findUnique({
+    where: { id: data.id },
+    include: { postContentImages: true },
+  });
   if (!post) throw new NotFoundError();
 
+  const imagesBackup = await Promise.all(
+    post.postContentImages.map(async (image) => {
+      const response = await fetch(
+        `${requestMetadata.origin}/api/images/raw/${image.imageKey}`
+      );
+
+      if (response.status === 404) throw new FileNotFoundError();
+      if (!response.ok) throw new Error();
+
+      return await response.blob();
+    })
+  );
+
+  const successfullyDeletedImageKeys: string[] = [];
+
+  try {
+    await Promise.all(
+      post.postContentImages.map(async (image) => {
+        await deleteImage(image.imageKey, requestMetadata);
+        successfullyDeletedImageKeys.push(image.imageKey);
+      })
+    );
+
+    await deleteMiniature(post.miniatureKey, requestMetadata);
+  } catch (error) {
+    await Promise.all(
+      successfullyDeletedImageKeys.map(async (key, index) => {
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+          await uploadImage(
+            (reader.result as string).split(",")[1],
+            requestMetadata,
+            successfullyDeletedImageKeys[index]
+          );
+        };
+        reader.readAsDataURL(imagesBackup[index]);
+      })
+    );
+
+    throw error;
+  }
+
   await prismaClient.post.delete({ where: { id: data.id } });
-  deleteMiniature(post.miniatureKey, requestMetadata);
 }

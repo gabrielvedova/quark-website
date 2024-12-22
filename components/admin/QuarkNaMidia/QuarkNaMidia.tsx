@@ -112,7 +112,7 @@ export default function QuarkNaMidia({}) {
         </div>
         <div className={styles.addHeadlinesContainer}>
           <Link href="/admin/quark-na-midia/novo">
-            <Button text="Adicionar Manchete" />
+            <Button>Adicionar Manchete</Button>
           </Link>
         </div>
       </main>

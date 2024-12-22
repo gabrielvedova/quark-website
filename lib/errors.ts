@@ -88,3 +88,10 @@ export class FileDeletionError extends Error {
     this.name = "FileDeleteError";
   }
 }
+
+export class PostImageListingError extends Error {
+  constructor() {
+    super("Error listing post images");
+    this.name = "PostImageListingError";
+  }
+}

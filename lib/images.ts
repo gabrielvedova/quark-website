@@ -15,6 +15,25 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import s3Client from "./s3";
 
+export async function getImageBlob(key: string) {
+  const command = new GetObjectCommand({
+    Bucket: process.env.S3_BUCKET_NAME || "",
+    Key: key,
+  });
+
+  try {
+    const response = await s3Client.send(command);
+    const blob = response.Body;
+    return blob?.transformToByteArray() || null;
+  } catch (error) {
+    if (error instanceof Error && error.name === "NoSuchKey") {
+      throw new FileNotFoundError();
+    }
+
+    throw error;
+  }
+}
+
 export async function getImage(key: string) {
   const command = new GetObjectCommand({
     Bucket: process.env.S3_BUCKET_NAME || "",

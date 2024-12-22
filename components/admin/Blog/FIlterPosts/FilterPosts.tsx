@@ -31,23 +31,17 @@ export default function FilterPosts(props: {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
     const handleKeydDown = (e: KeyboardEvent) => {
       if (popupRef.current && e.key === "Escape") {
         setPopupOpened(false);
       }
     };
 
+    document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeydDown);
 
     return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeydDown);
     };
   }, []);

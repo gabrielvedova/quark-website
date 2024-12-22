@@ -25,7 +25,7 @@ export default function SearchBar(props: {
       <FilterPosts published={published} setPublished={setPublished} />
       <form className={styles.searchForm}>
         <SearchInput search={search} setSearch={setSearch} />
-        <Button text="Pesquisar" onClick={handleSearch} />
+        <Button onClick={handleSearch}>Pesquisar</Button>
       </form>
     </div>
   );

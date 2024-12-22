@@ -116,7 +116,7 @@ export default function Blog() {
         </div>
         <div className={styles.addPostsContainer}>
           <Link href="/admin/blog/posts/novo">
-            <Button text="Adicionar postagem" />
+            <Button>Criar Postagem</Button>
           </Link>
         </div>
       </main>

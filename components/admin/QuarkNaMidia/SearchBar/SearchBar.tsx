@@ -19,7 +19,7 @@ export default function SearchBar(props: {
     <div className={styles.searchBar}>
       <form className={styles.searchForm}>
         <SearchInput search={search} setSearch={setSearch} />
-        <Button text="Pesquisar" onClick={handleSearch} />
+        <Button onClick={handleSearch}>Pesquisar</Button>
       </form>
     </div>
   );
