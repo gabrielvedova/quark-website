@@ -1,6 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState, useRef } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import { AiOutlineOrderedList, AiOutlineUnorderedList } from "react-icons/ai";
 import {
   MdOutlineFormatBold,
@@ -110,20 +118,61 @@ function htmlToSlate(html: string) {
   return Array.from(body.childNodes).flatMap(traverse);
 }
 
-export default function TextEditor(props: {
-  placeholder: string;
-  initialValue?: string;
-}) {
+function slateToHTML(value: Descendant[]) {
+  const serialize = (node: Descendant): string => {
+    if ("text" in node) {
+      let text = node.text;
+
+      if (node.bold) text = `<b>${text}</b>`;
+      if (node.italic) text = `<i>${text}</i>`;
+      if (node.underline) text = `<u>${text}</u>`;
+      if (node.strikethrough) text = `<s>${text}</s>`;
+      if (node.link) text = `<a href="${node.text}">${text}</a>`;
+
+      return text;
+    }
+
+    const children = node.children.map(serialize).join("");
+
+    switch (node.type) {
+      case "paragraph":
+        return `<p>${children}</p>`;
+      case "quote":
+        return `<blockquote>${children}</blockquote>`;
+      case "ordered-list":
+        return `<ol>${children}</ol>`;
+      case "unordered-list":
+        return `<ul>${children}</ul>`;
+      case "list-item":
+        return `<li>${children}</li>`;
+      case "image":
+        return `<img src="${node.src}" />`;
+    }
+  };
+
+  return value.map(serialize).join("");
+}
+
+export interface TextEditorRef {
+  getValueHTML: () => string;
+}
+
+const TextEditor = forwardRef<
+  TextEditorRef,
+  { placeholder: string; initialValue?: string }
+>((props, ref) => {
   const { placeholder, initialValue } = props;
 
-  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const [value, setValue] = useState<Descendant[]>(
     htmlToSlate(initialValue || "<p></p>")
   );
   const [image, setImage] = useState<string>("");
   const [isImagePopupOpen, setIsImagePopupOpen] = useState<boolean>(false);
 
+  const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+
   const imagePopupRef = useRef<HTMLDivElement>(null);
+  useImperativeHandle(ref, () => ({ getValueHTML: () => slateToHTML(value) }));
 
   const isMarkActive = (editor: Editor, format: keyof CustomMark) => {
     return Editor.marks(editor)?.[format];
@@ -430,4 +479,6 @@ export default function TextEditor(props: {
       )}
     </>
   );
-}
+});
+
+export default TextEditor;
