@@ -118,7 +118,6 @@ import Button from "../../Button/Button";
 
 export default function NewPost() {
   const [title, setTile] = useState<string>("");
-  const [content, setContent] = useState<string>("");
   const [published, setPublished] = useState<boolean>(false);
   const [miniature, setMiniature] = useState<string | null>(null);
   const router = useRouter();

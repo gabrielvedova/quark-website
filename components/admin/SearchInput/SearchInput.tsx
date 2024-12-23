@@ -1,9 +1,11 @@
 import styles from "./SearchInput.module.css";
 
-export default function SearchInput(props: {
+interface SearchInputProps {
   search: string;
   setSearch: (search: string) => void;
-}) {
+}
+
+export default function SearchInput(props: SearchInputProps) {
   const { search, setSearch } = props;
 
   return (

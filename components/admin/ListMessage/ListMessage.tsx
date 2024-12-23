@@ -1,6 +1,10 @@
 import styles from "./ListMessage.module.css";
 
-export default function ListMessage(props: { message: string }) {
+interface ListMessageProps {
+  message: string;
+}
+
+export default function ListMessage(props: ListMessageProps) {
   const { message } = props;
 
   return (

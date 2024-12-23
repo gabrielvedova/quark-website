@@ -1,6 +1,6 @@
 import styles from "./ConfirmationPopup.module.css";
 
-export default function ConfirmationPopup(props: {
+interface ConfirmationPopupProps {
   confirmationPopup: {
     message: string;
     onConfirm: () => Promise<void>;
@@ -12,7 +12,9 @@ export default function ConfirmationPopup(props: {
     } | null
   ) => void;
   confirmationPopupRef: React.RefObject<HTMLDivElement>;
-}) {
+}
+
+export default function ConfirmationPopup(props: ConfirmationPopupProps) {
   const { confirmationPopup, setConfirmationPopup, confirmationPopupRef } =
     props;
 

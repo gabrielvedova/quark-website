@@ -1,6 +1,10 @@
 import styles from "./FormErrors.module.css";
 
-export default function FormErrors(props: { errors: string[] }) {
+interface FormErrorsProps {
+  errors: string[];
+}
+
+export default function FormErrors(props: FormErrorsProps) {
   const { errors } = props;
 
   return (

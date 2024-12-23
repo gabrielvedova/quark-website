@@ -1,9 +1,11 @@
 import Link from "next/link";
 import styles from "./Menu.module.css";
 
-export default function Menu(props: {
+interface MenuProps {
   current: "blog" | "quark-na-midia" | "meu-perfil" | "novo";
-}) {
+}
+
+export default function Menu(props: MenuProps) {
   const { current } = props;
 
   return (

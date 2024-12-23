@@ -6,13 +6,15 @@ import styles from "./SearchBar.module.css";
 import SearchInput from "@/components/admin/SearchInput/SearchInput";
 import Button from "../../Button/Button";
 
-export default function SearchBar(props: {
+interface SearchBarProps {
   search: string;
   setSearch: (search: string) => void;
   fetchPosts: () => void;
   published: boolean;
   setPublished: (published: boolean) => void;
-}) {
+}
+
+export default function SearchBar(props: SearchBarProps) {
   const { search, setSearch, fetchPosts, published, setPublished } = props;
 
   const handleSearch = (e: FormEvent<HTMLButtonElement>) => {

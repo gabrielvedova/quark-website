@@ -4,10 +4,12 @@ import { useState, useRef, useEffect } from "react";
 import { MdOutlineFilterList, MdOutlineFilterListOff } from "react-icons/md";
 import styles from "./FilterPosts.module.css";
 
-export default function FilterPosts(props: {
+interface FilterPostsProps {
   published: boolean;
   setPublished: (published: boolean) => void;
-}) {
+}
+
+export default function FilterPosts(props: FilterPostsProps) {
   const { published, setPublished } = props;
 
   const [popupOpened, setPopupOpened] = useState(false);

@@ -11,7 +11,7 @@ import Link from "next/link";
 import Button from "../Button/Button";
 import SearchBar from "./SearchBar/SearchBar";
 
-export default function QuarkNaMidia({}) {
+export default function QuarkNaMidia() {
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const [headlines, setHeadlines] = useState<Headline[]>([]);

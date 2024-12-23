@@ -157,10 +157,12 @@ export interface TextEditorRef {
   getValueHTML: () => string;
 }
 
-const TextEditor = forwardRef<
-  TextEditorRef,
-  { placeholder: string; initialValue?: string }
->((props, ref) => {
+interface TextEditorProps {
+  placeholder: string;
+  initialValue?: string;
+}
+
+const TextEditor = forwardRef<TextEditorRef, TextEditorProps>((props, ref) => {
   const { placeholder, initialValue } = props;
 
   const [value, setValue] = useState<Descendant[]>(
@@ -172,7 +174,9 @@ const TextEditor = forwardRef<
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   const imagePopupRef = useRef<HTMLDivElement>(null);
-  useImperativeHandle(ref, () => ({ getValueHTML: () => slateToHTML(value) }));
+  useImperativeHandle(ref, () => ({
+    getValueHTML: () => slateToHTML(value),
+  }));
 
   const isMarkActive = (editor: Editor, format: keyof CustomMark) => {
     return Editor.marks(editor)?.[format];

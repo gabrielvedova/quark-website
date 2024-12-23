@@ -6,7 +6,7 @@ import Link from "next/link";
 import { MdOutlineDeleteForever, MdOutlineEdit } from "react-icons/md";
 import { useRouter } from "next/navigation";
 
-export default function HeadlineOption(props: {
+interface HeadlineOptionProps {
   headline: Headline;
   fetchHeadlines: () => Promise<void>;
   setError: (error: string) => void;
@@ -16,7 +16,9 @@ export default function HeadlineOption(props: {
       onConfirm: () => Promise<void>;
     } | null
   ) => void;
-}) {
+}
+
+export default function HeadlineOption(props: HeadlineOptionProps) {
   const { headline, fetchHeadlines, setError, setConfirmationPopup } = props;
 
   const router = useRouter();

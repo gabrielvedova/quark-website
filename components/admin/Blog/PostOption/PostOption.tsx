@@ -13,7 +13,7 @@ import DOMPurify from "dompurify";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export default function PostOption(props: {
+interface PostOptionProps {
   post: Post;
   fetchPosts: () => Promise<void>;
   setError: (error: string) => void;
@@ -23,7 +23,9 @@ export default function PostOption(props: {
       onConfirm: () => Promise<void>;
     } | null
   ) => void;
-}) {
+}
+
+export default function PostOption(props: PostOptionProps) {
   const { post, fetchPosts, setError, setConfirmationPopup } = props;
 
   const formattedDate = format(post.lastEditedAt, "dd/MM/yyyy");
