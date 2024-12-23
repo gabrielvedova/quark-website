@@ -38,7 +38,7 @@ type CustomElement =
   | { type: "list-item"; children: CustomText[] }
   | { type: "ordered-list"; children: CustomElement[] }
   | { type: "unordered-list"; children: CustomElement[] }
-  | { type: "image"; file: string; children: CustomText[] };
+  | { type: "image"; children: CustomText[]; src?: string };
 
 type CustomMark = {
   bold?: boolean;
@@ -58,15 +58,71 @@ declare module "slate" {
   }
 }
 
-export default function TextEditor(props: { placeholder: string }) {
-  const { placeholder } = props;
+function htmlToSlate(html: string) {
+  const parser = new DOMParser();
+  const { body } = parser.parseFromString(html, "text/html");
+
+  const getElementType = (element: HTMLElement): CustomElement["type"] => {
+    switch (element.tagName.toLowerCase()) {
+      case "p":
+        return "paragraph";
+      case "blockquote":
+        return "quote";
+      case "ol":
+        return "ordered-list";
+      case "ul":
+        return "unordered-list";
+      case "li":
+        return "list-item";
+      case "img":
+        return "image";
+      default:
+        return "paragraph";
+    }
+  };
+
+  const traverse = (node: Node): Descendant[] => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return [{ text: node.textContent || "" }];
+    }
+
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const element = node as HTMLElement;
+      const type = getElementType(element);
+      let children = Array.from(node.childNodes).flatMap(traverse);
+
+      if (type === "image") {
+        return [
+          {
+            type,
+            children: [{ text: "" }],
+            src: element.getAttribute("src") || undefined,
+          },
+        ];
+      }
+
+      return [{ type, children } as CustomElement];
+    }
+
+    return [];
+  };
+
+  return Array.from(body.childNodes).flatMap(traverse);
+}
+
+export default function TextEditor(props: {
+  placeholder: string;
+  initialValue?: string;
+}) {
+  const { placeholder, initialValue } = props;
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-  const [value, setValue] = useState<Descendant[]>([
-    { type: "paragraph", children: [{ text: "" }] },
-  ]);
-  const [isImagePopupOpen, setIsImagePopupOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<Descendant[]>(
+    htmlToSlate(initialValue || "<p></p>")
+  );
   const [image, setImage] = useState<string>("");
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState<boolean>(false);
+
   const imagePopupRef = useRef<HTMLDivElement>(null);
 
   const isMarkActive = (editor: Editor, format: keyof CustomMark) => {
@@ -123,7 +179,7 @@ export default function TextEditor(props: { placeholder: string }) {
       case "list-item":
         return <li {...attributes}>{children}</li>;
       case "image":
-        return <img src={element.file} {...attributes} />;
+        return <img src={element.src} {...attributes} />;
       default:
         return <p {...attributes}>{children}</p>;
     }
@@ -186,7 +242,7 @@ export default function TextEditor(props: { placeholder: string }) {
     insertNodes(editor, [
       {
         type: "image",
-        file: image,
+        src: image,
         children: [{ text: "" }],
       },
       {
