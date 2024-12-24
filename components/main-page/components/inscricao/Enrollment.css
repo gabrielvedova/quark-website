@@ -30,7 +30,7 @@
 }
 
 .mainEnrollment {
-  height: 75%;
+  height: 80%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -43,14 +43,15 @@
   align-items: center;
   gap: 5px;
   width: 100%;
-  height: 20%;
+  height: 15%;
 }
 
 #closeContainer {
   align-self: flex-end;
   background-color: transparent;
   border: none;
-  height: 15%;
+  height: 10%;
+  margin-top: 10px;
 }
 
 .enrollment .itemEnrollment div {
@@ -59,18 +60,39 @@
   color: #d8d8d8;
 }
 
-.enrollment .itemEnrollment input {
-  width: 80%;
-  height: 60%;
+.enrollment .itemEnrollment .input {
   border-radius: 6px;
   background-color: #ffffff62;
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
   border: none;
   padding: 0px 10px;
 }
 
-.enrollment .itemEnrollment input:focus {
+.enrollment .itemEnrollment .input:focus {
+  border: none;
+  outline: none;
+}
+
+.enrollment .itemEnrollment input {
+  width: 80%;
+  height: 40%;
+}
+
+.enrollment .itemEnrollment textarea {
+  width: 80%;
+  min-width: 20%;
+  max-width: 80%;
+  border-radius: 6px;
+  background-color: #ffffff62;
+  color: #fff;
+  font-size: 18px;
+  border: none;
+  padding: 10px;
+  resize: none;
+}
+
+.enrollment .itemEnrollment textarea:focus {
   border: none;
   outline: none;
 }
@@ -84,6 +106,7 @@
   align-self: center;
   width: 85%;
   height: 8%;
+  min-height: 3em;
   border-radius: 10px;
   border: none;
   color: #8a2be2;

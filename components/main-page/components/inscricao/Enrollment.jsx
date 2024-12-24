@@ -5,22 +5,25 @@ import { IoIosClose } from "react-icons/io";
 import { set } from "date-fns";
 
 export default function Enrollment(props) {
-  const [isName, setName] = useState("");
-  const [isPhone, setPhone] = useState("");
-  const [isEmail, setEmail] = useState("");
-  const [isInstitution, setInstitution] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [institution, setInstitution] = useState("");
+  const [reason, setReason] = useState("");
 
   async function sendForm() {
-    const name = isName;
-    const phone = isPhone;
-    const email = isEmail;
-    const institution = isInstitution;
+    const name = name;
+    const phone = phone;
+    const email = email;
+    const institution = institution;
+    const reason = reason;
 
     const data = {
       name,
       phone,
       email,
       institution,
+      reason,
     };
 
     try {
@@ -61,6 +64,7 @@ export default function Enrollment(props) {
             <div>Nome</div>
             <input
               type="text"
+              className="input"
               id="name"
               onBlur={() => {
                 if (document.querySelector("#name").value.length < 3) {
@@ -82,6 +86,7 @@ export default function Enrollment(props) {
             <div>Telefone</div>
             <input
               type="tel"
+              className="input"
               id="phone"
               maxLength={11}
               onBlur={(e) => {
@@ -117,6 +122,7 @@ export default function Enrollment(props) {
             <div>E-mail</div>
             <input
               type="email"
+              className="input"
               id="e-mail"
               onBlur={() => {
                 const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -144,6 +150,7 @@ export default function Enrollment(props) {
             <div>Instituição que representa</div>
             <input
               type="text"
+              className="input"
               id="institution"
               onBlur={() => {
                 if (document.querySelector("#institution").value.length < 3) {
@@ -162,10 +169,19 @@ export default function Enrollment(props) {
             />
             <span>Instituição Inválida</span>
           </div>
+          <div className="itemEnrollment">
+            <div>Motivo de Incrição</div>
+            <textarea
+              name=""
+              rows={3}
+              className="input"
+              onChange={(e) => setReason(e.target.value)}
+            ></textarea>
+          </div>
           <button
             id="formsSend"
             type="submit"
-            disabled={!(isName && isPhone && isEmail && isInstitution)}
+            disabled={!(name && phone && email && institution)}
           >
             Enviar
           </button>
