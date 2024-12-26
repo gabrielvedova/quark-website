@@ -41,11 +41,6 @@
   justify-content: space-evenly;
 }
 
-.main .img {
-  background-color: blue;
-  align-self: center;
-}
-
 .main .text2 {
   width: 30%;
   min-height: 40vh;
@@ -90,7 +85,7 @@
 
 @media (min-width: 971px) {
   .main img {
-    width: 40%;
+    width: 30%;
     object-fit: contain;
   }
 }
@@ -105,7 +100,7 @@
     text-align: center;
   }
   .main img {
-    width: auto;
+    width: 80%;
   }
   .main .text2 {
     width: 90%;

@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./Diferenciais.module.css";
 import "@/app/styles.css";
 
+import Difenciais from "@/public/Diferenciais.png";
+
 export default function Diferenciais() {
   return (
     <div className={styles.container} id="Diferenciais">
@@ -34,10 +36,7 @@ export default function Diferenciais() {
             </p>
           </div>
         </div>
-        <img
-          src="https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png"
-          alt=""
-        />
+        <img src={Difenciais.src} alt="" />
         <div className={styles.text2}>
           <div className={styles.topic3}>
             <h2>
