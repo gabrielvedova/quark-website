@@ -4,8 +4,26 @@ import Slide from "../slide/Slide";
 import Enrollment from "../inscricao/Enrollment";
 import "@/app/styles.css";
 
+import Numeros1 from "@/public/Numeros1.png";
+import Numeros2 from "@/public/Numeros2.png";
+import Numeros3 from "@/public/Numeros3.png";
+
 export default function Conquistas() {
   const [isFormsOpen, setForms] = useState(false);
+  const lista = [
+    {
+      id: 1,
+      img: Numeros1.src,
+    },
+    {
+      id: 2,
+      img: Numeros2.src,
+    },
+    {
+      id: 3,
+      img: Numeros3.src,
+    },
+  ];
   return (
     <>
       <div className={styles.container}>
@@ -13,7 +31,7 @@ export default function Conquistas() {
           <h1>Quark em Números</h1>
         </div>
         <div className={styles.carousel}>
-          <Slide />
+          <Slide list={lista} />
         </div>
         <div className={styles.totalInfo}>
           <div className={styles.info}>

@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Slide.css";
 
-export default function Slide() {
+export default function Slide({ list, centerPadding = "0" }) {
   const sliderRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(1);
   const [innerWidth, setInnerWidth] = useState(0);
@@ -22,21 +22,6 @@ export default function Slide() {
     };
   });
 
-  const list = [
-    {
-      id: 1,
-      img: "https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png",
-    },
-    {
-      id: 2,
-      img: "https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png",
-    },
-    {
-      id: 3,
-      img: "https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-cell-phone-mockup-png-image_6584030.png",
-    },
-  ];
-
   const settings = {
     dots: false,
     arrows: false,
@@ -45,7 +30,7 @@ export default function Slide() {
     slidesToShow: innerWidth > 450 ? 3 : 1,
     slidesToScroll: 1,
     centerMode: true, // Ativar o modo centralizado
-    centerPadding: "0", // Remover padding central
+    centerPadding: centerPadding, // Remover padding central
     autoplay: true,
     autoplaySpeed: 2000,
     beforeChange: (current, next) => {

@@ -4,7 +4,25 @@ import styles from "./Home.module.css";
 
 import Slide from "../slide/Slide";
 
+import Home1 from "@/public/Home1.png";
+import Home2 from "@/public/Home2.png";
+import Home3 from "@/public/Home3.png";
+
 export default function Home() {
+  const lista = [
+    {
+      id: 1,
+      img: Home1.src,
+    },
+    {
+      id: 2,
+      img: Home2.src,
+    },
+    {
+      id: 3,
+      img: Home3.src,
+    },
+  ];
   return (
     <div className={styles.container} id="QuemSomos">
       <div className={styles.text}>
@@ -27,7 +45,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.carousel}>
-        <Slide />
+        <Slide list={lista} centerPadding="10px" />
       </div>
     </div>
   );
