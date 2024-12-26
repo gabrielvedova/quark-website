@@ -43,7 +43,7 @@ export default function Perguntas() {
           }`}
         >
           <div className={styles.answer}>
-            <span>Quem pode usar o aplicativo?</span>
+            <span>Como contratar a Quark?</span>
             {isQuestionOne ? (
               <FaCircleMinus
                 color="#eb3f6d"
@@ -59,10 +59,9 @@ export default function Perguntas() {
             )}
           </div>
           <div className={styles.detailsQuestion}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            A Quark vende pacotes de assinaturas mensais que funcinam como
+            acessos à plataforma de conteúdos e certificações voltado para o
+            desenvolvimento de habilidades comportamentais.
           </div>
         </div>
         <div
@@ -71,7 +70,7 @@ export default function Perguntas() {
           }`}
         >
           <div className={styles.answer}>
-            <span>Funciona em Android e IOS?</span>
+            <span>Para quem a Quark é indicada?</span>
             {isQuestionTwo ? (
               <FaCircleMinus
                 color="#eb3f6d"
@@ -87,10 +86,10 @@ export default function Perguntas() {
             )}
           </div>
           <div className={styles.detailsQuestion}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            A Quark é indicada para instituições que desejem empoderar jovens da
+            rede pública dando acesso ao desenvolvimento de soft skills
+            essenciais, ampliando suas oportunidades de empregabilidade e
+            sucesso no mercado de trabalho.
           </div>
         </div>
         <div
@@ -99,7 +98,7 @@ export default function Perguntas() {
           }`}
         >
           <div className={styles.answer}>
-            <span>Baixei o app, como consigo meu código de acesso?</span>
+            <span>Como posso conhecer mais da Quark?</span>
 
             {isQuestionThree ? (
               <FaCircleMinus
@@ -116,10 +115,8 @@ export default function Perguntas() {
             )}
           </div>
           <div className={styles.detailsQuestion}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            Você pode entrar em contato através do email
+            comercial@escolahappen.com.br ou preencher o formulário do site.
           </div>
         </div>
       </div>
