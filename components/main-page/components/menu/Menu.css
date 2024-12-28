@@ -18,8 +18,6 @@
 }
 
 .containerMenu .imgContainerMenu .imgMenu {
-  background-color: aqua;
-  height: 90px;
   width: 220px;
 }
 
@@ -196,6 +194,10 @@
 }
 
 @media (max-width: 500px) {
+  .containerMenu .imgContainerMenu .imgMenu {
+    width: 180px;
+  }
+
   .menuBar {
     display: flex;
     flex-direction: column;

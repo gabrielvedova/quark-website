@@ -12,7 +12,6 @@
 .totalParceiros {
   display: flex;
   flex-direction: column;
-  gap: 10vh;
   width: 70vw;
 }
 
@@ -21,10 +20,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  column-gap: 50px;
 }
 
 .parceiro img {
-  height: 80px; /* Defina a altura desejada */
+  height: 100px; /* Defina a altura desejada */
   width: auto; /* Ajusta a largura automaticamente */
   object-fit: contain; /* Mantém a proporção da imagem */
 }
@@ -33,23 +35,24 @@
   .totalParceiros {
     margin-top: 10vh;
     flex-direction: row;
-    gap: 0;
     align-items: center;
-    height: 70vh;
+    height: 90vh;
   }
 
   .container .parceirosContainer {
     flex-direction: column;
     height: 100%;
+    column-gap: 0;
+    gap: 20px;
   }
 }
 
-@media (max-width: 970px) {
+@media (max-width: 1150px) {
   .totalParceiros {
     width: 100%;
   }
   .parceiro img {
-    width: 130px;
+    width: 150px;
     height: auto;
   }
 }
@@ -57,5 +60,14 @@
 @media (max-width: 480px) {
   .parceiro img {
     width: 100px;
+  }
+  .container .parceirosContainer {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 410px) {
+  .parceiro img {
+    width: 80px;
   }
 }

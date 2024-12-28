@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./Menu.css";
 import { IoMenuOutline } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
-import Link from "next/link";
+import Logo from "@/public/logoQuark.png";
 
 export default function Menu() {
   // Menu fix to scroll to the top of the page
@@ -38,7 +38,7 @@ export default function Menu() {
     <>
       <nav id="menu" className="containerMenu">
         <div className="imgContainerMenu">
-          <div className="imgMenu"></div>
+          <img src={Logo.src} alt="" className="imgMenu" />
         </div>
         {!isMenuOpen && (
           <button onClick={() => setMenu(!isMenuOpen)} className="menuBar">
