@@ -31,7 +31,7 @@ export default function Conquistas() {
           <h1>Quark em Números</h1>
         </div>
         <div className={styles.carousel}>
-          <Slide list={lista} />
+          <Slide list={lista} centerPadding="-40" />
         </div>
         <div className={styles.totalInfo}>
           <div className={styles.info}>
