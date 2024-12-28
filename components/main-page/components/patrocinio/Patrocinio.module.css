@@ -55,6 +55,15 @@
     width: 150px;
     height: auto;
   }
+  .container .parceirosContainer {
+    row-gap: 90px;
+  }
+}
+
+@media (max-width: 620px) {
+  .container .parceirosContainer {
+    row-gap: 50px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -62,12 +71,16 @@
     width: 100px;
   }
   .container .parceirosContainer {
-    gap: 30px;
+    gap: 40px;
+    row-gap: 70px;
   }
 }
 
 @media (max-width: 410px) {
   .parceiro img {
     width: 80px;
+  }
+  .container .parceirosContainer {
+    row-gap: 60px;
   }
 }
