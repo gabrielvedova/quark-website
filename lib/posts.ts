@@ -9,6 +9,7 @@ import {
 import { getAdminId } from "./session";
 import { generateUniqueFilename } from "./utils";
 import { cookies } from "next/headers";
+import { JSDOM } from "jsdom";
 
 async function fetchRequiredImages(
   postWithImageKeys: {
@@ -191,8 +192,8 @@ async function deleteImage(key: string, requestMetadata: { origin: string }) {
 }
 
 function listPostContentImageRaws(content: string) {
-  const contentHTML = new DOMParser().parseFromString(content, "text/html");
-  const images = contentHTML.querySelectorAll("img");
+  const dom = new JSDOM(content).window.document;
+  const images = dom.querySelectorAll("img");
 
   return Array.from(images)
     .map((image) => image.src)
@@ -228,8 +229,8 @@ function changeRawImageSourcesToUrls(
   keys: string[],
   requestMetadata: { origin: string }
 ) {
-  const contentHTML = new DOMParser().parseFromString(content, "text/html");
-  const images = contentHTML.querySelectorAll("img");
+  const dom = new JSDOM(content).window.document;
+  const images = dom.querySelectorAll("img");
 
   images.forEach((image, index) => {
     if (!image.src.startsWith("http")) {
@@ -237,7 +238,7 @@ function changeRawImageSourcesToUrls(
     }
   });
 
-  return contentHTML.body.innerHTML;
+  return dom.body.innerHTML;
 }
 
 export async function createPost(
@@ -250,7 +251,6 @@ export async function createPost(
   requestMetadata: { origin: string }
 ) {
   const adminId = await getAdminId();
-
   if (!adminId) throw new UnauthorizedError();
 
   const miniatureKey = await uploadImage(data.miniatureFile, requestMetadata);
@@ -302,11 +302,8 @@ function listUnusedPostContentImages(
   newContent: string,
   requestMetadata: { origin: string }
 ) {
-  const newContentHTML = new DOMParser().parseFromString(
-    newContent,
-    "text/html"
-  );
-  const newImages = newContentHTML.querySelectorAll("img");
+  const dom = new JSDOM(newContent).window.document;
+  const newImages = dom.querySelectorAll("img");
   const newImageSrcs = Array.from(newImages).map((image) => image.src);
 
   return oldImageKeys.filter(

@@ -62,6 +62,7 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
 
   try {
     const id = await createPost(validatedBody.data, requestMetadata);
+
     return ConventionalResponse.created({ data: { id } });
   } catch (error) {
     if (error instanceof UnauthorizedError) {

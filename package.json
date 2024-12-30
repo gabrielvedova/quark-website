@@ -20,6 +20,7 @@
     "dompurify": "^3.2.2",
     "file-type": "^19.6.0",
     "jose": "^5.9.6",
+    "jsdom": "^25.0.1",
     "next": "15.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,6 +34,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.16",
     "@types/react": "^18",
