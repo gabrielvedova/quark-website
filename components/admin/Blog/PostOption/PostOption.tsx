@@ -137,10 +137,9 @@ export default function PostOption(props: PostOptionProps) {
           </div>
         </header>
         <section className={styles.info}>
-          <div
-            className={styles.description}
-            dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-          ></div>
+          <div className={styles.description}>
+            {sanitizedContent.replace(/<[^>]+>/g, "")}
+          </div>
         </section>
       </div>
     </div>

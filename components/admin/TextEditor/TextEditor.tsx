@@ -68,6 +68,7 @@ declare module "slate" {
 
 function htmlToSlate(html: string) {
   const parser = new DOMParser();
+  if (!html.startsWith("<")) html = `<p>${html}</p>`;
   const { body } = parser.parseFromString(html, "text/html");
 
   const getElementType = (element: HTMLElement): CustomElement["type"] => {
@@ -109,7 +110,12 @@ function htmlToSlate(html: string) {
         ];
       }
 
-      return [{ type, children } as CustomElement];
+      return [
+        {
+          type,
+          children: children.length ? children : [{ text: "" }],
+        } as CustomElement,
+      ];
     }
 
     return [];
@@ -154,7 +160,7 @@ function slateToHTML(value: Descendant[]) {
 }
 
 export interface TextEditorRef {
-  getValueHTML: () => string;
+  getHTMLContent: () => string;
 }
 
 interface TextEditorProps {
@@ -165,18 +171,28 @@ interface TextEditorProps {
 const TextEditor = forwardRef<TextEditorRef, TextEditorProps>((props, ref) => {
   const { placeholder, initialValue } = props;
 
-  const [value, setValue] = useState<Descendant[]>(
-    htmlToSlate(initialValue || "<p></p>")
-  );
+  const [value, setValue] = useState<Descendant[]>([
+    { type: "paragraph", children: [{ text: "" }] },
+  ]);
   const [image, setImage] = useState<string>("");
   const [isImagePopupOpen, setIsImagePopupOpen] = useState<boolean>(false);
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
+  const imageToolbarBtnRef = useRef<HTMLButtonElement>(null);
   const imagePopupRef = useRef<HTMLDivElement>(null);
   useImperativeHandle(ref, () => ({
-    getValueHTML: () => slateToHTML(value),
+    getHTMLContent: () => slateToHTML(value || []),
   }));
+
+  const setInitialValue = (editor: Editor) => {
+    if (!initialValue) return;
+
+    const parsedValue = htmlToSlate(initialValue);
+
+    editor.insertNodes(parsedValue);
+    editor.removeNodes({ at: [0] });
+  };
 
   const isMarkActive = (editor: Editor, format: keyof CustomMark) => {
     return Editor.marks(editor)?.[format];
@@ -254,18 +270,12 @@ const TextEditor = forwardRef<TextEditorRef, TextEditorProps>((props, ref) => {
   }, []);
 
   const handleKeyboardShortcuts = (e: KeyboardEvent) => {
-    e.preventDefault();
     if (e.ctrlKey && e.key === "b") toggleMark(editor, "bold");
-
     if (e.ctrlKey && e.key === "i") toggleMark(editor, "italic");
-
     if (e.ctrlKey && e.key === "u") toggleMark(editor, "underline");
-
     if (e.ctrlKey && e.altKey && e.key === "s")
       toggleMark(editor, "strikethrough");
-
     if (e.ctrlKey && e.altKey && e.key === "l") toggleMark(editor, "link");
-
     if (e.ctrlKey && e.altKey && e.key == "i") setIsImagePopupOpen(true);
   };
 
@@ -317,6 +327,8 @@ const TextEditor = forwardRef<TextEditorRef, TextEditorProps>((props, ref) => {
   };
 
   useEffect(() => {
+    setInitialValue(editor);
+
     document.addEventListener("keydown", handleKeyboardShortcuts);
     document.addEventListener("keydown", handleEnterKeyInImagePopup);
     document.addEventListener("keydown", handleEscapeImagePopup);

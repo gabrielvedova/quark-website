@@ -108,31 +108,72 @@
 
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Menu from "../../Menu/Menu";
 import styles from "./NewPost.module.css";
 import { IoMdCloudUpload, IoIosArrowBack } from "react-icons/io";
 import { useRouter } from "next/navigation";
-import TextEditor from "../../TextEditor/TextEditor";
+import TextEditor, { TextEditorRef } from "../../TextEditor/TextEditor";
 import Button from "../../Button/Button";
 
 export default function NewPost() {
+  const [miniature, setMiniature] = useState<string>("");
   const [title, setTile] = useState<string>("");
   const [published, setPublished] = useState<boolean>(false);
-  const [miniature, setMiniature] = useState<string | null>(null);
   const router = useRouter();
+  const textEditorRef = useRef<TextEditorRef>(null);
 
   const handleMiniatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
 
     const file = e.target.files && e.target.files[0];
-    if (!file) return setMiniature(null);
+    if (!file) return setMiniature("");
 
     const reader = new FileReader();
     reader.onloadend = () => {
       setMiniature(reader.result as string);
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleUploadPost = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (!miniature || !title || !textEditorRef.current) {
+      return window.alert("Todos os campos são obrigatórios");
+    }
+
+    const content = textEditorRef.current.getHTMLContent();
+
+    const data = {
+      title,
+      content,
+      miniatureFile: miniature.split(",")[1],
+      published,
+    };
+
+    const response = await fetch("/api/blog/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      const id = ((await response.json()) as { data: { id: number } }).data.id;
+      router.push(`/admin/blog/posts/${id}`);
+      return;
+    }
+
+    if (response.status === 401) {
+      window.alert("Você não tem permissão para fazer isso.");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      router.push("/login");
+      return;
+    }
+
+    if (response.status === 500) {
+      window.alert("Ocorreu um erro ao criar o post.");
+    }
   };
 
   return (
@@ -151,7 +192,7 @@ export default function NewPost() {
           </div>
         </div>
         <div className={styles.miniature}>
-          {miniature === null ? (
+          {!miniature ? (
             <label
               htmlFor="uploadNewMiniature"
               className={styles.uploadMiniatureLabel}
@@ -208,7 +249,7 @@ export default function NewPost() {
             />
           </div>
           <div className={styles.contentContainer}>
-            <TextEditor placeholder="Conteúdo" />
+            <TextEditor placeholder="Conteúdo" ref={textEditorRef} />
           </div>
         </div>
         <div className={styles.publishedContainer}>
@@ -223,7 +264,7 @@ export default function NewPost() {
           <label htmlFor="publish">Publicar ao criar</label>
         </div>
         <div className={styles.submitBtnContainer}>
-          <Button>Criar Postagem</Button> {/* TODO upload post */}
+          <Button onClick={handleUploadPost}>Criar Postagem</Button>
         </div>
       </main>
     </div>

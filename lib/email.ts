@@ -6,8 +6,9 @@
 //   email: string;
 //   phoneNumber: string;
 //   institution: string;
+//   reason: string;
 // }) {
-//   const { name, email, phoneNumber, institution } = data;
+//   const { name, email, phoneNumber, institution, reason } = data;
 //   const params = {
 //     Destination: {
 //       ToAddresses: [process.env.CONTACT_RECIPIENT_ADDRESS || ""],
@@ -24,6 +25,7 @@
 //           <li><strong>Email:</strong> ${email}</li>
 //           <li><strong>Telefone:</strong> ${phoneNumber}</li>
 //           <li><strong>Instituição:</strong> ${institution}</li>
+//           <li><strong>Motivo:</strong> ${reason}</li>
 //         </ul>
 //         `,
 //         },

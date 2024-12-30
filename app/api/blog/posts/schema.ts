@@ -42,7 +42,11 @@ export const PostSchema = z.object({
     .max(255, { message: "Título deve ter no máximo 255 caracteres." })
     .trim(),
 
-  content: z.string().min(1, { message: "Insira um conteúdo." }),
+  content: z
+    .string()
+    .min(1, { message: "Insira um conteúdo." })
+    .startsWith("<", { message: "O conteúdo deve ser um HTML válido." })
+    .endsWith(">", { message: "O conteúdo deve ser um HTML válido." }),
 
   miniatureFile: z
     .string()

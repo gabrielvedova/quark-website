@@ -29,4 +29,6 @@ export const PostSchema = z.object({
       message: "Insituição deve ter no máximo 200 caracteres.",
     })
     .trim(),
+
+  reason: z.string().trim().optional(),
 });
