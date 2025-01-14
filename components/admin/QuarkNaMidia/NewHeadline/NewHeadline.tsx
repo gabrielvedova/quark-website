@@ -49,7 +49,7 @@ export default function NewHeadline() {
       body: JSON.stringify(data),
     });
 
-    if (response.ok) return void router.push("/admin/quark-na-midia");
+    if (response.ok) return router.push("/admin/quark-na-midia");
 
     if (response.status === 400) {
       const { error } = (await response.json()) as {
@@ -69,7 +69,7 @@ export default function NewHeadline() {
 
     if (response.status === 401) {
       alert("Você não tem permissão para fazer isso.");
-      return void router.push("/login");
+      return router.push("/login");
     }
 
     alert("Ocorreu um erro ao criar a manchete.");

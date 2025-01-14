@@ -11,7 +11,7 @@ class UndefinedBodyError extends Error {
 }
 
 export class ConventionalResponse extends Response {
-  constructor(status: number, body?: ConventionalResponseBody) {
+  private constructor(status: number, body?: ConventionalResponseBody) {
     const nullBodyCodes = [100, 101, 204, 205, 304];
     if (nullBodyCodes.includes(status)) {
       super(null, { status });

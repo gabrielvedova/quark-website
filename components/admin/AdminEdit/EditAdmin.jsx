@@ -4,8 +4,10 @@ import styles from "./EditAdmin.module.css";
 import { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 import PopUp from "./PopUp/PopUp";
+import Loading from "../Loading/Loading";
 
 export default function EditAdmin() {
+  const [loading, setLoading] = useState(true);
   const [admin, setAdmin] = useState({
     name: "",
     role: "",
@@ -38,6 +40,7 @@ export default function EditAdmin() {
       if (response.ok) {
         const data = (await response.json()).data;
         setAdmin(data.admin);
+        setLoading(false);
       } else {
         const errorData = (await response.json()).data;
         console.error(
@@ -107,102 +110,110 @@ export default function EditAdmin() {
   }, []);
 
   return (
-    <div className={styles.container}>
-      {save.submit && (
-        <PopUp data={save} setData={setSave} onClick={PutAdmin} />
-      )}
-      {remove.submit && (
-        <PopUp data={remove} setData={setRemove} onClick={DelAdmin} />
-      )}
-      <div className={styles.form}>
-        <div className={styles.imageContainer}>
-          <img
-            src={admin.profilePictureUrl}
-            alt="Imagem de perfil"
-            className={styles.imageProfile}
-          />
-          <input
-            type="file"
-            id="fileInput"
-            className={styles.fileInput}
-            onChange={handleImageChange}
-          />
-          {errors.profilePictureFile && (
-            <FormErrors errors={errors.profilePictureFile} />
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className={styles.container}>
+          {save.submit && (
+            <PopUp data={save} setData={setSave} onClick={PutAdmin} />
           )}
-          <label htmlFor="fileInput" className={styles.fileInputLabel}>
-            <MdModeEdit size={60} color="#fff" />
-          </label>
-          <div className={styles.errorsContainer}>
-            {errors.image && <FormErrors errors={errors.image} />}
+          {remove.submit && (
+            <PopUp data={remove} setData={setRemove} onClick={DelAdmin} />
+          )}
+          <div className={styles.form}>
+            <div className={styles.imageContainer}>
+              <img
+                src={admin.profilePictureUrl}
+                alt="Imagem de perfil"
+                className={styles.imageProfile}
+              />
+              <input
+                type="file"
+                id="fileInput"
+                className={styles.fileInput}
+                onChange={handleImageChange}
+              />
+              {errors.profilePictureFile && (
+                <FormErrors errors={errors.profilePictureFile} />
+              )}
+              <label htmlFor="fileInput" className={styles.fileInputLabel}>
+                <MdModeEdit size={60} color="#fff" />
+              </label>
+              <div className={styles.errorsContainer}>
+                {errors.image && <FormErrors errors={errors.image} />}
+              </div>
+            </div>
+            <div className={styles.inputContainer}>
+              <div className={styles.item}>
+                <h3>Nome</h3>
+                <input
+                  type="text"
+                  id="name"
+                  value={admin.name}
+                  onChange={(e) => setAdmin({ ...admin, name: e.target.value })}
+                />
+                <div className={styles.errorsContainer}>
+                  {errors.name && <FormErrors errors={errors.name} />}
+                </div>
+              </div>
+              <div className={styles.item}>
+                <h3>Cargo</h3>
+                <input
+                  type="text"
+                  id="role"
+                  value={admin.role}
+                  onChange={(e) => setAdmin({ ...admin, role: e.target.value })}
+                />
+                <div className={styles.errorsContainer}>
+                  {errors.role && <FormErrors errors={errors.role} />}
+                </div>
+              </div>
+              <div className={styles.buttons}>
+                <div className={styles.editButton}>
+                  <button
+                    onClick={() =>
+                      router.push("/admin/meu-perfil/alterar-username")
+                    }
+                  >
+                    Editar Username
+                  </button>
+                  <button
+                    onClick={() =>
+                      router.push("/admin/meu-perfil/alterar-senha")
+                    }
+                  >
+                    Editar Senha
+                  </button>
+                </div>
+                <div className={styles.importantButton}>
+                  <button
+                    onClick={() => {
+                      setSave({
+                        message: "Tem certeza que deseja salvar as alterações?",
+                        submit: true,
+                      });
+                    }}
+                  >
+                    Salvar
+                  </button>
+                  <button
+                    style={{ backgroundColor: "#FF0000" }}
+                    onClick={() =>
+                      setRemove({
+                        message: "Tem certeza que deseja deletar sua conta?",
+                        submit: true,
+                      })
+                    }
+                  >
+                    Deletar
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className={styles.inputContainer}>
-          <div className={styles.item}>
-            <h3>Nome</h3>
-            <input
-              type="text"
-              id="name"
-              value={admin.name}
-              onChange={(e) => setAdmin({ ...admin, name: e.target.value })}
-            />
-            <div className={styles.errorsContainer}>
-              {errors.name && <FormErrors errors={errors.name} />}
-            </div>
-          </div>
-          <div className={styles.item}>
-            <h3>Cargo</h3>
-            <input
-              type="text"
-              id="role"
-              value={admin.role}
-              onChange={(e) => setAdmin({ ...admin, role: e.target.value })}
-            />
-            <div className={styles.errorsContainer}>
-              {errors.role && <FormErrors errors={errors.role} />}
-            </div>
-          </div>
-          <div className={styles.buttons}>
-            <div className={styles.editButton}>
-              <button
-                onClick={() =>
-                  router.push("/admin/meu-perfil/alterar-username")
-                }
-              >
-                Editar Username
-              </button>
-              <button
-                onClick={() => router.push("/admin/meu-perfil/alterar-senha")}
-              >
-                Editar Senha
-              </button>
-            </div>
-            <div className={styles.importantButton}>
-              <button
-                onClick={() => {
-                  setSave({
-                    message: "Tem certeza que deseja salvar as alterações?",
-                    submit: true,
-                  });
-                }}
-              >
-                Salvar
-              </button>
-              <button
-                style={{ backgroundColor: "#FF0000" }}
-                onClick={() =>
-                  setRemove({
-                    message: "Tem certeza que deseja deletar sua conta?",
-                    submit: true,
-                  })
-                }
-              >
-                Deletar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
