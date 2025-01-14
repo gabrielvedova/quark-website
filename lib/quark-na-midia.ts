@@ -4,7 +4,6 @@ import {
   FileNotFoundError,
   FileUploadError,
   NotFoundError,
-  UnauthorizedError,
 } from "./errors";
 import { generateUniqueFilename } from "./utils";
 import { cookies } from "next/headers";

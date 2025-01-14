@@ -29,7 +29,7 @@ export const PostSchema = z.object({
   description: z
     .string()
     .min(1, { message: "Insira uma descrição." })
-    .max(255, { message: "Descrição deve ter no máximo 255 caracteres." })
+    .max(511, { message: "Descrição deve ter no máximo 511 caracteres." })
     .trim(),
 
   miniatureFile: z

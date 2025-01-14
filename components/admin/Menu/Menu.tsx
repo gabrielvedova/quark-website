@@ -2,7 +2,7 @@ import Link from "next/link";
 import styles from "./Menu.module.css";
 
 interface MenuProps {
-  current: "blog" | "quark-na-midia" | "meu-perfil" | "novo";
+  current: "quark-na-midia" | "meu-perfil" | "novo";
 }
 
 export default function Menu(props: MenuProps) {
@@ -12,13 +12,6 @@ export default function Menu(props: MenuProps) {
     <div className={styles.container}>
       <nav className={styles.nav}>
         <h1 className={styles.title}>Admin Quark</h1>
-        <Link
-          href="/admin/blog"
-          className={styles.link}
-          style={{ textDecoration: current === "blog" ? "underline" : "none" }}
-        >
-          Blog
-        </Link>
         <Link
           href="/admin/quark-na-midia"
           className={styles.link}

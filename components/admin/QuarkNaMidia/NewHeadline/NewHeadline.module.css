@@ -108,12 +108,12 @@
   justify-content: center;
 }
 
-.postTitleContainer {
+.headlineTitleContainer {
   width: 45vw;
   margin: 20px 0;
 }
 
-.postTitleInput {
+.headlineTitleInput {
   width: 95%;
   height: 50px;
   border: none;
@@ -123,16 +123,61 @@
   padding: 0 1.1vw;
 }
 
-.postTitleInput:focus-visible {
+.headlineTitleInput:focus-visible {
   outline: 2px solid #0056d2;
 }
 
-.contentContainer {
+.descriptionContainer {
   width: 45vw;
   margin-top: 20px;
 }
 
-.publishedContainer,
+.descriptionInput {
+  width: 95%;
+  min-height: 100px;
+  border: none;
+  outline: 1px solid #0056d2;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 1.5vh 1.1vw;
+  font-family: sans-serif;
+  resize: vertical;
+}
+
+.monthContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.monthInput {
+  width: 43vw;
+  height: 50px;
+  border: none;
+  outline: 1px solid #0056d2;
+  border-radius: 20px;
+  font-size: 20px;
+  padding: 0 1.1vw;
+}
+
+.urlContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.urlInput {
+  width: 43vw;
+  height: 50px;
+  border: none;
+  outline: 1px solid #0056d2;
+  border-radius: 20px;
+  font-size: 20px;
+  padding: 0 1.1vw;
+}
+
 .submitBtnContainer {
   display: flex;
   justify-content: center;

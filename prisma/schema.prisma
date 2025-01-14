@@ -14,7 +14,6 @@ model Admin {
   role              String
   password          String
   profilePictureKey String    @default("no-profile-picture")
-  posts             Post[]
   sessions          Session[]
 }
 
@@ -23,24 +22,6 @@ model Session {
   admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
   adminId   String
   expiresAt DateTime
-}
-
-model Post {
-  id                Int                @id @default(autoincrement())
-  title             String
-  content           String
-  miniatureKey      String
-  author            Admin              @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId          String
-  published         Boolean            @default(true)
-  lastEditedAt      DateTime
-  postContentImages PostContentImage[]
-}
-
-model PostContentImage {
-  imageKey String @id
-  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId   Int
 }
 
 model Headline {
