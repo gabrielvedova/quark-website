@@ -38,14 +38,14 @@ export default function Enrollment(props) {
         body: JSON.stringify(data),
       });
 
-      if (response.ok && response.status === 200) {
-        console.log("Formulário enviado com sucesso");
-      } else {
-        console.log(
-          "Erro ao enviar formulário",
-          response.status,
-          response.statusText
+      if (response.ok && response) {
+        alert("Formulário enviado com sucesso");
+      } else if (response.status === 429) {
+        alert(
+          "Você já enviou um formulário recentemente, tente novamente mais tarde"
         );
+      } else {
+        alert("Ocorreu um erro ao enviar o formulário, tente novamente");
       }
     } catch (error) {
       console.error("Erro na requisição:", error);
