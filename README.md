@@ -34,10 +34,10 @@ Este projeto tem como objetivo desenvolver um site informativo moderno e intuiti
 
 ## Tecnologias Usadas
 
-- **Frontend**: React , tailwind e Next.Js.
-- **Backend**: Node.js e next.js.
-- **Banco de Dados**: PostgreSQL e Prisma .
-- **serviços externos**: AWS SES (serviço de email.) e AWS S3 ( servico de armazenamento de imagem.)
+- **Frontend**: React e Next.Js.
+- **Backend**: Node.js e Next.js.
+- **Banco de Dados**: PostgreSQL e Prisma ORM.
+- **Serviços Externos**: AWS SES (email) e AWS S3 (armazenamento de imagem)
 
 ---
 
@@ -45,13 +45,14 @@ Este projeto tem como objetivo desenvolver um site informativo moderno e intuiti
 
 ```txt
 quark/
-├── public/ # Arquivos públicos (index.html, imagens)
+├── prisma/     # Configuração do Prisma ORM (modelos, migrações, etc.)
+├── public/     # Arquivos públicos (imagens, favicon, etc.)
 ├── components/ # Componentes reutilizáveis (botões, cabeçalhos, formulários, etc.)
-├── lib/ # Funções e bibliotecas reutilizáveis, como helpers, utilitários
-├── app/ # Lógica principal da aplicação, incluindo configuração da API
-│   └── api/ # Interações com a API e backend as requisições
-├── .env # Variáveis de ambiente
-└── README.md # Documentação principal do projeto
+├── lib/        # Funções e bibliotecas reutilizáveis, como helpers, utilitários
+├── app/        # Lógica principal da aplicação, incluindo API
+│   └── api/    # Endpoints da API
+├── .env        # Variáveis de ambiente (não versionadas)
+└── README.md   # Documentação principal do projeto (você está aqui)
 ```
 
 ---
@@ -62,7 +63,6 @@ quark/
 
 Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 
-- **Next.Js** (Versão 15.0.3)
 - **npm** ou **yarn** (gerenciador de pacotes)
 
 ### Passo a Passo
@@ -88,43 +88,91 @@ npm install # ou yarn
 4 - Configure as váriáveis de ambiente em `.env`
 
 ```env
-# nodemailer config
-NODEMAILER_HOST='' # host do serviço de email
-NODEMAILER_PORT=0 # porta do serviço de email
-NODEMAILER_USER='' # usuário do serviço de email
-NODEMAILER_PASSWORD='' # senha do serviço de email
-
-# contact mail information
-CONTACT_RECIPIENT_NAME='' # nome do destinatário do email de contato
-CONTACT_RECIPIENT_ADDRESS='' # endereço de email do destinatário do email de contato
-
-# mailing api endpoint secret
-MAIL_API_SECRET='' # segredo para acessar a API de envio de email
-
-# database credentials
-DATABASE_URL='' # URL de conexão com o banco de dados
-
-# node environment
-NODE_ENV='' # ambiente de execução do node
-
-# session encription secret
-SESSION_SECRET='' # segredo para encriptar as sessões
-
-# URL
-NEXT_PUBLIC_BASE_URL='' # URL base da aplicação
+CONTACT_RECIPIENT_ADDRESS # endereço de email do destinatário do email de contato
+DATABASE_URL              # URL de conexão com o banco de dados
+SESSION_SECRET            # segredo para encriptar as sessões
+S3_BUCKET_NAME            # nome do bucket do S3
 ```
 
 ---
 
-## Autenticação
+## Como Fazer Deploy no Elastic Beanstalk
 
-<!--> Explicar tipos de autenticação <!-->
+### Pré-requisitos
+
+Antes de começar, certifique-se de ter as seguintes dependências instaladas:
+
+- **npm** ou **yarn** (gerenciador de pacotes)
+- **AWS CLI** (com credenciais configuradas)
+- **EB CLI** (Elastic Beanstalk Command Line Interface)
+
+### Passo a Passo
+
+1 - Clone o repositório:
+
+```bash
+git clone <https://github.com/gabrielvedova/quark-website.git>
+```
+
+2 - Acesse o diretório do projeto: 
+
+```bash
+cd quark-website/
+```
+
+3 - Instale os pacotes:
+
+```bash
+npm install # ou yarn
+```
+
+4 - Faça build da aplicação:
+
+```bash
+npm run build
+```
+
+5 - Crie um arquivo `.ebignore` com o seguinte conteúdo:
+
+```txt
+node_modules
+```
+
+6 - Faça login na AWS:
+
+```bash
+aws configure
+```
+
+7 - Inicialize o Elastic Beanstalk:
+
+```bash
+eb init
+```
+
+8 - Crie um ambiente:
+
+```bash
+eb create
+```
+
+9 - Faça deploy da aplicação:
+
+```bash
+eb deploy
+```
+
+## Painel de Administração
+
+O painel de administração é uma interface web que permite aos administradores do sistema gerenciar conteúdos, usuários e configurações do site. Ele é acessado através da rota `/admin` e requer autenticação para ser acessado.
+
+## Autenticação
 
 ### Sessões
 
 As sessões são guardadas no banco de dados e são encriptografadas com um segredo definido nas variáveis de ambiente. Elas são usadas para autenticar usuários e manter a sessão ativa enquanto o usuário estiver logado. As sessões são encerradas quando o usuário faz logout ou quando o token expira. As sessões armazenam o ID do usuário e a data de expiração do token.
 
-Este meio de autenticação é considerado o principal, sua finalidade é proteger páginas e rotas que só devem ser acessadas pelos administradores do sistema, como edição de postagens, manchetes, informações de perfis e gerenciamento de usuários.
+Este meio de autenticação é considerado o principal, sua finalidade é proteger páginas e rotas que só devem ser acessadas pelos administradores do sistema.
 
 O cookie responsável por armazenar a sessão é seguro e possui as seguintes configurações:
 
@@ -134,712 +182,7 @@ O cookie responsável por armazenar a sessão é seguro e possui as seguintes co
 
 Seu nome é `session` e seu valor é o token de sessão encriptografado.
 
-No código, é possível identificar a necessidade de autenticação por sessão através do middleware `withAuth` (há um caso especial em que se utiliza `withGetPostsAuth` que impede o acesso a postagens não publicadas).
-
-### Bearer tokens
-
-Bearer tokens são usados para impedir o acesso a rotas cujas finalidades são internas e técnicas, como envio de e-mails de contato. Os tokens são armazenados nas variáveis de ambiente e são enviados no cabeçalho `Authorization` da requisição. Para a checagem, utiliza-se o middleware `withTokenAuth`.
-
----
-
-## Endpoints da API
-
-### PATCH /api/admin/change-email
-
-**Autenticação:** Por sessão.
-
-**Descrição:** Permite ao usuário autenticado alterar seu e-mail.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "email": string,
-  "newEmail": string,
-  "newEmailConfirmation": string
-}
-```
-
-#### Respostas
-
-- **200** _OK_
-
-```ts
-{
-  "message": "E-mail alterado com sucesso"
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string[]
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **404** _Not Found_
-
-```ts
-{
-  "message": "Usuário não encontrado"
-}
-```
-
-- **409** _Conflict_
-
-```ts
-{
-  "error": {
-    "newEmail": ["Email já em uso"]
-  }
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### PATCH /api/admin/change-password
-
-**Autenticação:** Por sessão.
-
-**Descrição:** Permite ao usuário autenticado alterar sua senha.
-
-#### Estrutura de requisição
-
-```ts
-{
- "password": string,
- "newpassword": string,
- "newPasswordConfirmation": string
-}
-```
-
-#### Respostas
-
-- **200** _OK_
-
-```ts
-{
-  "message": "Senha alterada com sucesso."
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string[]
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **404** _Not Found_
-
-```ts
-{
-  "message": "Usuário não encontrado"
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### CREATE /api/create-admin
-
-**Autenticação**: Por sessão (apenas administradores podem criar novos usuários).
-
-**Descrição**: Cria um novo usuário com a permissão de administrador no sistema.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "name": string,
-  "role": string,
-  "password": string,
-  "passwordconfirmation": string
-}
-```
-
-#### Respostas
-
-- **200** _OK_
-
-```ts
-{
-  "message": "Admin criado com sucesso."
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **409** _Conflict_
-
-```ts
-{
-  "error": {
-    "email": ["Email já em uso"]
-  }
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### DELETE /api/admin/delete
-
-**Autenticação**: Por sessão.
-
-**Descrição**: Exclui usuário atualmente logado no sistema.
-
-#### Estrutura de requisição
-
-Sem corpo, pois o usuário é identificado por seu ID guardado e encriptografado na sessão atual.
-
-#### Respostas
-
-- **204** _No Content_
-
-Sem corpo.
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### PUT /api/admin/edit-info
-
-**Autenticação**: Por sessão.
-
-**Descrição**: Edita as informações que aparecem no blog do administrador atualmente autenticado.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "name": string,
-  "role": string,
-  "profilePicture": string
-}
-```
-
-#### Respostas
-
-- **200** _OK_:
-
-```ts
-{
-  "message": "Informações alteradas com sucesso."
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **404** _Not Found_
-
-```ts
-{
-  "message": "Perfil não encontrado"
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### GET /api/blog
-
-**Autenticação**: Requer autenticação por sessão caso `published !== true`.
-
-**Descrição**: Lista as postagens do blog, filtrando-as se inserido algum valor nas queries.
-
-#### Estrutura de requisição
-
-```ts
-interface searchQuery {
-  id: number;
-  search: string;
-  published: boolean;
-}
-```
-
-#### Respostas
-
-- **200** _OK_
-
-```ts
-{
-  "data": {
-    "id": number,
-    "title": string,
-    "content": string, // HTML of the post
-    "miniature": string, // URL of the miniature image
-    "authorId": string,
-    "published": boolean,
-    "lastEditedAt": Date
-  }[]
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-### POST /api/blog/posts
-
-**Autenticação**: Por sessão.
-
-**Descrição**: Cria uma nova postagem no blog.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "title": string,
-  "content": string,
-  "published": boolean,
-  "miniature": string
-}
-```
-
-- **201** _Created_
-
-```ts
-{
-  "id": number
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### PUT /api/blog/posts
-
-**Autenticação**: Por sessão.
-
-**Descrição**: Edita um post existente no blog.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "id": number,
-  "title": string,
-  "content": string,
-  "miniature": string,
-  "published": boolean
-}
-```
-
-#### Respostas
-
-- **204** _No Content_
-
-Sem corpo.
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **404** _Not Found_
-
-```ts
-{
-  "message": "Post não encontrado"
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### DELETE /api/blog/posts
-
-**Autenticação**: Por sessão.
-
-**Descrição**: Exclui um post do blog.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "id": number
-}
-```
-
-#### Respostas
-
-- **204** _No Content_
-
-Sem corpo.
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **404** _Not Found_
-
-```ts
-{
-  "message": "Post não encontrado"
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### POST /api/fale-conosco
-
-**Autenticação**: Não requer autenticação.
-
-**Descrição**: Permite que o usuário envie uma mensagem através do formulário de contato.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "name": string,
-  "email": string,
-  "phonenumber": string,
-  "institution": string
-}
-```
-
-#### Respostas
-
-- **204** _No Content_
-
-Sem corpo.
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### POST /api/login
-
-**Autenticação**: Não requer autenticação (é o primeiro ponto de entrada para obter um token).
-
-**Descrição**: Realiza o login do usuário com e-mail e senha.
-
-#### Estrutura de requisição
-
-```ts
-{
-  "email": string,
-  "password": string
-}
-```
-
-#### Respostas
-
-- **200** _OK_
-
-```ts
-{
-  "message": "Login realizado com sucesso"
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Email ou senha incorretos."
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### POST /api/logout
-
-**Autenticação**: Por sessão.
-
-**Descrição**: Realiza o logout do usuário, encerrando sua sessão.
-
-#### Estrutura de requisição
-
-Sem corpo.
-
-#### Respostas
-
-- **204** _No Content_
-
-Sem corpo.
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
-
-### GET /api/quark-na-midia
-
-**Autenticação**: Não requer autenticação.
-
-**Descrição**: Acessa a lista de manchetes de notícias sobre a Quark.
-
-#### Estrutura de requisição
-
-```ts
-interface searchQuery {
-  id: number;
-}
-```
-
-#### Respostas
-
-- **200** _OK_
-
-```ts
-{
-  "data": {
-    "id": number,
-    "title": string,
-    "description": string,
-    "miniature": string,
-    "publishingDate": Date,
-    "url": string
-  }[]
-}
-```
-
-- **400** _Bad Request_
-
-```ts
-{
-  "error": {
-    [k: string]: string
-  }
-}
-```
-
-- **401** _Unauthorized_
-
-```ts
-{
-  "message": "Não autorizado."
-}
-```
-
-- **404** _Not Found_
-
-```ts
-{
-  "message": "Manchete não encontrada"
-}
-```
-
-- **500** _Internal Server Error_
-
-```ts
-{
-  "message": "Ocorreu um erro."
-}
-```
+No código, é possível identificar a necessidade de autenticação por sessão através do middleware `withAuth`.
 
 ## Créditos
 
