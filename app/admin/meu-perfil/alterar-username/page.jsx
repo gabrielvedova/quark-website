@@ -1,5 +1,5 @@
 import Menu from "@/components/admin/Menu/Menu";
-import ChangeUsername from "@/components/admin/AdminEdit/ChangeUsername/ChangeUsername";
+import ChangeUsername from "@/components/admin/ChangeUsername/ChangeUsername";
 
 export default function Page() {
   return (

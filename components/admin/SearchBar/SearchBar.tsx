@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
-import Button from "../../Button/Button";
-import SearchInput from "../../SearchInput/SearchInput";
+import Button from "../Button/Button";
+import SearchInput from "../SearchInput/SearchInput";
 import styles from "./SearchBar.module.css";
 
 interface SearchBarProps {

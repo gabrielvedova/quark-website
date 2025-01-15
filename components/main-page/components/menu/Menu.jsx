@@ -64,7 +64,7 @@ export default function Menu() {
             <a href="#Depoimentos">Depoimentos</a>
           </li>
           <li>
-            <a href="#Blog">Blog</a>
+            <a href="#Blog">Quark na Mídia</a>
           </li>
         </ul>
       </nav>

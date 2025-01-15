@@ -50,7 +50,9 @@ export const GET = async (request: Request) => {
       });
     }
 
-    return ConventionalResponse.internalServerError();
+    return ConventionalResponse.internalServerError(
+      error instanceof Error ? { message: error.message } : undefined
+    );
   }
 };
 
@@ -83,7 +85,7 @@ export const POST = adminAuthApiMiddleware(async (request: Request) => {
 export const PUT = adminAuthApiMiddleware(async (request: Request) => {
   const requestMetadata = { origin: new URL(request.url).origin };
 
-  const body = request.json();
+  const body = await request.json();
   const validatedBody = await PutSchema.safeParseAsync(body);
 
   if (!validatedBody.success) {
@@ -120,7 +122,9 @@ export const PUT = adminAuthApiMiddleware(async (request: Request) => {
       });
     }
 
-    return ConventionalResponse.internalServerError();
+    return ConventionalResponse.internalServerError(
+      error instanceof Error ? { message: error.message } : undefined
+    );
   }
 });
 

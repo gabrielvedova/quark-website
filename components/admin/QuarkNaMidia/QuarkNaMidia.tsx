@@ -5,11 +5,11 @@ import Menu from "../Menu/Menu";
 import { Headline } from "@/lib/definitions";
 import styles from "./QuarkNaMidia.module.css";
 import ListMessage from "../ListMessage/ListMessage";
-import HeadlineOption from "./HeadlineOption/HeadlineOption";
+import HeadlineOption from "../HeadlineOption/HeadlineOption";
 import ConfirmationPopup from "../ConfirmationPopup/ConfirmationPopup";
 import Link from "next/link";
 import Button from "../Button/Button";
-import SearchBar from "./SearchBar/SearchBar";
+import SearchBar from "../SearchBar/SearchBar";
 
 export default function QuarkNaMidia() {
   const [loading, setLoading] = useState<boolean>(false);

@@ -192,7 +192,6 @@ export async function updateHeadline(
   }
 
   let miniatureKey: string | undefined;
-
   if (data.miniatureFile) {
     miniatureKey = await updateMiniature(
       headline.miniatureKey,
@@ -201,7 +200,19 @@ export async function updateHeadline(
     );
   }
 
-  await prismaClient.headline.update({ where: { id: data.id }, data });
+  if (data.publishingDate)
+    data.publishingDate = new Date(data.publishingDate).toISOString();
+
+  await prismaClient.headline.update({
+    where: { id: data.id },
+    data: {
+      miniatureKey,
+      title: data.title,
+      description: data.description,
+      publishingDate: data.publishingDate,
+      url: data.url,
+    },
+  });
 }
 
 async function deleteMiniature(

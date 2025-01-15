@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import styles from "./EditAdmin.module.css";
 import { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
-import PopUp from "./PopUp/PopUp";
+import PopUp from "../PopUp/PopUp";
 import Loading from "../Loading/Loading";
 
 export default function EditAdmin() {

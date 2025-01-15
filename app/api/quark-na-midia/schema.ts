@@ -85,7 +85,8 @@ export const PutSchema = z.object({
     .string()
     .min(1, { message: "Insira um título." })
     .max(255, { message: "Título deve ter no máximo 255 caracteres." })
-    .trim(),
+    .trim()
+    .optional(),
 
   description: z
     .string()

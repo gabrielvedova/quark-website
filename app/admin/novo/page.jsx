@@ -1,4 +1,4 @@
-import NewAdmin from "@/components/admin/AdminNew/NewAdmin";
+import NewAdmin from "@/components/admin/NewAdmin/NewAdmin";
 import Menu from "@/components/admin/Menu/Menu";
 
 export default function Page() {

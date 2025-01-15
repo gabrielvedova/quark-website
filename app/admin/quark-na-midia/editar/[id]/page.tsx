@@ -1,7 +1,9 @@
 import Menu from "@/components/admin/Menu/Menu";
-import EditHeadline from "@/components/admin/QuarkNaMidia/EditHeadline/EditHeadline";
+import EditHeadline from "@/components/admin/EditHeadline/EditHeadline";
 
-export default async function Page({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>;
+
+export default async function Page({ params }: { params: Params }) {
   const { id } = await params;
 
   return (

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import styles from "./NewHeadline.module.css";
 import { IoIosArrowBack, IoMdCloudUpload } from "react-icons/io";
-import Button from "../../Button/Button";
+import Button from "../Button/Button";
 import { useRouter } from "next/navigation";
 
 export default function NewHeadline() {
@@ -79,7 +79,10 @@ export default function NewHeadline() {
     <main className={styles.main}>
       <div className={styles.titleContainer}>
         <div>
-          <button className={styles.backButton}>
+          <button
+            className={styles.backButton}
+            onClick={() => router.push("/admin/quark-na-midia")}
+          >
             <IoIosArrowBack size={35} />
           </button>
           <h1>Nova Manchete</h1>
@@ -117,7 +120,10 @@ export default function NewHeadline() {
               className={styles.uploadNewMiniature}
               onChange={handleMiniatureChange}
             />
-            <label htmlFor="uploadNewMiniature">
+            <label
+              htmlFor="uploadNewMiniature"
+              className={styles.uploadNewMiniatureLabel}
+            >
               <div
                 title="Fazer upload de uma nova miniatura."
                 className={styles.uploadNewMiniatureBtn}

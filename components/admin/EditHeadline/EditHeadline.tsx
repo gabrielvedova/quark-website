@@ -1,22 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import styles from "./EditHeadline.module.css";
 import { IoIosArrowBack, IoMdCloudUpload } from "react-icons/io";
-import Button from "../../Button/Button";
+import Button from "../Button/Button";
 import { useRouter } from "next/navigation";
 import { Headline } from "@/lib/definitions";
-import { set } from "zod";
-import Loading from "../../Loading/Loading";
+import Loading from "../Loading/Loading";
 
 interface EditHeadlineProps {
   id: string;
 }
 
 export default function EditHeadline(props: EditHeadlineProps) {
-  let id: number;
-
   const [loading, setLoading] = useState<boolean>(true);
+  const [id, setId] = useState<number>(0);
   const [miniature, setMiniature] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -45,14 +43,23 @@ export default function EditHeadline(props: EditHeadlineProps) {
     if (!miniature || !title || !description || !url)
       return alert("Todos os campos são obrigatórios!");
 
-    const data = {
+    const data: {
+      id: number;
+      miniatureFile?: string;
+      title: string;
+      description: string;
+      publishingDate: string;
+      url: string;
+    } = {
       id,
-      miniatureFile: miniature.split(",")[1],
       title,
       description,
       publishingDate: publishingDate.toISOString().slice(0, 10),
       url,
     };
+
+    if (miniature.startsWith("data:image/"))
+      data.miniatureFile = miniature.split(",")[1];
 
     const response = await fetch("/api/quark-na-midia", {
       method: "PUT",
@@ -84,19 +91,10 @@ export default function EditHeadline(props: EditHeadlineProps) {
     }
 
     alert("Ocorreu um erro ao atualizar a manchete.");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     router.push("/admin/quark-na-midia");
   };
 
   const fetchHeadline = async () => {
-    try {
-      id = parseInt(props.id);
-    } catch {
-      alert("ID inválido.");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return router.push("/admin/quark-na-midia");
-    }
-
     const response = await fetch(`/api/quark-na-midia?id=${id}`);
 
     if (response.ok) {
@@ -117,17 +115,24 @@ export default function EditHeadline(props: EditHeadlineProps) {
 
     if (response.status === 404) {
       alert("Manchete não encontrada.");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       router.push("/admin/quark-na-midia");
     }
 
     alert("Ocorreu um erro ao buscar a manchete.");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push("/admin/quark-na-midia");
+    return router.push("/admin/quark-na-midia");
   };
 
   useEffect(() => {
-    fetchHeadline();
+    if (id > 0) fetchHeadline();
+  }, [id]);
+
+  useEffect(() => {
+    try {
+      setId(parseInt(props.id));
+    } catch {
+      alert("ID inválido.");
+      router.push("/admin/quark-na-midia");
+    }
   }, []);
 
   return (
@@ -179,7 +184,10 @@ export default function EditHeadline(props: EditHeadlineProps) {
                   className={styles.uploadNewMiniature}
                   onChange={handleMiniatureChange}
                 />
-                <label htmlFor="uploadNewMiniature">
+                <label
+                  htmlFor="uploadNewMiniature"
+                  className={styles.uploadNewMiniatureLabel}
+                >
                   <div
                     title="Fazer upload de uma nova miniatura."
                     className={styles.uploadNewMiniatureBtn}
