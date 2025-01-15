@@ -58,6 +58,11 @@ export class ConventionalResponse extends Response {
     return new this(409, body);
   }
 
+  public static tooManyRequests(body?: { message?: string }) {
+    const { message } = body || {};
+    return new this(429, { message: message || "Muitas requisições." });
+  }
+
   public static internalServerError(body?: { message?: string }) {
     const { message } = body || {};
     return new this(500, { message: message || "Ocorreu um erro." });
