@@ -186,6 +186,6 @@ No código, é possível identificar a necessidade de autenticação por sessão
 
 ## Créditos
 
-**Front-end:** [Gabriel Vedova](https://linkedin.com/in/gabrielvedova)
-**Back-end:** [Caio de Araújo](https://linkedin.com/in/caiotdearaujo)
-**Documentação**: [Breno Cunha](https://www.linkedin.com/in/breno-cunha-2a49a9302?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
+- **Front-end:** [Gabriel Vedova](https://linkedin.com/in/gabrielvedova)
+- **Back-end:** [Caio de Araújo](https://linkedin.com/in/caiotdearaujo)
+- **Documentação**: [Breno Cunha](https://www.linkedin.com/in/breno-cunha-2a49a9302?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)
