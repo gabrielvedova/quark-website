@@ -162,6 +162,17 @@ eb create
 eb deploy
 ```
 
+10 - Configure as váriáveis de ambiente na AWS:
+
+```env
+CONTACT_RECIPIENT_ADDRESS # endereço de email do destinatário do email de contato
+DATABASE_URL              # URL de conexão com o banco de dados
+SESSION_SECRET            # segredo para encriptar as sessões
+S3_BUCKET_NAME            # nome do bucket do S3
+```
+
+---
+
 ## Painel de Administração
 
 O painel de administração é uma interface web que permite aos administradores do sistema gerenciar conteúdos, usuários e configurações do site. Ele é acessado através da rota `/admin` e requer autenticação para ser acessado.
