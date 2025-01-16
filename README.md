@@ -70,7 +70,7 @@ Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 1 - Clone o repositório:
 
 ```bash
-git clone <https://github.com/gabrielvedova/quark-website.git>
+git clone https://github.com/gabrielvedova/quark-website.git
 ```
 
 2 - Acesse o diretório do projeto:
@@ -111,7 +111,7 @@ Antes de começar, certifique-se de ter as seguintes dependências instaladas:
 1 - Clone o repositório:
 
 ```bash
-git clone <https://github.com/gabrielvedova/quark-website.git>
+git clone https://github.com/gabrielvedova/quark-website.git
 ```
 
 2 - Acesse o diretório do projeto: 
