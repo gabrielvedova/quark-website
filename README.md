@@ -177,6 +177,38 @@ S3_BUCKET_NAME            # nome do bucket do S3
 
 O painel de administração é uma interface web que permite aos administradores do sistema gerenciar conteúdos, usuários e configurações do site. Ele é acessado através da rota `/admin` e requer autenticação para ser acessado.
 
+- **OBS: Como adicionar o primeiro perfil de administrador?**
+
+O painel conta inicialmente com um painel de *login*, entretanto, ao conectar pela primeira vez um banco de dados, alguns procedimentos são necessários para o primeiro uso do painel de administrador:
+
+1. Desativar o middleware de autenticação da API (TENHA CUIDADO!)
+
+Entre em `lib/auth.ts` e comente o seguinte trecho da função `adminAuthApiMiddleware`
+
+```ts
+export function adminAuthApiMiddleware(
+  handler: (request: Request) => Promise<ConventionalResponse>
+) {
+  return async function (request: Request): Promise<ConventionalResponse> {
+    // if (!(await isAdminAuthenticated())) {
+    //   return ConventionalResponse.unauthorized();
+    // }
+
+    return handler(request);
+  };
+}
+```
+
+2. Faça uma requisição `POST` para o *endpoint* `/api/admin`
+
+```bash
+curl <origin>/api/admin \
+  -X POST \
+  -d '{"name":<nome>,"role":<role>,"username":<username>,"password":<password>,"passwordConfirmation":<password>}'
+```
+
+3. Descomente o trecho que foi comentado em `lib/auth.ts`
+
 ## Autenticação
 
 ### Sessões
