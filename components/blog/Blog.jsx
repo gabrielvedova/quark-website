@@ -133,7 +133,7 @@ export default function Blog() {
                 rel="noreferrer"
                 key={index}
               >
-                <div className={styles.itemSlide} style={{ width: 80 }}>
+                <div className={styles.itemSlide} style={{ width: "auto" }}>
                   <div className={styles.notice}>
                     <img
                       src={headline.miniatureUrl}
