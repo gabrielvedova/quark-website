@@ -5,14 +5,15 @@ import styles from "./Conquistas.module.css";
 import Slide from "../slide/Slide";
 import Enrollment from "../inscricao/Enrollment";
 import "@/app/styles.css";
+import getImageUrl from "@/lib/images";
 
 export default function Conquistas() {
   const [isFormsOpen, setForms] = useState(false);
-  // TODO add number image urls
+
   const imageList = [
-    { id: 1, img: "" },
-    { id: 2, img: "" },
-    { id: 3, img: "" },
+    { id: 1, img: getImageUrl("numbers1") },
+    { id: 2, img: getImageUrl("numbers2") },
+    { id: 3, img: getImageUrl("numbers3") },
   ];
 
   return (

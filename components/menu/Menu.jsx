@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import "./Menu.css";
 import { IoMenuOutline } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
+import getImageUrl from "@/lib/images";
 
 export default function Menu() {
   // Menu fix to scroll to the top of the page
@@ -38,8 +39,7 @@ export default function Menu() {
     <>
       <nav id="menu" className="containerMenu">
         <div className="imgContainerMenu">
-          {/* TODO add logo image url */}
-          <img src={null} alt="" className="imgMenu" />
+          <img src={getImageUrl("logo")} alt="" className="imgMenu" />
         </div>
         {!isMenuOpen && (
           <button onClick={() => setMenu(!isMenuOpen)} className="menuBar">

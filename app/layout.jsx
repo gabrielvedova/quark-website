@@ -1,3 +1,4 @@
+import getImageUrl from "@/lib/images";
 import "./styles.css";
 
 export const metadata = {
@@ -9,8 +10,7 @@ export default function Layout({ children }) {
   return (
     <html lang="pt-br">
       <head>
-        {/* TODO add favicon url */}
-        <link rel="icon" href={""} type="image/x-icon" />
+        <link rel="icon" href={getImageUrl("favicon")} type="image/x-icon" />
       </head>
       <body>
         <div id="root">{children}</div>

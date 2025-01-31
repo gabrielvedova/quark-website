@@ -2,13 +2,13 @@
 
 import styles from "./Home.module.css";
 import Slide from "../slide/Slide";
+import getImageUrl from "@/lib/images";
 
 export default function Home() {
-  // TODO add home image urls
   const images = [
-    { id: 1, img: "" },
-    { id: 2, img: "" },
-    { id: 3, img: "" },
+    { id: 1, img: getImageUrl("home1") },
+    { id: 2, img: getImageUrl("home2") },
+    { id: 3, img: getImageUrl("home3") },
   ];
 
   return (

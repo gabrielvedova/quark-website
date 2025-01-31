@@ -1,3 +1,4 @@
+import getImageUrl from "@/lib/images";
 import styles from "./Diferenciais.module.css";
 import "@/app/styles.css";
 
@@ -33,8 +34,7 @@ export default function Diferenciais() {
             </p>
           </div>
         </div>
-        {/* TODO add diferentials image url */}
-        <img src={""} alt="" />
+        <img src={getImageUrl("diferentials")} alt="" />
         <div className={styles.text2}>
           <div className={styles.topic3}>
             <h2>
