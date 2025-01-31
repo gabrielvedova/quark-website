@@ -1,21 +1,20 @@
 import "./styles.css";
-import favicon from "@/public/favicon-16x16.png";
 
 export const metadata = {
-  title: "Quark",
+  title:
+    "Quark - Plataforma de ensino de habilidades comportamentais para jovens",
 };
 
-const RootLayout = ({ children }) => {
+export default function Layout({ children }) {
   return (
     <html lang="pt-br">
       <head>
-        <link rel="icon" href={favicon.src} type="image/x-icon" />
+        {/* TODO add favicon url */}
+        <link rel="icon" href={""} type="image/x-icon" />
       </head>
       <body>
         <div id="root">{children}</div>
       </body>
     </html>
   );
-};
-
-export default RootLayout;
+}

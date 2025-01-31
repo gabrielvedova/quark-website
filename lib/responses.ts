@@ -2,6 +2,10 @@ type ConventionalResponseBody =
   | { message: string }
   | { error: any }
   | { data: any };
+type SuccessResponseBody = Exclude<ConventionalResponseBody, { error: any }>;
+type ErrorResponseBody = Exclude<ConventionalResponseBody, { data: any }>;
+type ErrorObjectResponseBody = Exclude<ErrorResponseBody, { message: string }>;
+type ErrorMessageResponseBody = Exclude<ErrorResponseBody, { error: any }>;
 
 class UndefinedBodyError extends Error {
   constructor() {
@@ -28,11 +32,11 @@ export class ConventionalResponse extends Response {
     });
   }
 
-  public static ok(body: { message: string } | { data: any }) {
+  public static ok(body: SuccessResponseBody) {
     return new this(200, body);
   }
 
-  public static created(body: { message: string } | { data: any }) {
+  public static created(body: SuccessResponseBody) {
     return new this(201, body);
   }
 
@@ -40,30 +44,30 @@ export class ConventionalResponse extends Response {
     return new this(204);
   }
 
-  public static badRequest(body: { error: object }) {
+  public static badRequest(body: ErrorObjectResponseBody) {
     return new this(400, body);
   }
 
-  public static unauthorized(body?: { message?: string }) {
+  public static unauthorized(body?: ErrorMessageResponseBody) {
     const { message } = body || {};
     return new this(401, { message: message || "Não autorizado." });
   }
 
-  public static notFound(body?: { message?: string }) {
+  public static notFound(body?: ErrorMessageResponseBody) {
     const { message } = body || {};
     return new this(404, { message: message || "Não encontrado." });
   }
 
-  public static conflict(body: { error: object }) {
+  public static conflict(body: ErrorObjectResponseBody) {
     return new this(409, body);
   }
 
-  public static tooManyRequests(body?: { message?: string }) {
+  public static tooManyRequests(body?: ErrorMessageResponseBody) {
     const { message } = body || {};
     return new this(429, { message: message || "Muitas requisições." });
   }
 
-  public static internalServerError(body?: { message?: string }) {
+  public static internalServerError(body?: ErrorMessageResponseBody) {
     const { message } = body || {};
     return new this(500, { message: message || "Ocorreu um erro." });
   }
